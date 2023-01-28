@@ -302,7 +302,7 @@ export default function Customer() {
                 className="d-flex justify-content-center align-items-center"
 
             >
-                <form className="border border-secondary p-2 m-2 rounded-2 row bg-white py-4">
+                <form className="border border-secondary p-2 m-2 rounded-2 row bg-white py-4" style={{maxWidth: "900px"}}>
                     <div className="pt-2">
                         <h4 className="col d-flex justify-content-center">Add new-document</h4>
                         <div className="col d-flex justify-content-center">
