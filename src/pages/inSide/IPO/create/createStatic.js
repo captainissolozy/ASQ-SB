@@ -361,7 +361,7 @@ export default function Customer(props) {
 
             >
 
-                <form className="border border-secondary p-2 m-2 rounded-2 row bg-white py-4">
+                <form className="border border-secondary p-2 m-2 rounded-2 row bg-white py-4" style={{maxWidth: "900px"}}>
                     <div className="pt-2">
                         <h4 className="col d-flex justify-content-start px-2">Add work</h4>
                         <div className="row mt-3 d-flex justify-content-center mb-2">
