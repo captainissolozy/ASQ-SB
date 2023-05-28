@@ -6,6 +6,8 @@ const FormWrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: rgba(0,0,0,0.05)!important;
+    border: none!important;
   }
   .box {
     height: calc(100vh - 62.5px);

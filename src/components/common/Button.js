@@ -1,11 +1,17 @@
-import {Button} from "@mui/material"
+import {Button, makeStyles} from "@mui/material"
 import * as React from 'react';
 
+const useStyles = makeStyles({
+    root: {
+        background: transparent,
+        border: none,
+    }
+});
+
 function BasicButtons({title}, {color}) {
-
-
+    const classes = useStyles();
     return (
-        <Button variant="contained" className="w-100" color={color}>{title}</Button>
+        <Button variant="contained" className={classes.root} color={color}>{title}</Button>
     );
 }
 
