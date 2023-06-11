@@ -105,12 +105,12 @@ export default function Lobby() {
     return (
         <LobbyWrapper>
             <div className="wrapper-box pt-4">
-                <div className="container pt-5" style={{height: "auto"}}>
+                <div className="container mb-5 py-4 px-3 shadow-sm" style={{height: "auto"}}>
                     <div className=''>
-                    <div className="col px-2">
-                        <IconButton variant="outlined" className="px-0" color="primary" onClick={handleCreate}
-                                    size="small"><h4 className="text-dark mb-0">Quotation</h4><AddIcon
-                            className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
+                    <div className="col px-2 d-flex align-items-center justify-content-between">
+                        <h4 className="mb-0">Quotation</h4>
+                        <IconButton variant="outlined" className="px-3 rounded-2 sty-addbtn" color="primary" onClick={handleCreate}
+                                    size="small"><p3 className="mb-0">Add</p3></IconButton>
                     </div>
                     <div className="row mt-3 d-flex justify-content-center">
                         <div className="row">
@@ -193,14 +193,14 @@ export default function Lobby() {
                         </div>
                     </div>
                     </div>
-                    <div className="row mt-2 mx-1 table-responsive">
-                            <table className="table table-sm border-bottom-0 overflow-auto" id="dtHorizontalExample" >
-                                <thead className="bg-dark text-light">
+                    <div className="row mt-2 mx-2 table-responsive">
+                            <table className="table border-bottom-0 overflow-auto" id="dtHorizontalExample" >
+                                <thead className="text-light">
                                 <tr>
-                                    <th scope="col" className="t-stick th-sm">Q-No</th>
-                                    <th scope="col" className="t-stick th-sm">Customer</th>
-                                    <th scope="col" className="t-stick th-sm">Sales</th>
-                                    <th scope="col" className="t-stick th-sm">Status</th>
+                                    <th scope="col" className="t-stick th px-3">Q-No</th>
+                                    <th scope="col" className="t-stick th px-3">Customer</th>
+                                    <th scope="col" className="t-stick th px-3">Sales</th>
+                                    <th scope="col" className="t-stick th px-3">Status</th>
                                 </tr>
                                 </thead>
                                 <AddTable genQo={searchKey.genQo} sales={searchKey.sales} status={searchKey.status}

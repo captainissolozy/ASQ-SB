@@ -34,5 +34,15 @@ const FormWrapper = styled.div`
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
   }
+  .pt-2 {
+    width: 100%;
+    max-width: 218px;
+  }
+  button.mx-3 {
+    background-color: #302e38;
+    color: #e2f3e5;
+    margin: 0!important;
+    padding: 10px 16px;
+  }
 `;
 export default FormWrapper;

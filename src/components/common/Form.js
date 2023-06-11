@@ -36,7 +36,7 @@ const BasicTextFields = ({setPassword, setEmail, handleAction}) => {
                     <div className="pt-2">
 
 
-                        <Button type="submit" variant="contained" color="primary" className="mx-3"
+                        <Button type="submit" variant="contained" color="primary" fullWidth="true" className="mx-3"
                                 onClick={handleAction}>
                             Login
                         </Button>

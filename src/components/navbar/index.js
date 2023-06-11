@@ -130,12 +130,12 @@ const Navbar = () => {
                             )}
                         </ul>
                         <form
-                            className="d-flex justify-content-center"
+                            className="d-flex justify-content-center btn-logout"
                             data-bs-toggle="collapse"
                             data-bs-target="#navbarTogglerDemo02"
                             aria-controls="navbarTogglerDemo02"
                         >
-                            {user ? <LogoutBtn1 className="" variant="text"/> : <></>}
+                            {user ? <LogoutBtn1 className="rounded-2" buttonVariant="outlined" variant="text"/> : <></>}
                         </form>
                     </div>
                 </div>

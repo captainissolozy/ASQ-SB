@@ -304,14 +304,13 @@ export default function Customer() {
                         </div>
                         <div className="heading-container mt-1 d-flex justify-content-start px-2 pt-1">
                             <div className="col">
-                                <div className="col p-0">
+                                <div className="col p-0 d-flex justify-content-between align-items-center">
+                                <h5 className="text-dark mb-0">Customer</h5>
                                     <IconButton variant="outlined" className="px-1" color="error"
                                                 onClick={handleCreate}
-                                                size="small"><h5 className="text-dark mb-0">Customer:</h5>
-                                        <AddIcon color="error"
-                                                 className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
+                                                size="small"><p5>Add</p5></IconButton>
                                 </div>
-                                <h5 className="px-1">Select:</h5>
+                                {/* <h5 className="px-1">Select:</h5> */}
                                 <ComboBox func={listenChange} dis={stateOfN}/>
                             </div>
 

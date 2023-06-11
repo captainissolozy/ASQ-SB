@@ -33,10 +33,10 @@ const AddTable = (props) => {
         }).map((data) => (
             <tbody>
             <tr onClick={() => handleJoinPublic(data.genQo)} style={{cursor: "pointer"}}>
-                <td>{data.genQo}</td>
-                <td>{data.v_box1}</td>
-                <td className="overflow-hidden">{data.sales}</td>
-                <td>{data.v_box6}</td>
+                <td className="px-3">{data.genQo}</td>
+                <td className="px-3">{data.v_box1}</td>
+                <td className="px-3 overflow-hidden">{data.sales}</td>
+                <td className="px-3">{data.v_box6}</td>
             </tr>
             </tbody>
 
