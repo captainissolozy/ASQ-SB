@@ -118,17 +118,17 @@ export default function Customer() {
 
     return (
         <CustomerWrapper>
-            <div className="wrapper-box pt-4 bg-cus h-100 container px-0">
-                <div className="container-fluid pt-4">
+            <div className="wrapper-box bg-cus h-100 container px-0 shadow-sm mb-5">
+                <div className="container-fluid">
                     <div className="my-1 p-3 pb-3 row d-flex justify-content-center">
-                        <div className="col-10 px-2 d-flex justify-content-start col-md-9">
-                            <IconButton variant="outlined" className="px-0" color="primary" onClick={handleCreate}
-                                        size="small"><h4 className="text-dark mb-0">Supplier</h4><AddIcon
-                                className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
+                        <div className="col-10 d-flex justify-content-between align-items-center col-md-9 header-wrapper">
+                            <h4 className="mb-0">Supplier</h4>
+                            <IconButton variant="outlined" className="px-3 rounded-2 sty-addbtn" color="primary" onClick={handleCreate}
+                                        size="small"><p3 className="mb-0">Add</p3></IconButton>
                         </div>
                         <div className="row mt-2 d-flex justify-content-center">
-                            <div className="row d-flex justify-content-center">
-                                <div className="col-8 px-2 col-md-6">
+                            <div className="row d-flex justify-content-center p-0 wrap-input">
+                                <div className="col-8 col-md-6 flex-md-fill p-0">
                                     <div className="col pt-1 col-md-12 mb-2">
                                         <TextField id="outlined-search" type="search" InputLabelProps={{
                                             shrink: true,
@@ -140,8 +140,8 @@ export default function Customer() {
                                                    name="name" label="Name" className="w-100" onChange={joinChange}/>
                                     </div>
                                 </div>
-                                <div className="col p-0 col-md-3">
-                                    <div className="col p-0 pt-1 mb-2 mx-2">
+                                <div className="col p-0 col-md-3 flex-sm-fill">
+                                    <div className="col p-0 pt-1 mb-2">
                                         <TextField id="outlined-search" type="search" InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
@@ -154,9 +154,9 @@ export default function Customer() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="row d-flex justify-content-center">
-                                <div className="col-md-6 p-0 col-8">
-                                    <div className="col p-0 pt-1 mb-2 mx-2">
+                            <div className="row d-flex justify-content-center wrap-input p-0">
+                                <div className="col-md-6 p-0 col-8 flex-md-fill">
+                                    <div className="col p-0 pt-1 mb-2">
                                         <TextField id="outlined-search" type="name" InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
@@ -168,8 +168,8 @@ export default function Customer() {
                                                    onChange={joinChange}/>
                                     </div>
                                 </div>
-                                <div className="col p-0 col-md-3">
-                                    <div className="col p-0 pt-1 mb-2 mx-2">
+                                <div className="col p-0 col-md-3 flex-sm-fill">
+                                    <div className="col p-0 pt-1 mb-2">
                                         <TextField id="outlined-search" type="search" InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
@@ -188,10 +188,10 @@ export default function Customer() {
                         <table className="table table-sm border-bottom-0 rounded">
                             <thead className="bg-dark text-light">
                             <tr>
-                                <th scope="col" className="t-stick">Name</th>
-                                <th scope="col" className="t-stick">Contact</th>
-                                <th scope="col" className="t-stick">tel.</th>
-                                <th scope="col" className="t-stick">status</th>
+                                <th scope="col" className="t-stick px-3 py-2">Name</th>
+                                <th scope="col" className="t-stick px-3 py-2">Contact</th>
+                                <th scope="col" className="t-stick px-3 py-2">tel.</th>
+                                <th scope="col" className="t-stick px-3 py-2">status</th>
                             </tr>
                             </thead>
                             <FormS s_name={searchChanged.name} s_status={searchChanged.status}
@@ -210,13 +210,13 @@ export default function Customer() {
             >
 
                 <form className="border border-secondary p-4 m-2 rounded-2 row bg-white" style={{maxWidth: "900px"}}>
-                    <div className="heading-container mt-2 d-flex justify-content-start">
+                    <div className="heading-container mt-2 p-0 d-flex justify-content-start">
                         <h3>Customer</h3>
-                        <Button type="submit" variant="outlined" color="warning" className="mx-2 m"
+                        <Button type="submit" variant="outlined" color="warning" className="ms-auto me-2"
                                 onClick={handleChangeToOrg}>
                             Org
                         </Button>
-                        <Button type="submit" variant="outlined" color="success" className="mx-1 m"
+                        <Button type="submit" variant="outlined" color="success" className=""
                                 onClick={handleChangeToPer}>
                             Private
                         </Button>

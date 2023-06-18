@@ -254,9 +254,47 @@ export default function Customer() {
 
     return (
         <CustomerWrapper>
+            <div className="heading-container mt-1 d-flex justify-content-start pt-1">
+                <div className="col d-flex justify-content-start flex-row-reverse customer-box-sl">
+                    <div className="p-0 d-flex justify-content-between align-items-center">
+                    {/* <p3 className="text-dark mb-0 txt">เรียน/Attn:</p3> */}
+                        <IconButton variant="outlined" className="px-3 cs-add-btn" color="error"
+                                    onClick={handleCreate}
+                                    size="small"><p5 className="">Add</p5></IconButton>
+                    </div>
+                    {/* <h5 className="px-1">Select:</h5> */}
+                    <ComboBox func={listenChange} dis={stateOfN}/>
+                </div>
+            </div>
             <div className="wrapper-box pt-4">
-                <div className="container pt-5 mb-3 bg-white">
-                    <h4 className="pt-1 pt-md-1 px-2 mb-0">Quotation</h4>
+                <div className="container pt-5 mb-3 bg-white shadow-sm">
+                    <div className="wrapper-header d-flex justify-content-between align-items-start px-4 mb-3">
+                        <div className="img-box"><img src="../../asq-logo.png" width="80"/></div>
+                        <div className="wrap-text d-flex flex-column">
+                            <p3>ใบเสนอราคา/ใบสั่งซื้อ</p3>
+                            <p3>Quotation/Purchase Order</p3>
+                            <div className="wrap-input d-flex flex-column">
+                                <p3>เลขที่/No.</p3>
+                                <TextField inputProps={{
+                                    style: {
+                                        height: "5px",
+                                    },
+                                }}
+                                    name="qu_number" className="inp-box"
+                                />
+                            </div>
+                            <div className="wrap-input d-flex flex-column">
+                                <p3>วันที่/Date</p3>
+                                <TextField inputProps={{
+                                    style: {
+                                        height: "5px",
+                                    },
+                                }}
+                                    name="qu_number" className="inp-box"
+                                />
+                            </div>
+                        </div>
+                    </div>
                     <form>
                         <div className="row pt-2 pt-md-1 px-3 mb-0">
                             <div className="col px-2">
@@ -301,19 +339,6 @@ export default function Customer() {
                                                value={sessionStorage.getItem('email')}/>
                                 </div>
                             </div>
-                        </div>
-                        <div className="heading-container mt-1 d-flex justify-content-start px-2 pt-1">
-                            <div className="col">
-                                <div className="col p-0 d-flex justify-content-between align-items-center">
-                                <h5 className="text-dark mb-0">Customer</h5>
-                                    <IconButton variant="outlined" className="px-1" color="error"
-                                                onClick={handleCreate}
-                                                size="small"><p5>Add</p5></IconButton>
-                                </div>
-                                {/* <h5 className="px-1">Select:</h5> */}
-                                <ComboBox func={listenChange} dis={stateOfN}/>
-                            </div>
-
                         </div>
                         <div className="row mt-3 d-flex justify-content-center">
                             <div className="row pt-1">
@@ -416,7 +441,100 @@ export default function Customer() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="row">
+                           
+                        </div>
+                    </form>
+                    <div className="container-fluid p-0">
+                        <div className="row m-2 pt-1 mb-0 table-responsive">
+
+                            <table className="table table-sm border-bottom-0">
+                                <thead className="bg-dark text-light">
+                                <tr>
+                                    <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-45">No.</th>
+                                    <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-desc">Description</th>
+                                    <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-price">Quantity</th>
+                                    <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-price">Unit</th>
+                                    <th scope="col" colspan="2" className="t-stick px-2 py-2">Unit Price</th>
+                                    <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-12">Total <br/>Unit Price</th>
+                                    <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-12">Total</th>
+                                </tr>
+                                <tr>
+                                    <th scope="col" className="t-stick px-2 py-2 w-1">Labour</th>
+                                    <th scope="col" className="t-stick px-2 py-2 w-1">Material</th>
+                                </tr>
+                                </thead>
+                                <FormC roomCode={genQo}/>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td className="ta-r px-2 py-2">Total</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr> 
+                                    <tr>
+                                        <td></td>
+                                        <td className="ta-r px-2 py-2">Overhead</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr> 
+                                    <tr>
+                                        <td></td>
+                                        <td className="ta-r px-2 py-2">Special discount</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr> 
+                                    <tr>
+                                        <td></td>
+                                        <td className="ta-r px-2 py-2">Total before VAT (7%)</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td className="ta-r px-2 py-2">VAT (7%)</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr> 
+                                    <tr className="hs-border">
+                                        <td colspan="2" className="ta-border"></td>
+                                        <td colspan="5" className="ta-border"></td>
+                                        <td colspan="1" className="ta-border"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div className="row m-2 justify-content-end mt-0">
+                            <div className="col-2 p-0 mx-md-1 col-md-1 mx-2">
+                                <Button variant="outlined" className="w-100" color="primary" onClick={handleCreateTwo}
+                                        size="small"><AddIcon/>
+                                </Button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div className="row">
                                 <div className="col p-0 mb-3">
                                     <div className="col p-0 pt-1 mt-2 mx-2 d-flex flex-row-reverse">
                                         <Button variant="contained" className="" color="primary"
@@ -430,42 +548,13 @@ export default function Customer() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
-                    {stateOfN?(<div className="container-fluid p-0">
-                        <div className="row m-2 pt-1 mb-0 table-responsive">
-
-                            <table className="table table-sm border-bottom-0">
-                                <thead className="bg-dark text-light">
-                                <tr>
-                                    <th scope="col" className="t-stick">Description</th>
-                                    <th scope="col" className="t-stick">Quantity</th>
-                                    <th scope="col" className="t-stick">unit</th>
-                                    <th scope="col" className="t-stick">labor</th>
-                                    <th scope="col" className="t-stick">material</th>
-
-                                </tr>
-                                </thead>
-                                <FormC roomCode={genQo}/>
-                            </table>
-
-                        </div>
-                        <div className="row m-2 justify-content-end mt-0">
-                            <div className="col-2 p-0 mx-md-1 col-md-1 mx-2">
-                                <Button variant="outlined" className="w-100" color="primary" onClick={handleCreateTwo}
-                                        size="small"><AddIcon/>
-                                </Button>
-                            </div>
-                        </div>
-                        <div className="row m-1 mt-0 justify-content-end">
+                            {stateOfN?(<div className="row m-1 mt-0 justify-content-end">
                             <div className="col-4 p-0 mt-2 col-md-2 mx-1">
                                 <Button variant="contained" className="w-100" color="primary" onClick={handleGoNext}
                                         size="small">Finish
                                 </Button>
                             </div>
-                        </div>
-                    </div>):(<></>)}
-                </div>
+                        </div>):(<></>)}
             </div>
             <Modal
                 open={openTwo}

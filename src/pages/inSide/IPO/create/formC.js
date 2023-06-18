@@ -19,11 +19,14 @@ const AddTable = (props) => {
         formData.map((data) => (
             <tbody>
             <tr>
+                <td>000001</td>
                 <td>{data.description}</td>
                 <td>{data.quantity}</td>
                 <td>{data.unit}</td>
                 <td>{data.labor}</td>
                 <td>{data.material}</td>
+                <td>1000</td>
+                <td>1000</td>
             </tr>
             </tbody>
 

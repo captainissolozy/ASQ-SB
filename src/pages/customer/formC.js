@@ -34,10 +34,10 @@ const AddTable = (s_name) => {
         }).map((data) => (
             <tbody>
             <tr onClick={() => handleJoinPublic(data.v_box1 + data.v_box2)} style={{cursor: "pointer"}}>
-                <td>{data.v_box1}</td>
-                <td>{data.v_box4}</td>
-                <td>{data.v_box5}</td>
-                <td>{data.v_box6}</td>
+                <td className="px-3 py-2">{data.v_box1}</td>
+                <td className="px-3 py-2">{data.v_box4}</td>
+                <td className="px-3 py-2">{data.v_box5}</td>
+                <td className="px-3 py-2">{data.v_box6}</td>
 
             </tr>
             </tbody>
