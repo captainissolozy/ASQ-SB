@@ -66,39 +66,32 @@ const CustomerWrapper = styled.div`
     border-radius: 6px!important;
   }
   table {
-    border-radius: 10px;
-    // border-collapse: collapse;
+    margin-bottom: 20px;
   }
-  table tbody tr {
-    border-color: transparent;
-    border-style: unset;
-  }
-  table tr th {
-    background-color: #302e38;
+  table thead tr th {
+    background-color: #d7d7d7;
+    color: #000!important;
     text-align: center;
     font-size: 14px;
     font-weight: 400;
-    border-right: 1px solid rgba(255,255,255, 0.5);
+    border: 1px solid #000;
+    border-top: 1px solid #000!important;
     vertical-align: middle!important;
   }
   table tr td {
-    font-size: 14px;
-    border-right: 1px solid #302e38;
+    border: 1px solid #000;
+    border-top: none;
+    border-bottom: none;
   }
-  table tr td:nth-last-child(1) {
-    border-right: none!important;
-  }
-  table tr:nth-child(even) td {
-    background-color: rgba(48,46,56, 0.1);
-  }
-  table tr td.ta-border {
+  table tbody tr th {
     background-color: #fff;
-    border-top:1px solid #302e38;
-    height: 38px;
+    border: 1px solid #000;
+    border-top: none;
+    border-bottom: none;
   }
   table tr.hs-border {
-    border-color: #302e!important;
-    border-top: 1px solid #302e38!important;
+    border: 1px solid #000;
+    height: 33px;
   }
   .w-desc {
     width: 250px;
@@ -117,6 +110,28 @@ const CustomerWrapper = styled.div`
   }
   .ta-r {
     text-align: right;
+  }
+  .wrap-input {
+    gap: 10px;
+  }
+  .sign-namebox {
+    max-width: 400px;
+    margin-left: auto!important;
+    margin-right: 0;
+    margin-bottom: 40px;
+    padding-right: 150px;
+  }
+  .line {
+    height: 16px;
+    width: 300px;
+    border-bottom: 1px solid #000;
+    margin-bottom: 15px;
+  }
+  .txt-sty {
+    text-align: center;
+  }
+  .txt-hd {
+    font-size: 14px!important;
   }
 `
 export default CustomerWrapper

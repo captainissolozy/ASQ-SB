@@ -257,12 +257,10 @@ export default function Customer() {
             <div className="heading-container mt-1 d-flex justify-content-start pt-1">
                 <div className="col d-flex justify-content-start flex-row-reverse customer-box-sl">
                     <div className="p-0 d-flex justify-content-between align-items-center">
-                    {/* <p3 className="text-dark mb-0 txt">เรียน/Attn:</p3> */}
                         <IconButton variant="outlined" className="px-3 cs-add-btn" color="error"
                                     onClick={handleCreate}
                                     size="small"><p5 className="">Add</p5></IconButton>
                     </div>
-                    {/* <h5 className="px-1">Select:</h5> */}
                     <ComboBox func={listenChange} dis={stateOfN}/>
                 </div>
             </div>
@@ -273,23 +271,23 @@ export default function Customer() {
                         <div className="wrap-text d-flex flex-column">
                             <p3>ใบเสนอราคา/ใบสั่งซื้อ</p3>
                             <p3>Quotation/Purchase Order</p3>
-                            <div className="wrap-input d-flex flex-column">
-                                <p3>เลขที่/No.</p3>
+                            <div className="wrap-input d-flex align-items-end justify-content-between">
+                                <p3>เลขที่/No. :</p3>
                                 <TextField inputProps={{
                                     style: {
-                                        height: "5px",
+                                        height: "16px",
                                     },
-                                }}
+                                }} variant="standard"
                                     name="qu_number" className="inp-box"
                                 />
                             </div>
-                            <div className="wrap-input d-flex flex-column">
-                                <p3>วันที่/Date</p3>
+                            <div className="wrap-input d-flex align-items-end">
+                                <p3>วันที่/Date :</p3>
                                 <TextField inputProps={{
                                     style: {
-                                        height: "5px",
+                                        height: "16px",
                                     },
-                                }}
+                                }} variant="standard"
                                     name="qu_number" className="inp-box"
                                 />
                             </div>
@@ -297,33 +295,8 @@ export default function Customer() {
                     </div>
                     <form>
                         <div className="row pt-2 pt-md-1 px-3 mb-0">
-                            <div className="col px-2">
-                                <div className="col pt-1 col-md-12">
-                                    <TextField type="search" onChange={handleChangePro} InputLabelProps={{
-                                        shrink: true,
-                                    }} inputProps={{
-                                        style: {
-                                            height: "5px",
-                                        },
-                                    }}
-                                               name="subject" label="Subject" className="w-100" required disabled={stateOfN}
-                                    />
-                                </div>
-                            </div>
-                            <div className="col p-0">
-                                <div className="col p-0 pt-1 mb-2 mx-2">
-                                    <TextField type="search" onChange={handleChangePro} InputLabelProps={{
-                                        shrink: true,
-                                    }} inputProps={{
-                                        style: {
-                                            height: "5px",
-                                        },
-                                    }}
-                                               name="projectName" label="Project Name" className="w-100" required disabled={stateOfN}
-                                    />
-                                </div>
-                            </div>
-                            <div className="col-12 px-1">
+                            
+                            {/* <div className="col-12 px-1">
                                 <div className="col p-0 pt-1 mb-2">
                                     <TextField type="search" onChange={handleChangePro} InputLabelProps={{
                                         shrink: true,
@@ -338,11 +311,12 @@ export default function Customer() {
                                                disabled={true}
                                                value={sessionStorage.getItem('email')}/>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
-                        <div className="row mt-3 d-flex justify-content-center">
+                        <div className="row mt-3 d-flex justify-content-center mb-2">
                             <div className="row pt-1">
-                                <h6 className="pt-1 pt-md-1">Customer-info:</h6>
+                                {/* <h6 className="pt-1 pt-md-1">Customer-info:</h6> */}
+                                <p3 className="txt-hd">Attn.: </p3>
                                 <div className="col px-2">
                                     <div className="col pt-1 col-md-12 mb-2">
                                         <TextField id="v_box1" type="search" InputLabelProps={{
@@ -352,11 +326,11 @@ export default function Customer() {
                                                 height: "5px",
                                             },
                                         }}
-                                                   name="v_box1" label="Name" className="w-100" required
+                                                   name="v_box1" label="" className="w-100" required
                                                    value={formDataIn.v_box1} disabled={true}/>
                                     </div>
                                 </div>
-                                <div className="col p-0">
+                                {/* <div className="col p-0">
                                     <div className="col p-0 pt-1 mb-2 mx-2">
                                         <TextField id="v_box2" type="search" InputLabelProps={{
                                             shrink: true,
@@ -368,23 +342,24 @@ export default function Customer() {
                                                    name="v_box2" label={box2} className="w-100" required
                                                    value={formDataIn.v_box2} disabled={true}/>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="row">
-                                <div className="col px-2">
+                                <div className="col px-2 mb-2">
+                                    <p3 className="txt-hd">Tel. :</p3>
                                     <div className="col pt-1 col-md-12 mb-2">
-                                        <TextField id="v_box3" type="search" InputLabelProps={{
+                                        <TextField id="v_box5" type="search" InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
                                             style: {
                                                 height: "5px",
                                             },
                                         }}
-                                                   name="v_box3" label={box3} className="w-100" required
-                                                   value={formDataIn.v_box3} disabled={edit}/>
+                                                   name="v_box5" label="" className="w-100" required
+                                                   value={formDataIn.v_box5} disabled={edit}/>
                                     </div>
                                 </div>
-                                <div className="col p-0">
+                                {/* <div className="col p-0">
                                     <div className="col p-0 pt-1 mb-2 mx-2">
                                         <TextField id="v_box4" type="search" InputLabelProps={{
                                             shrink: true,
@@ -396,23 +371,24 @@ export default function Customer() {
                                                    name="v_box4" label={boxLa} className="w-100" required
                                                    value={formDataIn.v_box4} disabled={edit}/>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
                             <div className="row">
-                                <div className="col px-2">
+                                <div className="col px-2 mb-2">
+                                    <p3 className="txt-hd">E-MAIL: </p3>
                                     <div className="col pt-1 col-md-12 mb-2">
-                                        <TextField id="v_box5" type="search" InputLabelProps={{
+                                        <TextField id="v_box3" type="search" InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
                                             style: {
                                                 height: "5px",
                                             },
                                         }}
-                                                   name="v_box5" label="Tel." className="w-100" required
-                                                   value={formDataIn.v_box5} disabled={edit}/>
+                                                   name="v_box3" label="" className="w-100" required
+                                                   value={formDataIn.v_box3} disabled={edit}/>
                                     </div>
                                 </div>
-                                <div className="col p-0">
+                                {/* <div className="col p-0">
                                     <div className="col p-0 pt-1 mb-2 mx-2">
                                         <TextField id="v_box7" type="search" InputLabelProps={{
                                             shrink: true,
@@ -424,30 +400,64 @@ export default function Customer() {
                                                    name="v_box7" label="Address" className="w-100" required
                                                    value={formDataIn.v_box7} disabled={edit}/>
                                     </div>
-                                </div>
-                                <div className="col-12 px-1">
-                                    <div className="col p-0 pt-1 mb-2">
-                                        <TextField name="payment" type="text" variant="filled" onChange={handleChangePro} InputLabelProps={{
+                                </div> */}
+                                
+                            </div>
+                            <div className="row mb-3">
+                                <div className="col px-2">
+                                    <p3 className="txt-hd">Subject: </p3>
+                                    <div className="col pt-1 col-md-12">
+                                        <TextField type="search" onChange={handleChangePro} InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
                                             style: {
-                                                height: "20px",
+                                                height: "5px",
                                             },
                                         }}
-                                                   label="payment"
-                                                   className="w-100 px-1"
-                                                   required
-                                                   />
+                                                name="subject" label="" className="w-100" required disabled={stateOfN}
+                                        />
                                     </div>
                                 </div>
                             </div>
-                           
+                            <div className="row">
+                                <div className="col px-2">
+                                    <p3 className="txt-hd">Project No.: </p3>
+                                    <div className="col p-0 pt-1 mb-2">
+                                        <TextField type="search" onChange={handleChangePro} InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                name="projectNo" label="" className="w-100" required disabled={stateOfN}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="col px-2">
+                                    <p3 className="txt-hd">Project Name:</p3>
+                                    <div className="col p-0 pt-1 mb-2 ">
+                                        <TextField type="search" onChange={handleChangePro} InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                name="projectName" label="" className="w-100" required disabled={stateOfN}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </form>
+                    <div className="row m-2 wrap-text">
+                        <p3 className="p-0">บริษัทฯ ยินดีเสนอราคาสินค้าดังรายการต่อไปนี้</p3>
+                    </div>
                     <div className="container-fluid p-0">
                         <div className="row m-2 pt-1 mb-0 table-responsive">
 
-                            <table className="table table-sm border-bottom-0">
+                            <table className="">
                                 <thead className="bg-dark text-light">
                                 <tr>
                                     <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-45">No.</th>
@@ -531,7 +541,38 @@ export default function Customer() {
                                 </Button>
                             </div>
                         </div>
-
+                        <div className="row mx-2 mb-5 wrap-text">
+                            <p3>Validity: 30 Days From qouted</p3>
+                            <p3>Delivery: 90 Days after confirmation by purchase order</p3>
+                            <div className="col px-1 d-flex flex-row align-items-end">
+                                    <p3 className="m-2">Payment: </p3>
+                                    <div className="col p-0 pt-1 mb-2">
+                                        <TextField name="payment" type="text" variant="filled" onChange={handleChangePro} InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "10px",
+                                            },
+                                        }}
+                                                   label="payment"
+                                                   className="px-1"
+                                                   required
+                                                   />
+                                    </div>
+                                </div>
+                        </div>
+                        <div className="row wrap-text sign-namebox d-flex justify-content-center">
+                            <div className="line"></div>
+                            <p3 className="txt-sty">(อธีร์ศิรินภาพันธ์)</p3>
+                            <p3 className="txt-sty">Project Director</p3>
+                        </div>
+                        <div className="row m-2 pb-4">
+                            <p2>บริษัท เอ สแควร์จํากัด</p2>
+                            <p2>A SQUARE LIMITED.</p2>
+                            <p2>26 ซอยนวมินทร์86 แขวงรามอินทรา เขตคันนายาว กรุงเทพฯ 10230</p2>
+                            <p2>26 Soi Nawamin 86 Ram Intra, Khan Na Yao, BANGKOK 10230</p2>
+                            <p2>Tel: (662) 0-2542-2108-9 ;Email: pracha.imail@gmail.com; www.asquare.co.th</p2>
+                        </div>
                     </div>
                 </div>
                 <div className="row">
