@@ -27,10 +27,13 @@ const AddTable = (props) => {
 
     return (
         formData.filter( result => {
-            return (result.v_box6.includes(props.status) && result.genQo.includes(props.genQo)
-                    && result.sales.includes(props.sales) && result.date.toString().includes(props.day)
-                    && result.month.toString().includes(props.month) && result.year.toString().includes(props.year))
-        }).map((data) => (
+            return (result.v_box6.includes(props.status) 
+                    && result.genQo.includes(props.genQo)
+                    && result.sales.includes(props.sales) 
+                    && result.date.toString().includes(props.day)
+                    && result.month.toString().includes(props.month) 
+                    && result.year.toString().includes(props.year))
+        }).map((data, i) => (
             <tbody>
             <tr onClick={() => handleJoinPublic(data.genQo)} style={{cursor: "pointer"}}>
                 <td className="px-3">{data.genQo}</td>

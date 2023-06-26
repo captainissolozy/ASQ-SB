@@ -34,7 +34,7 @@ export default function ComboBox(props) {
             size="small"
             disabled={props.dis}
             options={formName}
-            onChange={(event: any, newValue: string | null) => {
+            onChange={(event, newValue) => {
                 setValue(newValue);
                 sessionStorage.setItem("selectCus", newValue)
                 props.func(newValue)

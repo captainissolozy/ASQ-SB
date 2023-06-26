@@ -254,7 +254,7 @@ export default function Customer() {
                     </form>
                     <div className="container-fluid p-0">
                         <div className="row m-2 pt-1 mb-0">
-                            <table className="table table-sm border-bottom-0">
+                            <table className="table table-sm border-bottom-0 common-table">
                                 <thead className="bg-dark text-light">
                                 <tr>
                                     <th scope="col" className="t-stick">Quotation</th>

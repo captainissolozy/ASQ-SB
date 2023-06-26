@@ -42,11 +42,7 @@ const CustomerWrapper = styled.div`
     row-gap: 6px;
   }
   .inp-box {
-    max-width: 300px;
-  }
-  .cs-add-btn {
-    max-width: 80px;
-
+    max-width: 120px;
   }
   .heading-container {
     max-width: 900px;
@@ -61,12 +57,26 @@ const CustomerWrapper = styled.div`
     column-gap: 10px;
   }
   .cs-add-btn {
+    border: 1px solid #302e38;
+    background-color: transparent;
+    color: #302e38!important;
+    border-radius: 6px!important;
+    font-size: 14px;
+    line-height: 29px;
+  }
+  .cs-add-btn.confirm {
     background-color: #302e38;
     color: #fff!important;
-    border-radius: 6px!important;
+    box-shadow: none;
   }
-  table {
+  table.qa-table {
     margin-bottom: 20px;
+    min-height: 700px;
+  }
+  table tbody.min-h {
+    min-height: 33px;
+    max-height: 670px;
+    height: 100%;
   }
   table thead tr th {
     background-color: #d7d7d7;
@@ -78,19 +88,25 @@ const CustomerWrapper = styled.div`
     border-top: 1px solid #000!important;
     vertical-align: middle!important;
   }
-  table tr td {
+  table.qa-table tr td {
     border: 1px solid #000;
     border-top: none;
     border-bottom: none;
-  }
-  table tbody tr th {
+  } 
+  table.qa-table tbody tr th {
     background-color: #fff;
     border: 1px solid #000;
     border-top: none;
     border-bottom: none;
   }
+  table.common-table tbody tr td {
+    border: 1px solid #000;
+  }
   table tr.hs-border {
     border: 1px solid #000;
+    height: 33px;
+  }
+  table tbody.min-h tr th {
     height: 33px;
   }
   .w-desc {
@@ -110,6 +126,12 @@ const CustomerWrapper = styled.div`
   }
   .ta-r {
     text-align: right;
+  }
+  .ta-c {
+    text-align: right;
+  }
+  table tbody td {
+    font-size: 14px!important;
   }
   .wrap-input {
     gap: 10px;
@@ -132,6 +154,30 @@ const CustomerWrapper = styled.div`
   }
   .txt-hd {
     font-size: 14px!important;
+    min-width: 55px;
+    margin-right: 10px;
+  }
+  .css-v4u5dn-MuiInputBase-root-MuiInput-root.Mui-disabled:before {
+    border-bottom: transparent;
+  }
+  .MuiInputBase-input.MuiInput-input.Mui-disabled {
+    -webkit-text-fill-color: unset;
+  }
+  @media print {
+    .css-v4u5dn-MuiInputBase-root-MuiInput-root:before {
+      border-bottom: transparent!important;
+    }
+    .customer-box-sl {
+      display: none!important; 
+    }
+    .container {
+      box-shadow: none!important;
+    }
+    table thead tr th {
+      background-color: transparent!important;
+      border: 1px solid #000;
+
+    }
   }
 `
 export default CustomerWrapper

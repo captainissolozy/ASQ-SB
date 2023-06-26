@@ -12,6 +12,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import CustomerWrapper from "./CustomerWrapper";
 import AddIcon from "@mui/icons-material/Add";
 import ComboBox from "./combobox";
+import { jsPDF } from "jspdf";
+import * as html2canvas from "html2canvas";
 
 
 export default function Customer() {
@@ -55,7 +57,9 @@ export default function Customer() {
         quantity: 1,
         unit: "",
         labor: 0,
-        material: 0
+        material: 0,
+        totalUnitPrice: 0,
+        total: 0,
     });
 
     const navigate = useNavigate()
@@ -77,6 +81,8 @@ export default function Customer() {
     const [listenC, setListen] = useState("");
     const [genQo, setGenQo] = useState("");
     const [countQo, setCountQo] = useState(0);
+    const [overHead, serOverHead] = useState(0);
+    const [listenTotal, setListenTotal] = useState(0);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
@@ -90,12 +96,11 @@ export default function Customer() {
                 }
             }
         }
-
         await fetchData()
     }, [count, listenC])
 
 
-    useEffect(() => {
+    useEffect(async () => {
         if (formDataIn.type === "Private") {
             setBox2("surname")
             setBox3("email")
@@ -105,7 +110,6 @@ export default function Customer() {
             setBox3("registeredCapital")
             setBox2("taxpayerNum")
         }
-
     }, [count, formDataIn.type, listenC])
 
     useEffect(() => {
@@ -121,7 +125,7 @@ export default function Customer() {
             setGenQo(`${docSnap.docs.length+1}`+`${formDataProject.date}`+
                 `${formDataProject.month}`+`${formDataProject.year}`)
         }
-    }, [formDataProject, genQo, stateOfN])
+    }, [formDataProject, genQo, stateOfN, listenC])
 
     const handleCreate = () => {
         setOpen(true)
@@ -130,8 +134,12 @@ export default function Customer() {
         setOpenTwo(true)
     }
 
-    const listenChange = (data) => {
+    const listenChange = async (data) => {
         setListen(data)
+    }
+
+    const pull_total = async (data) => {
+        setListenTotal(data)
     }
 
     const handleChangeToOrg = () => {
@@ -167,7 +175,8 @@ export default function Customer() {
             labor: 0,
             material: 0,
             quantity: 1,
-            totalUnitPrice: 0
+            totalUnitPrice: 0,
+            total: 0
         })
     }
 
@@ -237,6 +246,8 @@ export default function Customer() {
             labor: 0,
             material: 0,
             quantity: 1,
+            totalUnitPrice: 0,
+            total: 0
         })
     };
 
@@ -247,24 +258,54 @@ export default function Customer() {
         }
     };
 
+    const createPDF = async () => {
+        const pdf = new jsPDF("portrait", "pt", "a4");
+        const data = await html2canvas(document.querySelector("#pdf"));
+        const img = data.toDataURL("image/png");
+        pdf.addImage(img, "PNG") 
+        pdf.save(genQo+".pdf");
+      };
+
     const handleGoNext = async () => {
-        navigate("/insideQuotation")
-        sessionStorage.setItem("projectID", genQo)
+        if (stateOfN === false && formDataProject.projectName !== "" && formDataProject.subject !== ""
+            && listenC !== "" && listenC !== null) {
+            const docRef1 = doc(db, "PO", genQo, "Quotation", genQo);
+            await setDoc(docRef1, {genQo, "payment": formDataProject.payment});
+            navigate("/insideQuotation")
+            sessionStorage.setItem("projectID", genQo)
+        }else {
+            toast.error('Please Fill in all the value', {position: toast.POSITION.BOTTOM_CENTER});
+        }
+        
     };
 
     return (
         <CustomerWrapper>
-            <div className="heading-container mt-1 d-flex justify-content-start pt-1">
-                <div className="col d-flex justify-content-start flex-row-reverse customer-box-sl">
+            <div className="heading-container mt-1 d-flex justify-content-end pt-1">
+                <div className="col d-flex justify-content-end flex-row-reverse align-items-center customer-box-sl">
                     <div className="p-0 d-flex justify-content-between align-items-center">
                         <IconButton variant="outlined" className="px-3 cs-add-btn" color="error"
                                     onClick={handleCreate}
-                                    size="small"><p5 className="">Add</p5></IconButton>
+                                    size="small"><p4 className="">Add Customer</p4></IconButton>
                     </div>
                     <ComboBox func={listenChange} dis={stateOfN}/>
                 </div>
+                <div className="row">
+                    <div className="col p-0">
+                        <div className="col p-0 mx-2 d-flex flex-row-reverse">
+                            <Button variant="contained" className="px-3 cs-add-btn confirm" color="primary"
+                                    onClick={handleSubmitNext} type="submit" disabled={stateOfN}
+                                    size="small">Confirm
+                            </Button>
+                            <Button variant="contained" className="mx-1 px-3 cs-add-btn edit" color="secondary"
+                                    onClick={handleCancelNext} type="submit" disabled={!stateOfN}
+                                    size="small">Edit
+                            </Button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className="wrapper-box pt-4">
+            <div className="wrapper-box pt-4" id="pdf">
                 <div className="container pt-5 mb-3 bg-white shadow-sm">
                     <div className="wrapper-header d-flex justify-content-between align-items-start px-4 mb-3">
                         <div className="img-box"><img src="../../asq-logo.png" width="80"/></div>
@@ -278,7 +319,7 @@ export default function Customer() {
                                         height: "16px",
                                     },
                                 }} variant="standard"
-                                    name="qu_number" className="inp-box"
+                                    name="qu_number" className="inp-box" value={genQo}
                                 />
                             </div>
                             <div className="wrap-input d-flex align-items-end">
@@ -288,7 +329,7 @@ export default function Customer() {
                                         height: "16px",
                                     },
                                 }} variant="standard"
-                                    name="qu_number" className="inp-box"
+                                    name="qu_number" className="inp-box" value={formDataProject.date.toString() + "/" + formDataProject.month.toString().padStart(2, "0") + "/" + formDataProject.year.toString()}
                                 />
                             </div>
                         </div>
@@ -314,18 +355,19 @@ export default function Customer() {
                             </div> */}
                         </div>
                         <div className="row mt-3 d-flex justify-content-center mb-2">
-                            <div className="row pt-1">
+                            <div className="col d-flex flex-row mx-2 align-items-center">
                                 {/* <h6 className="pt-1 pt-md-1">Customer-info:</h6> */}
                                 <p3 className="txt-hd">Attn.: </p3>
-                                <div className="col px-2">
+                                <div className="col p-0">
                                     <div className="col pt-1 col-md-12 mb-2">
                                         <TextField id="v_box1" type="search" InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
                                             style: {
-                                                height: "5px",
+                                                height: "16px",
+                                                color: "#000000"
                                             },
-                                        }}
+                                        }} variant="standard"
                                                    name="v_box1" label="" className="w-100" required
                                                    value={formDataIn.v_box1} disabled={true}/>
                                     </div>
@@ -345,16 +387,36 @@ export default function Customer() {
                                 </div> */}
                             </div>
                             <div className="row">
-                                <div className="col px-2 mb-2">
+                                <div className="col px-2 mb-2 d-flex flex-row align-items-center">
+                                    <p3 className="txt-hd"></p3>
+                                    <div className="col p-0">
+                                        <div className="col ">
+                                            <TextField id="v_box7" type="search" InputLabelProps={{
+                                                shrink: true,
+                                            }} inputProps={{
+                                                style: {
+                                                    height: "16px",
+                                                    color: "#000000"
+                                                },
+                                            }} variant="standard"
+                                                    name="v_box7" label="" className="w-100" required
+                                                    value={formDataIn.v_box7} disabled={edit}/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col px-2 mb-2 d-flex flex-row align-items-center">
                                     <p3 className="txt-hd">Tel. :</p3>
-                                    <div className="col pt-1 col-md-12 mb-2">
+                                    <div className="col p-0">
                                         <TextField id="v_box5" type="search" InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
                                             style: {
-                                                height: "5px",
+                                                height: "16px",
+                                                color: "#000000",
                                             },
-                                        }}
+                                        }} variant="standard"
                                                    name="v_box5" label="" className="w-100" required
                                                    value={formDataIn.v_box5} disabled={edit}/>
                                     </div>
@@ -374,19 +436,28 @@ export default function Customer() {
                                 </div> */}
                             </div>
                             <div className="row">
-                                <div className="col px-2 mb-2">
-                                    <p3 className="txt-hd">E-MAIL: </p3>
-                                    <div className="col pt-1 col-md-12 mb-2">
+                                <div className="col px-2 mb-2 d-flex flex-row align-items-center">
+                                {box3 == "email" ? (
+                                    <p3 className="txt-hd">{box3.toUpperCase()}: </p3>
+                                    ) : (
+                                        <></>
+                                    )}
+                                    {box3 == "email" ? (
+                                    <div className="col p-0">
                                         <TextField id="v_box3" type="search" InputLabelProps={{
-                                            shrink: true,
+                                            shrink: true,       
                                         }} inputProps={{
-                                            style: {
-                                                height: "5px",
+                                                style: {
+                                                height: "16px",
+                                                color: "#000000"
                                             },
-                                        }}
-                                                   name="v_box3" label="" className="w-100" required
-                                                   value={formDataIn.v_box3} disabled={edit}/>
+                                        }} variant="standard"
+                                               name="v_box3" label="" className="w-100" required
+                                               value={formDataIn.v_box3} disabled={edit}/>
                                     </div>
+                                    ) : (
+                                        <></>
+                                    )}
                                 </div>
                                 {/* <div className="col p-0">
                                     <div className="col p-0 pt-1 mb-2 mx-2">
@@ -404,46 +475,49 @@ export default function Customer() {
                                 
                             </div>
                             <div className="row mb-3">
-                                <div className="col px-2">
+                                <div className="col px-2 d-flex flex-row align-items-center">
                                     <p3 className="txt-hd">Subject: </p3>
-                                    <div className="col pt-1 col-md-12">
+                                    <div className="col p-0">
                                         <TextField type="search" onChange={handleChangePro} InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
                                             style: {
-                                                height: "5px",
+                                                height: "16px",
+                                                color: "#000000"
                                             },
-                                        }}
+                                        }} variant="standard"
                                                 name="subject" label="" className="w-100" required disabled={stateOfN}
                                         />
                                     </div>
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="col px-2">
+                                <div className="col-4 px-2 d-flex flex-row align-items-center">
                                     <p3 className="txt-hd">Project No.: </p3>
                                     <div className="col p-0 pt-1 mb-2">
                                         <TextField type="search" onChange={handleChangePro} InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
                                             style: {
-                                                height: "5px",
+                                                height: "16px",
+                                                color: "#000000"
                                             },
-                                        }}
+                                        }} variant="standard"
                                                 name="projectNo" label="" className="w-100" required disabled={stateOfN}
                                         />
                                     </div>
                                 </div>
-                                <div className="col px-2">
+                                <div className="col px-2 d-flex flex-row align-items-center">
                                     <p3 className="txt-hd">Project Name:</p3>
-                                    <div className="col p-0 pt-1 mb-2 ">
+                                    <div className="col p-0 pt-1 mb-2">
                                         <TextField type="search" onChange={handleChangePro} InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
                                             style: {
-                                                height: "5px",
+                                                height: "16px",
+                                                color: "#000000"
                                             },
-                                        }}
+                                        }} variant="standard"
                                                 name="projectName" label="" className="w-100" required disabled={stateOfN}
                                         />
                                     </div>
@@ -457,7 +531,7 @@ export default function Customer() {
                     <div className="container-fluid p-0">
                         <div className="row m-2 pt-1 mb-0 table-responsive">
 
-                            <table className="">
+                            <table className="qa-table">
                                 <thead className="bg-dark text-light">
                                 <tr>
                                     <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-45">No.</th>
@@ -473,7 +547,19 @@ export default function Customer() {
                                     <th scope="col" className="t-stick px-2 py-2 w-1">Material</th>
                                 </tr>
                                 </thead>
-                                <FormC roomCode={genQo}/>
+                                <FormC roomCode={genQo} reOpen={openTwo} func={pull_total}/>
+                                <tbody className="min-h">
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </tbody>
                                 <tbody>
                                     <tr>
                                         <td></td>
@@ -483,7 +569,7 @@ export default function Customer() {
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
+                                        <td  className="ta-r px-2 py-2">{listenTotal.toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                     </tr> 
                                     <tr>
                                         <td></td>
@@ -492,8 +578,8 @@ export default function Customer() {
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td className="ta-r px-2 py-2"> %</td>
+                                        <td className="ta-r px-2 py-2"></td>
                                     </tr> 
                                     <tr>
                                         <td></td>
@@ -502,8 +588,8 @@ export default function Customer() {
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td className="ta-r px-2 py-2">-</td>
+                                        <td className="ta-r px-2 py-2"></td>
                                     </tr> 
                                     <tr>
                                         <td></td>
@@ -512,7 +598,7 @@ export default function Customer() {
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
+                                        <td className="ta-r px-2 py-2"></td>
                                         <td></td>
                                     </tr>
                                     <tr>
@@ -522,7 +608,7 @@ export default function Customer() {
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td></td>
+                                        <td className="ta-r px-2 py-2"></td>
                                         <td></td>
                                     </tr> 
                                     <tr className="hs-border">
@@ -545,17 +631,17 @@ export default function Customer() {
                             <p3>Validity: 30 Days From qouted</p3>
                             <p3>Delivery: 90 Days after confirmation by purchase order</p3>
                             <div className="col px-1 d-flex flex-row align-items-end">
-                                    <p3 className="m-2">Payment: </p3>
-                                    <div className="col p-0 pt-1 mb-2">
-                                        <TextField name="payment" type="text" variant="filled" onChange={handleChangePro} InputLabelProps={{
+                                    <p3 className="mx-2">Payment: </p3>
+                                    <div className="col p-0">
+                                        <TextField name="payment" type="text" variant="standard" onChange={handleChangePro} InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
                                             style: {
                                                 height: "10px",
                                             },
                                         }}
-                                                   label="payment"
-                                                   className="px-1"
+                                                   label=""
+                                                   className="px-1 w-100"
                                                    required
                                                    />
                                     </div>
@@ -575,27 +661,23 @@ export default function Customer() {
                         </div>
                     </div>
                 </div>
-                <div className="row">
-                                <div className="col p-0 mb-3">
-                                    <div className="col p-0 pt-1 mt-2 mx-2 d-flex flex-row-reverse">
-                                        <Button variant="contained" className="" color="primary"
-                                                onClick={handleSubmitNext} type="submit" disabled={stateOfN}
-                                                size="small">confirm
-                                        </Button>
-                                        <Button variant="contained" className="mx-1" color="secondary"
-                                                onClick={handleCancelNext} type="submit" disabled={!stateOfN}
-                                                size="small">Edit
-                                        </Button>
-                                    </div>
-                                </div>
-                            </div>
-                            {stateOfN?(<div className="row m-1 mt-0 justify-content-end">
-                            <div className="col-4 p-0 mt-2 col-md-2 mx-1">
-                                <Button variant="contained" className="w-100" color="primary" onClick={handleGoNext}
-                                        size="small">Finish
-                                </Button>
-                            </div>
-                        </div>):(<></>)}
+                    <div className="row m-1 mt-0 justify-content-end">
+                        <div className="col-4 p-0 mt-2 col-md-2 mx-1">
+                            <Button variant="contained" className="w-100 cs-add-btn confirm" color="primary" onClick={createPDF}
+                                size="small">Save pdf
+                            </Button>
+                        </div>
+                    </div>
+                    {stateOfN?(
+                    <div className="row m-1 mt-0 justify-content-end">
+                        <div className="col-4 p-0 mt-2 col-md-2 mx-1">
+                            <Button variant="contained" className="w-100 cs-add-btn confirm" color="primary" onClick={handleGoNext}
+                                size="small">Finish
+                            </Button>
+                        </div>
+                    </div>)
+                    :(<></>)}
+
             </div>
             <Modal
                 open={openTwo}
