@@ -534,7 +534,7 @@ export default function Customer() {
                     <div className="container-fluid p-0">
                         <div className="row m-2 pt-1 mb-0 table-responsive">
 
-                            <table className="qa-table">
+                            <table className="qa-table splitForPrint">
                                 <thead className="bg-dark text-light">
                                 <tr>
                                     <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-45">No.</th>

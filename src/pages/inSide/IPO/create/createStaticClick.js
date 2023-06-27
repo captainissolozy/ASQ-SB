@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useRef} from "react";
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../../../context/UserContexts";
 import {Button, TextField} from "@mui/material";
@@ -9,8 +9,6 @@ import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import CustomerWrapper from "./CustomerWrapper";
 import FormPStatic2 from "./formPStatic2";
-import { jsPDF } from "jspdf";
-import * as html2canvas from "html2canvas";
 
 
 
@@ -27,6 +25,8 @@ export default function Customer(props) {
     const [count, setCount] = useState(0)
     const [listenC, setListen] = useState("");
     const [listenTotal, setListenTotal] = useState(0);
+    const myTable = useRef(null);
+    const [height, setHeight] = useState({});
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
@@ -41,6 +41,7 @@ export default function Customer(props) {
             }
         }
         await fetchData()
+
     }, [count])
 
     useEffect(async () => {
@@ -48,6 +49,26 @@ export default function Customer(props) {
         const docSnap = await getDoc(docRef1);
         if (docSnap.exists()) {
             setFormDataIn2(docSnap.data())
+        }
+        const o_height = myTable.current.clientHeight
+        var heightT_o = myTable.current.clientHeight;
+        if(heightT_o > 400 && heightT_o <= 700){
+            setHeight({
+                "min-height": 700 + "px"
+              });
+        }else if(heightT_o > 700 && heightT_o <= 1310){
+            setHeight({
+                "min-height": 1310 + "px"
+              });
+           
+        }else if(heightT_o > 1310 && heightT_o <= 2290){
+            setHeight({
+                "min-height": 2290 + "px"
+              });
+        }else if(heightT_o > 2290 && heightT_o <= 3230){
+            setHeight({
+                "min-height": 3230 + "px"
+              });
         }
     }, [])
 
@@ -80,41 +101,24 @@ export default function Customer(props) {
     };
 
     const createPDF = async () => {
-        const pdf = new jsPDF("portrait", "pt", "a4");
-        const data = await html2canvas(document.querySelector("#pdf"));
-        const img = data.toDataURL("image/png");
-        const imgProperties = pdf.getImageProperties(img);
-        const imgWidth = imgProperties.width - 280;
-        const pageHeight = pdf.internal.pageSize.getHeight();
-        const pdfWidth = pdf.internal.pageSize.getWidth(); 
-        const imgHeight = pageHeight * imgWidth / pdfWidth;
-        var heightLeft = imgHeight;
-        var position = 10
-        // const pdfHeight = ((imgProperties.height * pdfWidth) / imgProperties.width);
-        pdf.addImage(img, 'PNG', 30, position, imgWidth, imgHeight+70) 
-        heightLeft -= pageHeight;
-
-        while (heightLeft >= 0) {
-            position += heightLeft - imgHeight; // top padding for other pages
-            pdf.addPage();
-            pdf.addImage(img, 'PNG', 30, position, imgWidth, imgHeight+70);
-            heightLeft -= pageHeight;
-        }
-
-        pdf.save(formDataIn2.genQo+".pdf");
+        var originalTitle = document.title;
+        document.title = '\u00A0';
+        window.print();
+        document.title = originalTitle;
       };
+      
 
     return (
         <CustomerWrapper>
             <div className="wrapper-box">
-                <h4 className="pt-1 pt-md-1 px-2 mb-4">Quotation: {formDataIn2.genQo}</h4>
-                <div className="container pt-5 mb-3" id="pdf">
+                <h4 className="pt-1 pt-md-1 px-2 mb-4" id="no-print">Quotation: {formDataIn2.genQo}</h4>
+                <div className="container" id="pdf">
                     <div className="wrapper-header d-flex justify-content-between align-items-start px-4 mb-3">
                         <div className="img-box"><img src="../../asq-logo.png" width="80"/></div>
                         <div className="wrap-text d-flex flex-column">
                             <p3>ใบเสนอราคา/ใบสั่งซื้อ</p3>
                             <p3>Quotation/Purchase Order</p3>
-                            <div className="wrap-input d-flex align-items-end justify-content-between">
+                            <div className="wrap-input d-flex align-items-end justify-content-between mb-0">
                                 <p3>เลขที่/No. :</p3>
                                 <TextField inputProps={{
                                     style: {
@@ -142,12 +146,12 @@ export default function Customer(props) {
                         </div>
                     </div>
                     <form>
-                        <div className="row mt-3 d-flex justify-content-center">
-                            <div className="col d-flex flex-row mx-2 align-items-center mb-2">
+                        <div className="row d-flex justify-content-center">
+                            <div className="col d-flex flex-row mx-2 align-items-center">
                                 {/* <h6 className="pt-1 pt-md-1">Customer-info:</h6> */}
                                 <p3 className="txt-hd">Attn.: </p3>
                                 <div className="col p-0">
-                                    <div className="col pt-1 col-md-12">
+                                    <div className="col col-md-12">
                                         <TextField id="v_box1" type="search" InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
@@ -176,7 +180,7 @@ export default function Customer(props) {
                             </div>
 
                             <div className="row">
-                                <div className="col px-2 mb-2 d-flex flex-row align-items-center">
+                                <div className="col px-2 d-flex flex-row align-items-center">
                                     <p3 className="txt-hd"></p3>
                                     <div className="col p-0">
                                         <div className="col ">
@@ -195,7 +199,7 @@ export default function Customer(props) {
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="col px-2 mb-2 d-flex flex-row align-items-center">
+                                <div className="col px-2 d-flex flex-row align-items-center">
                                     <p3 className="txt-hd">Tel. :</p3>
                                     <div className="col p-0">
                                         <TextField id="v_box5" type="search" InputLabelProps={{
@@ -225,7 +229,7 @@ export default function Customer(props) {
                                 </div> */}
                             </div>
                             <div className="row">
-                                <div className="col px-2 mb-2 d-flex flex-row align-items-center">
+                                <div className="col px-2 d-flex flex-row align-items-center">
                                 {box3 == "email" ? (
                                     <p3 className="txt-hd">{box3.toUpperCase()}: </p3>
                                     ) : (
@@ -264,7 +268,7 @@ export default function Customer(props) {
                                 
                             </div>
                             <div className="row">
-                                <div className="row mb-3">
+                                <div className="row">
                                     <div className="col px-2 d-flex flex-row align-items-center">
                                         <p3 className="txt-hd">Subject: </p3>
                                         <div className="col p-0">
@@ -322,7 +326,7 @@ export default function Customer(props) {
                     <div className="container-fluid p-0">
                         <div className="row m-2 pt-1 mb-0">
 
-                            <table className="qa-table">
+                            <table className="qa-table splitForPrint" ref={myTable} style={height}>
                                 <thead className="bg-dark text-light">
                                 <tr>
                                     <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-45">No.</th>
@@ -421,7 +425,9 @@ export default function Customer(props) {
                                     </tr>
                                 </tbody>
                             </table>
-                            <div className="row p-0 mb-5 wrap-text">
+                            
+                        </div>
+                        <div className="row p-0 mb-5 wrap-text t-left mt-1">
                                 <p3>Validity: 30 Days From qouted</p3>
                                 <p3>Delivery: 90 Days after confirmation by purchase order</p3>
                                 <div className="col px-1 d-flex flex-row align-items-end">
@@ -443,33 +449,31 @@ export default function Customer(props) {
                                         </div>
                                     </div>
                             </div>
-                            <div className="row wrap-text sign-namebox d-flex justify-content-center">
+                            <div className="row wrap-text sign-namebox d-flex justify-content-cer">
                                 <div className="line"></div>
                                 <p3 className="txt-sty">(อธีร์ศิรินภาพันธ์)</p3>
                                 <p3 className="txt-sty">Project Director</p3>
                             </div>
-                            <div className="row p-0 pb-4">
+                            <div className="row p-0 pb-2 m-1">
                                 <p2>บริษัท เอ สแควร์จํากัด</p2>
                                 <p2>A SQUARE LIMITED.</p2>
                                 <p2>26 ซอยนวมินทร์86 แขวงรามอินทรา เขตคันนายาว กรุงเทพฯ 10230</p2>
                                 <p2>26 Soi Nawamin 86 Ram Intra, Khan Na Yao, BANGKOK 10230</p2>
                                 <p2>Tel: (662) 0-2542-2108-9 ;Email: pracha.imail@gmail.com; www.asquare.co.th</p2>
                             </div>
-                        </div>
-                        
                     </div>
                     
                 </div>
-                <div className="row m-1 mt-0 justify-content-end">
+                <div className="row m-1 mt-0 justify-content-end" id="no-print">
                         <div className="col-4 p-0 mt-2 col-md-2 mx-1">
                             <Button variant="contained" className="w-100 cs-add-btn confirm" color="primary" onClick={createPDF}
                                 size="small">Save pdf
                             </Button>
                         </div>
                     </div>
-                <div className="row m-1 mt-0 justify-content-end mb-4">
+                <div className="row m-1 mt-0 justify-content-end mb-4" id="no-print">
                     <div className="col-4 p-0 mt-2 col-md-2 mx-1">
-                        <Button variant="contained" className="w-100 cs-add-btn confirm" color="secondary" onClick={handleGoNext}
+                        <Button  variant="contained" className="w-100 cs-add-btn confirm" color="secondary" onClick={handleGoNext}
                                 size="small">Back
                         </Button>
                     </div>

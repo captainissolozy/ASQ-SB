@@ -46,7 +46,7 @@ const Navbar = () => {
     if (userInfo === {}) return null;
     return (
         <NavWrapper>
-            <nav className="navbar navbar-expand-lg navbar-dark fixed-top mb-4">
+            <nav className="navbar navbar-expand-lg navbar-dark fixed-top mb-4" id="no-print">
                 <div className="container-fluid lmh">
                     <a className="navbar-brand" href="#">
                         ASQuare

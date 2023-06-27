@@ -38,8 +38,13 @@ const CustomerWrapper = styled.div`
     background: #23354D;
   }
   .wrap-text {
-    font-size: 14px;
-    row-gap: 6px;
+    font-size: 13px;
+    row-gap: 3px;
+    page-break-inside:avoid; page-break-after:auto
+ 
+  }
+  .t-left{
+    margin-left: 1px;
   }
   .inp-box {
     max-width: 120px;
@@ -71,11 +76,10 @@ const CustomerWrapper = styled.div`
   }
   table.qa-table {
     margin-bottom: 20px;
-    min-height: 700px;
+    min-height: 400px;
   }
   table tbody.min-h {
     min-height: 33px;
-    max-height: 670px;
     height: 100%;
   }
   table thead tr th {
@@ -134,7 +138,7 @@ const CustomerWrapper = styled.div`
     font-size: 14px!important;
   }
   .wrap-input {
-    gap: 10px;
+    gap: 5px;
   }
   .sign-namebox {
     max-width: 400px;
@@ -164,20 +168,11 @@ const CustomerWrapper = styled.div`
     -webkit-text-fill-color: unset;
   }
   @media print {
-    .css-v4u5dn-MuiInputBase-root-MuiInput-root:before {
-      border-bottom: transparent!important;
+    a[href]:after { content: none !important; }
+    #no-print {
+      display: none;
     }
-    .customer-box-sl {
-      display: none!important; 
-    }
-    .container {
-      box-shadow: none!important;
-    }
-    table thead tr th {
-      background-color: transparent!important;
-      border: 1px solid #000;
-
-    }
+    
   }
 `
 export default CustomerWrapper

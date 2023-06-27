@@ -15,3 +15,33 @@ code {
 div.root{
     background: #e2f3e5;
 }
+
+
+
+@media print {
+    @page :first {
+        margin-top: 0.5in;
+        margin-bottom: 0.51in;
+    }
+    @page {
+        margin-top: 0.6in;
+        margin-bottom: 0.51in;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+    .wrapper-box{
+        background-color: white;
+    }
+    body {
+        background-color: white;
+    }
+    .container {
+        background-color: white;
+    }
+    #root{
+        background-color: white;
+    }
+    #no-print {
+      display: none;
+    }
+  }

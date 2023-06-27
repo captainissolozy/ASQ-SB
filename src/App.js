@@ -16,7 +16,15 @@ import InsideQuote from "./pages/inSide/IPO/create/inProject"
 import StaticQuote from "./pages/inSide/IPO/create/createStatic"
 import StaticQuote2 from "./pages/inSide/IPO/create/createStaticClick"
 
+
 function App() {
+
+
+    const script = document.createElement("script");
+    script.src = "src\split.js";
+    script.async = true;
+    document.body.appendChild(script);
+
 
     return (<>
         <BrowserRouter>
