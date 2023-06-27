@@ -262,7 +262,10 @@ export default function Customer() {
         const pdf = new jsPDF("portrait", "pt", "a4");
         const data = await html2canvas(document.querySelector("#pdf"));
         const img = data.toDataURL("image/png");
-        pdf.addImage(img, "PNG") 
+        const imgProperties = pdf.getImageProperties(img);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+        pdf.addImage(img, "PNG", 0, 0, pdfWidth, pdfHeight) 
         pdf.save(genQo+".pdf");
       };
 

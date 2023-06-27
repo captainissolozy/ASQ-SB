@@ -4,7 +4,7 @@ import {collection, doc, getDoc, onSnapshot} from "firebase/firestore"
 import {useNavigate} from "react-router-dom";
 
 
-const AddTable = () => {
+const AddTable = (props) => {
 
     const [formData, setFormData] = useState([])
 
@@ -13,6 +13,11 @@ const AddTable = () => {
         onSnapshot(collection(db, "PO", sessionStorage.getItem("projectID"), "Quotation", sessionStorage.getItem("quotationID"), "work"), (snapshot) => {
             setFormData(snapshot.docs.map((doc) => doc.data()))
         });
+        var total = 0;
+        for(var i in formData){
+            total += (parseFloat(formData[i].labor) + parseFloat(formData[i].material))*parseFloat(formData[i].quantity)
+        }
+        props.func(total)
     }, [formData])
 
     return (

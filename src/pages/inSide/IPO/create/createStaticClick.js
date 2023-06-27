@@ -9,6 +9,8 @@ import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import CustomerWrapper from "./CustomerWrapper";
 import FormPStatic2 from "./formPStatic2";
+import { jsPDF } from "jspdf";
+import * as html2canvas from "html2canvas";
 
 
 
@@ -24,6 +26,7 @@ export default function Customer(props) {
     const [boxLa, setBoxLa] = useState("Agent")
     const [count, setCount] = useState(0)
     const [listenC, setListen] = useState("");
+    const [listenTotal, setListenTotal] = useState(0);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
@@ -72,11 +75,40 @@ export default function Customer(props) {
         sessionStorage.setItem("projectID", formDataIn.genQo)
     };
 
+    const pull_total = async (data) => {
+        setListenTotal(data)
+    };
+
+    const createPDF = async () => {
+        const pdf = new jsPDF("portrait", "pt", "a4");
+        const data = await html2canvas(document.querySelector("#pdf"));
+        const img = data.toDataURL("image/png");
+        const imgProperties = pdf.getImageProperties(img);
+        const imgWidth = imgProperties.width - 280;
+        const pageHeight = pdf.internal.pageSize.getHeight();
+        const pdfWidth = pdf.internal.pageSize.getWidth(); 
+        const imgHeight = pageHeight * imgWidth / pdfWidth;
+        var heightLeft = imgHeight;
+        var position = 10
+        // const pdfHeight = ((imgProperties.height * pdfWidth) / imgProperties.width);
+        pdf.addImage(img, 'PNG', 30, position, imgWidth, imgHeight+70) 
+        heightLeft -= pageHeight;
+
+        while (heightLeft >= 0) {
+            position += heightLeft - imgHeight; // top padding for other pages
+            pdf.addPage();
+            pdf.addImage(img, 'PNG', 30, position, imgWidth, imgHeight+70);
+            heightLeft -= pageHeight;
+        }
+
+        pdf.save(formDataIn2.genQo+".pdf");
+      };
+
     return (
         <CustomerWrapper>
             <div className="wrapper-box">
                 <h4 className="pt-1 pt-md-1 px-2 mb-4">Quotation: {formDataIn2.genQo}</h4>
-                <div className="container pt-5 mb-3">
+                <div className="container pt-5 mb-3" id="pdf">
                     <div className="wrapper-header d-flex justify-content-between align-items-start px-4 mb-3">
                         <div className="img-box"><img src="../../asq-logo.png" width="80"/></div>
                         <div className="wrap-text d-flex flex-column">
@@ -89,19 +121,24 @@ export default function Customer(props) {
                                         height: "16px",
                                     },
                                 }} variant="standard"
-                                    name="qu_number" className="inp-box" value=""
+                                    name="qu_number" className="inp-box" value={formDataIn2.genQo}
                                 />
                             </div>
-                            <div className="wrap-input d-flex align-items-end">
-                                <p3>วันที่/Date :</p3>
-                                <TextField inputProps={{
-                                    style: {
-                                        height: "16px",
-                                    },
-                                }} variant="standard"
-                                    name="qu_number" className="inp-box" value=""
-                                />
-                            </div>
+                            {formDataIn.date ? (
+                                    <div className="wrap-input d-flex align-items-end">
+                                    <p3>วันที่/Date :</p3>
+                                    <TextField inputProps={{
+                                        style: {
+                                            height: "16px",
+                                        },
+                                    }} variant="standard"
+                                        name="qu_number" className="inp-box" value={formDataIn.date.toString() + "/" + formDataIn.month.toString().padStart(2, "0") + "/" + formDataIn.year.toString()}
+                                    />
+                                </div>
+                                    ) : (
+                                        <></>
+                                    )}
+                            
                         </div>
                     </div>
                     <form>
@@ -279,6 +316,9 @@ export default function Customer(props) {
                             </div>
                         </div>
                     </form>
+                    <div className="row m-2 wrap-text">
+                        <p3 className="p-0">บริษัทฯ ยินดีเสนอราคาสินค้าดังรายการต่อไปนี้</p3>
+                    </div>
                     <div className="container-fluid p-0">
                         <div className="row m-2 pt-1 mb-0">
 
@@ -298,7 +338,7 @@ export default function Customer(props) {
                                     <th scope="col" className="t-stick px-2 py-2 w-1">Material</th>
                                 </tr>
                                 </thead>
-                                <FormPStatic2/>
+                                <FormPStatic2 func={pull_total}/>
                                 <tbody className="min-h">
                                     <tr>
                                         <th></th>
@@ -320,7 +360,7 @@ export default function Customer(props) {
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td  className="ta-r px-2 py-2"></td>
+                                        <td  className="ta-r px-2 py-2">{listenTotal}</td>
                                     </tr> 
                                     <tr>
                                         <td></td>
@@ -420,6 +460,13 @@ export default function Customer(props) {
                     </div>
                     
                 </div>
+                <div className="row m-1 mt-0 justify-content-end">
+                        <div className="col-4 p-0 mt-2 col-md-2 mx-1">
+                            <Button variant="contained" className="w-100 cs-add-btn confirm" color="primary" onClick={createPDF}
+                                size="small">Save pdf
+                            </Button>
+                        </div>
+                    </div>
                 <div className="row m-1 mt-0 justify-content-end mb-4">
                     <div className="col-4 p-0 mt-2 col-md-2 mx-1">
                         <Button variant="contained" className="w-100 cs-add-btn confirm" color="secondary" onClick={handleGoNext}
