@@ -286,36 +286,37 @@ export default function Customer() {
         <CustomerWrapper>
             <div className="heading-container mt-1 d-flex justify-content-end pt-1">
                 <div className="col d-flex justify-content-end flex-row-reverse align-items-center customer-box-sl">
-                    <div className="p-0 d-flex justify-content-between align-items-center">
-                        <IconButton variant="outlined" className="px-3 cs-add-btn" color="error"
-                                    onClick={handleCreate}
-                                    size="small"><p4 className="">Add Customer</p4></IconButton>
-                    </div>
-                    <ComboBox func={listenChange} dis={stateOfN}/>
-                </div>
-                <div className="row">
                     <div className="col p-0">
-                        <div className="col p-0 mx-2 d-flex flex-row-reverse">
-                            <Button variant="contained" className="px-3 cs-add-btn confirm" color="primary"
+                        <div className="col p-0 d-flex justify-content-start">
+                            <Button variant="contained" className="mx-2 px-3 cs-add-btn confirm" color="primary"
                                     onClick={handleSubmitNext} type="submit" disabled={stateOfN}
                                     size="small">Confirm
                             </Button>
-                            <Button variant="contained" className="mx-1 px-3 cs-add-btn edit" color="secondary"
+                            <Button variant="contained" className="px-3 cs-add-btn edit" color="secondary"
                                     onClick={handleCancelNext} type="submit" disabled={!stateOfN}
                                     size="small">Edit
                             </Button>
                         </div>
                     </div>
+                    <ComboBox func={listenChange} dis={stateOfN}/>
+                </div>
+                <div className="row px-2">
+                    <div className="p-0 d-flex justify-content-between align-items-center">
+                        <IconButton variant="outlined" className="px-3 cs-add-btn" color="error"
+                                    onClick={handleCreate}
+                                    size="small"><p4 className="">Add Customer</p4></IconButton>
+                    </div>
+                    
                 </div>
             </div>
             <div className="wrapper-box pt-4" id="pdf">
                 <div className="container pt-5 mb-3 bg-white shadow-sm">
-                    <div className="wrapper-header d-flex justify-content-between align-items-start px-4 mb-3">
+                    <div className="wrapper-header d-flex justify-content-between align-items-start px-4 mb-1">
                         <div className="img-box"><img src="../../asq-logo.png" width="80"/></div>
                         <div className="wrap-text d-flex flex-column">
-                            <p3>ใบเสนอราคา/ใบสั่งซื้อ</p3>
-                            <p3>Quotation/Purchase Order</p3>
-                            <div className="wrap-input d-flex align-items-end justify-content-between">
+                            <p3 className="pb-1">ใบเสนอราคา/ใบสั่งซื้อ</p3>
+                            <p3 className="pb-1">Quotation/Purchase Order</p3>
+                            <div className="wrap-input d-flex align-items-center justify-content-between">
                                 <p3>เลขที่/No. :</p3>
                                 <TextField inputProps={{
                                     style: {
@@ -325,7 +326,7 @@ export default function Customer() {
                                     name="qu_number" className="inp-box" value={genQo}
                                 />
                             </div>
-                            <div className="wrap-input d-flex align-items-end">
+                            <div className="wrap-input d-flex align-items-center">
                                 <p3>วันที่/Date :</p3>
                                 <TextField inputProps={{
                                     style: {
@@ -338,31 +339,12 @@ export default function Customer() {
                         </div>
                     </div>
                     <form>
-                        <div className="row pt-2 pt-md-1 px-3 mb-0">
-                            
-                            {/* <div className="col-12 px-1">
-                                <div className="col p-0 pt-1 mb-2">
-                                    <TextField type="search" onChange={handleChangePro} InputLabelProps={{
-                                        shrink: true,
-                                    }} inputProps={{
-                                        style: {
-                                            height: "5px",
-                                        },
-                                    }}
-                                               label="sales"
-                                               className="w-100 px-1"
-                                               required
-                                               disabled={true}
-                                               value={sessionStorage.getItem('email')}/>
-                                </div>
-                            </div> */}
-                        </div>
                         <div className="row mt-3 d-flex justify-content-center mb-2">
                             <div className="col d-flex flex-row mx-2 align-items-center">
                                 {/* <h6 className="pt-1 pt-md-1">Customer-info:</h6> */}
                                 <p3 className="txt-hd">Attn.: </p3>
                                 <div className="col p-0">
-                                    <div className="col pt-1 col-md-12 mb-2">
+                                    <div className="col pt-1 col-md-12">
                                         <TextField id="v_box1" type="search" InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
@@ -390,7 +372,7 @@ export default function Customer() {
                                 </div> */}
                             </div>
                             <div className="row">
-                                <div className="col px-2 mb-2 d-flex flex-row align-items-center">
+                                <div className="col px-2 d-flex flex-row align-items-center">
                                     <p3 className="txt-hd"></p3>
                                     <div className="col p-0">
                                         <div className="col ">
@@ -409,7 +391,7 @@ export default function Customer() {
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="col px-2 mb-2 d-flex flex-row align-items-center">
+                                <div className="col px-2 d-flex flex-row align-items-center">
                                     <p3 className="txt-hd">Tel. :</p3>
                                     <div className="col p-0">
                                         <TextField id="v_box5" type="search" InputLabelProps={{
@@ -424,22 +406,9 @@ export default function Customer() {
                                                    value={formDataIn.v_box5} disabled={edit}/>
                                     </div>
                                 </div>
-                                {/* <div className="col p-0">
-                                    <div className="col p-0 pt-1 mb-2 mx-2">
-                                        <TextField id="v_box4" type="search" InputLabelProps={{
-                                            shrink: true,
-                                        }} inputProps={{
-                                            style: {
-                                                height: "5px",
-                                            },
-                                        }}
-                                                   name="v_box4" label={boxLa} className="w-100" required
-                                                   value={formDataIn.v_box4} disabled={edit}/>
-                                    </div>
-                                </div> */}
                             </div>
                             <div className="row">
-                                <div className="col px-2 mb-2 d-flex flex-row align-items-center">
+                                <div className="col px-2 d-flex flex-row align-items-center">
                                 {box3 == "email" ? (
                                     <p3 className="txt-hd">{box3.toUpperCase()}: </p3>
                                     ) : (
@@ -477,7 +446,7 @@ export default function Customer() {
                                 </div> */}
                                 
                             </div>
-                            <div className="row mb-3">
+                            <div className="row">
                                 <div className="col px-2 d-flex flex-row align-items-center">
                                     <p3 className="txt-hd">Subject: </p3>
                                     <div className="col p-0">
@@ -497,7 +466,7 @@ export default function Customer() {
                             <div className="row">
                                 <div className="col-4 px-2 d-flex flex-row align-items-center">
                                     <p3 className="txt-hd">Project No.: </p3>
-                                    <div className="col p-0 pt-1 mb-2">
+                                    <div className="col p-0 pt-1">
                                         <TextField type="search" onChange={handleChangePro} InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
@@ -512,7 +481,7 @@ export default function Customer() {
                                 </div>
                                 <div className="col px-2 d-flex flex-row align-items-center">
                                     <p3 className="txt-hd">Project Name:</p3>
-                                    <div className="col p-0 pt-1 mb-2">
+                                    <div className="col p-0 pt-1">
                                         <TextField type="search" onChange={handleChangePro} InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
@@ -528,26 +497,26 @@ export default function Customer() {
                             </div>
                         </div>
                     </form>
-                    <div className="row m-2 wrap-text">
+                    <div className="row m-2 mt-0 mb-0 wrap-text">
                         <p3 className="p-0">บริษัทฯ ยินดีเสนอราคาสินค้าดังรายการต่อไปนี้</p3>
                     </div>
                     <div className="container-fluid p-0">
-                        <div className="row m-2 pt-1 mb-0 table-responsive">
+                        <div className="row m-2 pt-1 mb-0 mt-0 table-responsive">
 
                             <table className="qa-table splitForPrint">
                                 <thead className="bg-dark text-light">
                                 <tr>
-                                    <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-45">No.</th>
-                                    <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-desc">Description</th>
-                                    <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-price">Quantity</th>
-                                    <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-price">Unit</th>
-                                    <th scope="col" colspan="2" className="t-stick px-2 py-2">Unit Price</th>
-                                    <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-12">Total <br/>Unit Price</th>
-                                    <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-12">Total</th>
+                                    <th scope="col" rowspan="2" className="px-2 py-2 w-45">No.</th>
+                                    <th scope="col" rowspan="2" className="px-2 py-2 w-desc">Description</th>
+                                    <th scope="col" rowspan="2" className="px-2 py-2 w-price">Quantity</th>
+                                    <th scope="col" rowspan="2" className="px-2 py-2 w-price">Unit</th>
+                                    <th scope="col" colspan="2" className="px-2 py-2">Unit Price</th>
+                                    <th scope="col" rowspan="2" className="px-2 py-2 w-12">Total <br/>Unit Price</th>
+                                    <th scope="col" rowspan="2" className="px-2 py-2 w-12">Total</th>
                                 </tr>
                                 <tr>
-                                    <th scope="col" className="t-stick px-2 py-2 w-1">Labour</th>
-                                    <th scope="col" className="t-stick px-2 py-2 w-1">Material</th>
+                                    <th scope="col" className="px-2 py-2 w-1">Labour</th>
+                                    <th scope="col" className="px-2 py-2 w-1">Material</th>
                                 </tr>
                                 </thead>
                                 <FormC roomCode={genQo} reOpen={openTwo} func={pull_total}/>
@@ -566,52 +535,52 @@ export default function Customer() {
                                 <tbody>
                                     <tr>
                                         <td></td>
-                                        <td className="ta-r px-2 py-2">Total</td>
+                                        <td className="ta-r px-2">Total</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td  className="ta-r px-2 py-2">{listenTotal.toLocaleString(undefined, {maximumFractionDigits:2})}</td>
+                                        <td  className="ta-r px-2">{listenTotal.toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                     </tr> 
                                     <tr>
                                         <td></td>
-                                        <td className="ta-r px-2 py-2">Overhead</td>
+                                        <td className="ta-r px-2">Overhead</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td className="ta-r px-2 py-2"> %</td>
-                                        <td className="ta-r px-2 py-2"></td>
+                                        <td className="ta-r px-2"> %</td>
+                                        <td className="ta-r px-2"></td>
                                     </tr> 
                                     <tr>
                                         <td></td>
-                                        <td className="ta-r px-2 py-2">Special discount</td>
+                                        <td className="ta-r px-2">Special discount</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td className="ta-r px-2 py-2">-</td>
-                                        <td className="ta-r px-2 py-2"></td>
+                                        <td className="ta-r px-2">-</td>
+                                        <td className="ta-r px-2"></td>
                                     </tr> 
                                     <tr>
                                         <td></td>
-                                        <td className="ta-r px-2 py-2">Total before VAT (7%)</td>
+                                        <td className="ta-r px-2">Total before VAT (7%)</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td className="ta-r px-2 py-2"></td>
+                                        <td className="ta-r px-2"></td>
                                         <td></td>
                                     </tr>
                                     <tr>
                                         <td></td>
-                                        <td className="ta-r px-2 py-2">VAT (7%)</td>
+                                        <td className="ta-r px-2">VAT (7%)</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td className="ta-r px-2 py-2"></td>
+                                        <td className="ta-r px-2"></td>
                                         <td></td>
                                     </tr> 
                                     <tr className="hs-border">
@@ -664,7 +633,7 @@ export default function Customer() {
                         </div>
                     </div>
                 </div>
-                    <div className="row m-1 mt-0 justify-content-end">
+                    <div className="row justify-content-end mx-900 pb-4">
                         <div className="col-4 p-0 mt-2 col-md-2 mx-1">
                             <Button variant="contained" className="w-100 cs-add-btn confirm" color="primary" onClick={createPDF}
                                 size="small">Save pdf

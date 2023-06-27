@@ -1,10 +1,18 @@
 body {
     margin: 0;
-    font-family: 'prompt', san-serif !important;
-    font-size: 0.7rem !important;
+    font-family: 'Helvetica', 'Arial', sans-serif !important;
+    /* font-size: 0.7rem !important; */
+    font-size: 14px!important;
+    line-height: 18px!important;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: #e2f3e5;
+}
+input {
+    font-family: 'Helvetica', 'Arial', sans-serif !important;
+    font-size: 13px!important;
+    line-height: 14px!important;
+    color: #000!important;
 }
 
 code {
@@ -37,6 +45,7 @@ div.root{
     }
     .container {
         background-color: white;
+        padding-top: 0!important;
     }
     #root{
         background-color: white;

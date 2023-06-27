@@ -7,6 +7,12 @@ const CustomerWrapper = styled.div`
     background: white;
     border-radius: 12px;
     overflow: hidden;
+    padding-top: 20px!important;
+    padding-left: 12px!important;
+    padding-right: 12px!important;
+  }
+  .sm-containter {
+    min-height: auto;
   }
   .txt {
     font-size: 14px;
@@ -59,7 +65,7 @@ const CustomerWrapper = styled.div`
     background-color: #fff;
   }
   .customer-box-sl {
-    column-gap: 10px;
+    column-gap: 0px;
   }
   .cs-add-btn {
     border: 1px solid #302e38;
@@ -67,7 +73,7 @@ const CustomerWrapper = styled.div`
     color: #302e38!important;
     border-radius: 6px!important;
     font-size: 14px;
-    line-height: 29px;
+    line-height: 22px!important;
   }
   .cs-add-btn.confirm {
     background-color: #302e38;
@@ -89,7 +95,6 @@ const CustomerWrapper = styled.div`
     font-size: 14px;
     font-weight: 400;
     border: 1px solid #000;
-    border-top: 1px solid #000!important;
     vertical-align: middle!important;
   }
   table.qa-table tr td {
@@ -134,9 +139,6 @@ const CustomerWrapper = styled.div`
   .ta-c {
     text-align: right;
   }
-  table tbody td {
-    font-size: 14px!important;
-  }
   .wrap-input {
     gap: 5px;
   }
@@ -167,12 +169,22 @@ const CustomerWrapper = styled.div`
   .MuiInputBase-input.MuiInput-input.Mui-disabled {
     -webkit-text-fill-color: unset;
   }
+ 
+  .mx-900 {
+    max-width: 900px;
+    margin: 0 auto;
+  }
   @media print {
     a[href]:after { content: none !important; }
     #no-print {
       display: none;
     }
-    
+    .container {
+      padding-top: 0!important;
+    }
+    .css-v4u5dn-MuiInputBase-root-MuiInput-root:before {
+      border-bottom: transparent!important;
+    }
   }
 `
 export default CustomerWrapper

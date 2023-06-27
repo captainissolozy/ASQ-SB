@@ -257,8 +257,8 @@ export default function Customer() {
                             <table className="table table-sm border-bottom-0 common-table">
                                 <thead className="bg-dark text-light">
                                 <tr>
-                                    <th scope="col" className="t-stick">Quotation</th>
-                                    <th scope="col" className="t-stick">File</th>
+                                    <th scope="col" className="">Quotation</th>
+                                    <th scope="col" className="">File</th>
                                 </tr>
                                 </thead>
                                 <FormP roomCode={sessionStorage.getItem("projectID")}/>
@@ -277,8 +277,8 @@ export default function Customer() {
                             <table className="table table-sm border-bottom-0">
                                 <thead className="bg-dark text-light">
                                 <tr>
-                                    <th scope="col" className="t-stick">Description</th>
-                                    <th scope="col" className="t-stick">Document</th>
+                                    <th scope="col" className="">Description</th>
+                                    <th scope="col" className="">Document</th>
                                 </tr>
                                 </thead>
                                 <FormP2 roomCode={sessionStorage.getItem("projectID")}/>

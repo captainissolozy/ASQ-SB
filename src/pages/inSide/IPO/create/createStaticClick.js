@@ -111,14 +111,14 @@ export default function Customer(props) {
     return (
         <CustomerWrapper>
             <div className="wrapper-box">
-                <h4 className="pt-1 pt-md-1 px-2 mb-4" id="no-print">Quotation: {formDataIn2.genQo}</h4>
+                <h4 className="pt-1 pt-md-1 px-2 mb-4 mx-900" id="no-print">Quotation: {formDataIn2.genQo}</h4>
                 <div className="container" id="pdf">
-                    <div className="wrapper-header d-flex justify-content-between align-items-start px-4 mb-3">
+                    <div className="wrapper-header d-flex justify-content-between align-items-start px-4 mb-1">
                         <div className="img-box"><img src="../../asq-logo.png" width="80"/></div>
                         <div className="wrap-text d-flex flex-column">
-                            <p3>ใบเสนอราคา/ใบสั่งซื้อ</p3>
-                            <p3>Quotation/Purchase Order</p3>
-                            <div className="wrap-input d-flex align-items-end justify-content-between mb-0">
+                            <p3 className="pb-1">ใบเสนอราคา/ใบสั่งซื้อ</p3>
+                            <p3 className="pb-1">Quotation/Purchase Order</p3>
+                            <div className="wrap-input d-flex align-items-center justify-content-between mb-0">
                                 <p3>เลขที่/No. :</p3>
                                 <TextField inputProps={{
                                     style: {
@@ -129,7 +129,7 @@ export default function Customer(props) {
                                 />
                             </div>
                             {formDataIn.date ? (
-                                    <div className="wrap-input d-flex align-items-end">
+                                    <div className="wrap-input d-flex align-items-center">
                                     <p3>วันที่/Date :</p3>
                                     <TextField inputProps={{
                                         style: {
@@ -320,26 +320,26 @@ export default function Customer(props) {
                             </div>
                         </div>
                     </form>
-                    <div className="row m-2 wrap-text">
+                    <div className="row mx-2 mt-1 wrap-text">
                         <p3 className="p-0">บริษัทฯ ยินดีเสนอราคาสินค้าดังรายการต่อไปนี้</p3>
                     </div>
                     <div className="container-fluid p-0">
-                        <div className="row m-2 pt-1 mb-0">
+                        <div className="row m-2 pt-1 mb-0 mt-0">
 
                             <table className="qa-table splitForPrint" ref={myTable} style={height}>
                                 <thead className="bg-dark text-light">
                                 <tr>
-                                    <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-45">No.</th>
-                                    <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-desc">Description</th>
-                                    <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-price">Quantity</th>
-                                    <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-price">Unit</th>
-                                    <th scope="col" colspan="2" className="t-stick px-2 py-2">Unit Price</th>
-                                    <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-12">Total <br/>Unit Price</th>
-                                    <th scope="col" rowspan="2" className="t-stick px-2 py-2 w-12">Total</th>
+                                    <th scope="col" rowspan="2" className="px-2 py-2 w-45">No.</th>
+                                    <th scope="col" rowspan="2" className="px-2 py-2 w-desc">Description</th>
+                                    <th scope="col" rowspan="2" className="px-2 py-2 w-price">Quantity</th>
+                                    <th scope="col" rowspan="2" className="px-2 py-2 w-price">Unit</th>
+                                    <th scope="col" colspan="2" className="px-2 py-2">Unit Price</th>
+                                    <th scope="col" rowspan="2" className="px-2 py-2 w-12">Total <br/>Unit Price</th>
+                                    <th scope="col" rowspan="2" className="px-2 py-2 w-12">Total</th>
                                 </tr>
                                 <tr>
-                                    <th scope="col" className="t-stick px-2 py-2 w-1">Labour</th>
-                                    <th scope="col" className="t-stick px-2 py-2 w-1">Material</th>
+                                    <th scope="col" className="px-2 py-2 w-1">Labour</th>
+                                    <th scope="col" className="px-2 py-2 w-1">Material</th>
                                 </tr>
                                 </thead>
                                 <FormPStatic2 func={pull_total}/>
@@ -358,32 +358,32 @@ export default function Customer(props) {
                                 <tbody>
                                     <tr>
                                         <td></td>
-                                        <td className="ta-r px-2 py-2">Total</td>
+                                        <td className="ta-r px-2">Total</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td  className="ta-r px-2 py-2">{listenTotal}</td>
+                                        <td  className="ta-r px-2">{listenTotal}</td>
                                     </tr> 
                                     <tr>
                                         <td></td>
-                                        <td className="ta-r px-2 py-2">Overhead</td>
+                                        <td className="ta-r px-2">Overhead</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td className="ta-r px-2 py-2"> %</td>
-                                        <td className="ta-r px-2 py-2"></td>
+                                        <td className="ta-r px-2"> %</td>
+                                        <td className="ta-r px-2"></td>
                                     </tr> 
                                     <tr>
                                         <td></td>
-                                        <td className="ta-r px-2 py-2">Special discount</td>
+                                        <td className="ta-r px-2">Special discount</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td className="ta-r px-2 py-2">
+                                        <td className="ta-r px-2">
                                             <TextField name="special-discount" type="text" variant="standard" 
                                             inputProps={{
                                                 style: {
@@ -396,26 +396,26 @@ export default function Customer(props) {
 
                                             </TextField>
                                         </td>
-                                        <td className="ta-r px-2 py-2"></td>
+                                        <td className="ta-r px-2"></td>
                                     </tr> 
                                     <tr>
                                         <td></td>
-                                        <td className="ta-r px-2 py-2">Total before VAT (7%)</td>
+                                        <td className="ta-r px-2">Total before VAT (7%)</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td className="ta-r px-2 py-2"></td>
+                                        <td className="ta-r px-2"></td>
                                         <td></td>
                                     </tr>
                                     <tr>
                                         <td></td>
-                                        <td className="ta-r px-2 py-2">VAT (7%)</td>
+                                        <td className="ta-r px-2">VAT (7%)</td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td className="ta-r px-2 py-2"></td>
+                                        <td className="ta-r px-2"></td>
                                         <td></td>
                                     </tr> 
                                     <tr className="hs-border">
@@ -428,50 +428,50 @@ export default function Customer(props) {
                             
                         </div>
                         <div className="row p-0 mb-5 wrap-text t-left mt-1">
-                                <p3>Validity: 30 Days From qouted</p3>
-                                <p3>Delivery: 90 Days after confirmation by purchase order</p3>
-                                <div className="col px-1 d-flex flex-row align-items-end">
-                                        <p3 className="mx-2">Payment: </p3>
-                                        <div className="col p-0">
-                                            <TextField name="payment" type="text" variant="standard" InputLabelProps={{
-                                                shrink: true,
-                                            }} inputProps={{
-                                                style: {
-                                                    height: "10px",
-                                                },
-                                            }}
-                                                    label=""
-                                                    value={formDataIn2.payment}
-                                                    disabled={true}
-                                                    className="w-100 px-1"
-                                                    required
-                                            />
-                                        </div>
+                            <p3>Validity: 30 Days From qouted</p3>
+                            <p3>Delivery: 90 Days after confirmation by purchase order</p3>
+                            <div className="col px-1 d-flex flex-row align-items-center">
+                                    <p3 className="mx-2">Payment: </p3>
+                                    <div className="col p-0">
+                                        <TextField name="payment" type="text" variant="standard" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "10px",
+                                            },
+                                        }}
+                                                label=""
+                                                value={formDataIn2.payment}
+                                                disabled={true}
+                                                className="w-100 px-1"
+                                                required
+                                        />
                                     </div>
-                            </div>
-                            <div className="row wrap-text sign-namebox d-flex justify-content-cer">
-                                <div className="line"></div>
-                                <p3 className="txt-sty">(อธีร์ศิรินภาพันธ์)</p3>
-                                <p3 className="txt-sty">Project Director</p3>
-                            </div>
-                            <div className="row p-0 pb-2 m-1">
-                                <p2>บริษัท เอ สแควร์จํากัด</p2>
-                                <p2>A SQUARE LIMITED.</p2>
-                                <p2>26 ซอยนวมินทร์86 แขวงรามอินทรา เขตคันนายาว กรุงเทพฯ 10230</p2>
-                                <p2>26 Soi Nawamin 86 Ram Intra, Khan Na Yao, BANGKOK 10230</p2>
-                                <p2>Tel: (662) 0-2542-2108-9 ;Email: pracha.imail@gmail.com; www.asquare.co.th</p2>
-                            </div>
+                                </div>
+                        </div>
+                        <div className="row wrap-text sign-namebox d-flex justify-content-cer">
+                            <div className="line"></div>
+                            <p3 className="txt-sty">(อธีร์ศิรินภาพันธ์)</p3>
+                            <p3 className="txt-sty">Project Director</p3>
+                        </div>
+                        <div className="row p-0 pb-2 m-1">
+                            <p2>บริษัท เอ สแควร์จํากัด</p2>
+                            <p2>A SQUARE LIMITED.</p2>
+                            <p2>26 ซอยนวมินทร์86 แขวงรามอินทรา เขตคันนายาว กรุงเทพฯ 10230</p2>
+                            <p2>26 Soi Nawamin 86 Ram Intra, Khan Na Yao, BANGKOK 10230</p2>
+                            <p2>Tel: (662) 0-2542-2108-9 ;Email: pracha.imail@gmail.com; www.asquare.co.th</p2>
+                        </div>
                     </div>
                     
                 </div>
-                <div className="row m-1 mt-0 justify-content-end" id="no-print">
+                <div className="row p-1 pt-0 justify-content-end mx-900" id="no-print">
                         <div className="col-4 p-0 mt-2 col-md-2 mx-1">
                             <Button variant="contained" className="w-100 cs-add-btn confirm" color="primary" onClick={createPDF}
                                 size="small">Save pdf
                             </Button>
                         </div>
                     </div>
-                <div className="row m-1 mt-0 justify-content-end mb-4" id="no-print">
+                <div className="row p-1 pt-0 justify-content-end pb-4 mx-900" id="no-print">
                     <div className="col-4 p-0 mt-2 col-md-2 mx-1">
                         <Button  variant="contained" className="w-100 cs-add-btn confirm" color="secondary" onClick={handleGoNext}
                                 size="small">Back

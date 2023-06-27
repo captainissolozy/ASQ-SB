@@ -142,8 +142,10 @@ export default function Customer(props) {
     return (
         <CustomerWrapper>
             <div className="wrapper-box pt-4">
-                <div className="container bg-white pt-5 mb-3">
+                <div className="row mx-900" id="no-pdf">
                     <h4 className="pt-1 pt-md-1 px-2 mb-2">Quotation: {formDataIn.genQo}</h4>
+                </div>
+                <div className="container bg-white sm-containter mb-3 pb-3" id="no-pdf">
                     <form>
                         <div className="row pt-2 pt-md-1 px-3 mb-0">
                             <div className="col px-2">
@@ -155,7 +157,7 @@ export default function Customer(props) {
                                             height: "5px",
                                         },
                                     }}
-                                               name="option" label="Option" className="w-100" required
+                                                name="option" label="Option" className="w-100" required
                                     />
                                 </div>
                             </div>
@@ -168,12 +170,184 @@ export default function Customer(props) {
                                             height: "5px",
                                         },
                                     }}
-                                               name="sales" label="Sales" className="w-100" value={sessionStorage.getItem("email")} disabled={true}
+                                                name="sales" label="Sales" className="w-100" value={sessionStorage.getItem("email")} disabled={true}
                                     />
                                 </div>
                             </div>
                         </div>
-                        <div className="row pt-2 pt-md-1 px-3 mb-0">
+                        <div className="row px-3">
+                            <div className="col p-0 mb-3">
+                                <div className="col p-0 pt-1 mt-2 mx-2 d-flex flex-row-reverse">
+                                    <Button variant="contained" className="cs-add-btn confirm" color="primary"
+                                            onClick={handleSubmitNext} type="submit" disabled={stateOfN}
+                                            size="small">confirm
+                                    </Button>
+                                    <Button variant="contained" className="mx-1 cs-add-btn edit" color="secondary"
+                                            onClick={handleCancelNext} type="submit" disabled={!stateOfN}
+                                            size="small">Edit
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div className="container bg-white">
+                    <div className="wrapper-header d-flex justify-content-between align-items-start px-4 mb-1">
+                        <div className="img-box"><img src="../../asq-logo.png" width="80"/></div>
+                        <div className="wrap-text d-flex flex-column">
+                            <p3 className="pb-1">ใบเสนอราคา/ใบสั่งซื้อ</p3>
+                            <p3 className="pb-1">Quotation/Purchase Order</p3>
+                            <div className="wrap-input d-flex align-items-center justify-content-between mb-0">
+                                <p3>เลขที่/No. :</p3>
+                                <TextField inputProps={{
+                                    style: {
+                                        height: "16px",
+                                    },
+                                }} variant="standard"
+                                    name="qu_number" className="inp-box" value=""
+                                />
+                            </div>
+                            {formDataIn.date ? (
+                                    <div className="wrap-input d-flex align-items-center">
+                                    <p3>วันที่/Date :</p3>
+                                    <TextField inputProps={{
+                                        style: {
+                                            height: "16px",
+                                        },
+                                    }} variant="standard"
+                                        name="qu_number" className="inp-box" value={formDataIn.date.toString() + "/" + formDataIn.month.toString().padStart(2, "0") + "/" + formDataIn.year.toString()}
+                                    />
+                                </div>
+                                    ) : (
+                                        <></>
+                                    )}
+                            
+                        </div>
+                    </div>
+                    <form>
+                        <div className="col d-flex flex-row mx-2 align-items-center">
+                            {/* <h6 className="pt-1 pt-md-1">Customer-info:</h6> */}
+                            <p3 className="txt-hd">Attn.: </p3>
+                            <div className="col p-0">
+                                <div className="col col-md-12">
+                                    <TextField id="v_box1" type="search" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "16px",
+                                            color: "#000000"
+                                        },
+                                    }} variant="standard"
+                                        name="v_box1" label="" className="w-100" required
+                                        value={formDataIn.v_box1} disabled={true}/>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row mx-2">
+                            <div className="col p-0 d-flex flex-row align-items-center">
+                                <p3 className="txt-hd"></p3>
+                                <div className="col p-0">
+                                    <div className="col ">
+                                        <TextField id="v_box7" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "16px",
+                                                color: "#000000"
+                                            },
+                                        }} variant="standard"
+                                                name="v_box7" label="" className="w-100" required
+                                                value={formDataIn.v_box7} disabled={edit}/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row mx-2">
+                            <div className="col p-0 d-flex flex-row align-items-center">
+                                <p3 className="txt-hd">Tel. :</p3>
+                                <div className="col p-0">
+                                    <TextField id="v_box5" type="search" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "16px",
+                                            color: "#000000",
+                                        },
+                                    }} variant="standard"
+                                                name="v_box5" label="" className="w-100" required
+                                                value={formDataIn.v_box5} disabled={edit}/>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row mx-2">
+                            <div className="col p-0 d-flex flex-row align-items-center">
+                                <p3 className="txt-hd">EMAIL :</p3>
+                                <div className="col p-0">
+                                    <TextField id="v_box3" type="search" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "16px",
+                                            color: "#000000",
+                                        },
+                                    }} variant="standard"
+                                                name="v_box3" label="" className="w-100" required
+                                                value={formDataIn.v_box3} disabled={edit}/>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                                <div className="row mx-2">
+                                    <div className="col p-0 d-flex flex-row align-items-center">
+                                        <p3 className="txt-hd">Subject: </p3>
+                                        <div className="col p-0">
+                                            <TextField type="search" InputLabelProps={{
+                                                shrink: true,
+                                            }} inputProps={{
+                                                style: {
+                                                    height: "16px",
+                                                    color: "#000000"
+                                                },
+                                            }} variant="standard"
+                                                    name="subject" label="" className="w-100" value={formDataIn.subject} required disabled={true}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row mx-2">
+                                    <div className="col-4 p-0 d-flex flex-row align-items-center">
+                                        <p3 className="txt-hd">Project No.: </p3>
+                                        <div className="col p-0">
+                                            <TextField type="search" InputLabelProps={{
+                                                shrink: true,
+                                            }} inputProps={{
+                                                style: {
+                                                    height: "16px",
+                                                    color: "#000000"
+                                                },
+                                            }} variant="standard"
+                                                    name="projectNo" label="" className="w-100" required disabled={true}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="col px-2 d-flex flex-row align-items-center">
+                                        <p3 className="txt-hd">Project Name:</p3>
+                                        <div className="col p-0">
+                                            <TextField type="search" InputLabelProps={{
+                                                shrink: true,
+                                            }} inputProps={{
+                                                style: {
+                                                    height: "16px",
+                                                    color: "#000000"
+                                                },
+                                            }} variant="standard"
+                                                    name="projectName" label="" className="w-100" value={formDataIn.projectName} required disabled={true}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {/* <div className="row pt-2 pt-md-1 px-3 mb-0">
                             <div className="col px-2">
                                 <div className="col pt-1 col-md-12">
                                     <TextField type="search" InputLabelProps={{
@@ -200,158 +374,179 @@ export default function Customer(props) {
                                     />
                                 </div>
                             </div>
-                        </div>
-                        <div className="row mt-3 d-flex justify-content-center">
-                            <div className="row pt-1">
-                                <h6 className="pt-1 pt-md-1">Customer-info:</h6>
-                                <div className="col px-2">
-                                    <div className="col pt-1 col-md-12 mb-2">
-                                        <TextField id="v_box1" type="search" InputLabelProps={{
-                                            shrink: true,
-                                        }} inputProps={{
-                                            style: {
-                                                height: "5px",
-                                            },
-                                        }}
-                                                   name="v_box1" label="Name" className="w-100" required
-                                                   value={formDataIn.v_box1} disabled={true}/>
-                                    </div>
-                                </div>
-                                <div className="col p-0">
-                                    <div className="col p-0 pt-1 mb-2 mx-2">
-                                        <TextField id="v_box2" type="search" InputLabelProps={{
-                                            shrink: true,
-                                        }} inputProps={{
-                                            style: {
-                                                height: "5px",
-                                            },
-                                        }}
-                                                   name="v_box2" label={box2} className="w-100" required
-                                                   value={formDataIn.v_box2} disabled={true}/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col px-2">
-                                    <div className="col pt-1 col-md-12 mb-2">
-                                        <TextField id="v_box3" type="search" InputLabelProps={{
-                                            shrink: true,
-                                        }} inputProps={{
-                                            style: {
-                                                height: "5px",
-                                            },
-                                        }}
-                                                   name="v_box3" label={box3} className="w-100" required
-                                                   value={formDataIn.v_box3} disabled={edit}/>
-                                    </div>
-                                </div>
-                                <div className="col p-0">
-                                    <div className="col p-0 pt-1 mb-2 mx-2">
-                                        <TextField id="v_box4" type="search" InputLabelProps={{
-                                            shrink: true,
-                                        }} inputProps={{
-                                            style: {
-                                                height: "5px",
-                                            },
-                                        }}
-                                                   name="v_box4" label={boxLa} className="w-100" required
-                                                   value={formDataIn.v_box4} disabled={edit}/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col px-2">
-                                    <div className="col pt-1 col-md-12 mb-2">
-                                        <TextField id="v_box5" type="search" InputLabelProps={{
-                                            shrink: true,
-                                        }} inputProps={{
-                                            style: {
-                                                height: "5px",
-                                            },
-                                        }}
-                                                   name="v_box5" label="Tel." className="w-100" required
-                                                   value={formDataIn.v_box5} disabled={edit}/>
-                                    </div>
-                                </div>
-                                <div className="col p-0">
-                                    <div className="col p-0 pt-1 mb-2 mx-2">
-                                        <TextField id="v_box7" type="search" InputLabelProps={{
-                                            shrink: true,
-                                        }} inputProps={{
-                                            style: {
-                                                height: "5px",
-                                            },
-                                        }}
-                                                   name="v_box7" label="Address" className="w-100" required
-                                                   value={formDataIn.v_box7} disabled={edit}/>
-                                    </div>
-                                </div>
-                                <div className="col-12 px-1">
-                                    <div className="col p-0 pt-1 mb-2">
-                                        <TextField name="payment" type="text" variant="filled" InputLabelProps={{
-                                            shrink: true,
-                                        }} inputProps={{
-                                            style: {
-                                                height: "20px",
-                                            },
-                                        }}
-                                                   label="payment"
-                                                   className="w-100 px-1"
-                                                   required
-                                                   />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col p-0 mb-3">
-                                    <div className="col p-0 pt-1 mt-2 mx-2 d-flex flex-row-reverse">
-                                        <Button variant="contained" className="" color="primary"
-                                                onClick={handleSubmitNext} type="submit" disabled={stateOfN}
-                                                size="small">confirm
-                                        </Button>
-                                        <Button variant="contained" className="mx-1" color="secondary"
-                                                onClick={handleCancelNext} type="submit" disabled={!stateOfN}
-                                                size="small">Edit
-                                        </Button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        </div> */}
                     </form>
+                    <div className="row mx-2 mt-1 wrap-text">
+                        <p3 className="p-0">บริษัทฯ ยินดีเสนอราคาสินค้าดังรายการต่อไปนี้</p3>
+                    </div>
                     {stateOfN?(<div className="container-fluid p-0">
                         <div className="row m-2 pt-1 mb-0">
-
-                            <table className="table table-sm border-bottom-0">
+                            <table className="qa-table">
                                 <thead className="bg-dark text-light">
-                                <tr>
-                                    <th scope="col" className="t-stick">Description</th>
-                                    <th scope="col" className="t-stick">Quantity</th>
-                                    <th scope="col" className="t-stick">unit</th>
-                                    <th scope="col" className="t-stick">labor</th>
-                                    <th scope="col" className="t-stick">material</th>
-
-                                </tr>
+                                    <tr>
+                                        <th scope="col" rowspan="2" className="px-2 py-2 w-45">No.</th>
+                                        <th scope="col" rowspan="2" className="px-2 py-2 w-desc">Description</th>
+                                        <th scope="col" rowspan="2" className="px-2 py-2 w-price">Quantity</th>
+                                        <th scope="col" rowspan="2" className="px-2 py-2 w-price">Unit</th>
+                                        <th scope="col" colspan="2" className="px-2 py-2">Unit Price</th>
+                                        <th scope="col" rowspan="2" className="px-2 py-2 w-12">Total <br/>Unit Price</th>
+                                        <th scope="col" rowspan="2" className="px-2 py-2 w-12">Total</th>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" className="px-2 py-2 w-1">Labour</th>
+                                        <th scope="col" className="px-2 py-2 w-1">Material</th>
+                                    </tr>
                                 </thead>
                                 <FormPStatic roomCode={formDataIn.genQo} currentCode={formDataIn.genQo+"_"+formDataIn.option}/>
+                                <tbody className="min-h">
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </tbody>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                        <td className="ta-r px-2">Total</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td  className="ta-r px-2"></td>
+                                    </tr> 
+                                    <tr>
+                                        <td></td>
+                                        <td className="ta-r px-2">Overhead</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td className="ta-r px-2"> %</td>
+                                        <td className="ta-r px-2"></td>
+                                    </tr> 
+                                    <tr>
+                                        <td></td>
+                                        <td className="ta-r px-2">Special discount</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td className="ta-r px-2">
+                                            <TextField name="special-discount" type="text" variant="standard" 
+                                            inputProps={{
+                                                style: {
+                                                    color: "#000000",
+                                                    height: "16px",
+                                                    textAlign: "right"
+                                                }
+                                            }}
+                                            className="w-100 ta-r">
 
+                                            </TextField>
+                                        </td>
+                                        <td className="ta-r px-2"></td>
+                                    </tr> 
+                                    <tr>
+                                        <td></td>
+                                        <td className="ta-r px-2">Total before VAT (7%)</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td className="ta-r px-2"></td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td className="ta-r px-2">VAT (7%)</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td className="ta-r px-2"></td>
+                                        <td></td>
+                                    </tr> 
+                                    <tr className="hs-border">
+                                        <td colspan="2" className="ta-border"></td>
+                                        <td colspan="5" className="ta-border"></td>
+                                        <td colspan="1" className="ta-border"></td>
+                                    </tr>
+                                </tbody>
                             </table>
-
                         </div>
-                        <div className="row m-2 justify-content-end mt-0">
+                        <div className="row m-2 justify-content-end mt-0" id="no-pdf">
                             <div className="col-2 p-0 mx-md-1 col-md-1 mx-2">
                                 <Button variant="outlined" className="w-100" color="primary" onClick={handleCreateTwo}
                                         size="small"><AddIcon/>
                                 </Button>
                             </div>
                         </div>
-                        <div className="row m-1 mt-0 justify-content-end pb-2">
-                            <div className="col-4 p-0 mt-2 col-md-2 mx-1">
-                                <Button variant="contained" className="w-100" color="primary" onClick={handleGoNext}
-                                        size="small">Finish
-                                </Button>
+                        <div className="row p-0 mb-5 wrap-text t-left mt-1">
+                            <p3>Validity: 30 Days From qouted</p3>
+                            <p3>Delivery: 90 Days after confirmation by purchase order</p3>
+                            <div className="col px-1 d-flex flex-row align-items-center">
+                                <p3 className="mx-2">Payment: </p3>
+                                <div className="col p-0">
+                                    <TextField name="payment" type="text" variant="standard" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "10px",
+                                        },
+                                    }}
+                                            label=""
+                                            value=""
+                                            disabled={true}
+                                            className="w-100 px-1"
+                                            required
+                                    />
+                                </div>
                             </div>
+
+                            {/* <div className="col-12 px-1">
+                                <div className="col p-0 pt-1 mb-2">
+                                    <TextField name="payment" type="text" variant="filled" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "20px",
+                                        },
+                                    }}
+                                                label="payment"
+                                                className="w-100 px-1"
+                                                required
+                                                />
+                                </div>
+                            </div> */}
+                        </div>
+                        <div className="row wrap-text sign-namebox d-flex justify-content-cer">
+                            <div className="line"></div>
+                            <p3 className="txt-sty">(อธีร์ศิรินภาพันธ์)</p3>
+                            <p3 className="txt-sty">Project Director</p3>
+                        </div>
+                        <div className="row p-0 pb-2 m-1">
+                            <p2>บริษัท เอ สแควร์จํากัด</p2>
+                            <p2>A SQUARE LIMITED.</p2>
+                            <p2>26 ซอยนวมินทร์86 แขวงรามอินทรา เขตคันนายาว กรุงเทพฯ 10230</p2>
+                            <p2>26 Soi Nawamin 86 Ram Intra, Khan Na Yao, BANGKOK 10230</p2>
+                            <p2>Tel: (662) 0-2542-2108-9 ;Email: pracha.imail@gmail.com; www.asquare.co.th</p2>
                         </div>
                     </div>):(<></>)}
+                    
+                </div>
+                <div className="row justify-content-end pb-2 mx-900" id="no-pdf">
+                    <div className="col-4 p-0 mt-2 col-md-2 mx-1">
+                        <Button variant="contained" className="w-100 cs-add-btn confirm" color="primary" onClick={handleGoNext}
+                                size="small">Finish
+                        </Button>
+                    </div>
                 </div>
             </div>
             <Modal
