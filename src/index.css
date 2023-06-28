@@ -2,7 +2,7 @@ body {
     margin: 0;
     font-family: 'Helvetica', 'Arial', sans-serif !important;
     /* font-size: 0.7rem !important; */
-    font-size: 14px!important;
+    font-size: 12px!important;
     line-height: 18px!important;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -10,8 +10,8 @@ body {
 }
 input {
     font-family: 'Helvetica', 'Arial', sans-serif !important;
-    font-size: 13px!important;
-    line-height: 14px!important;
+    font-size: 12px!important;
+    line-height: 13px!important;
     color: #000!important;
 }
 
@@ -28,12 +28,12 @@ div.root{
 
 @media print {
     @page :first {
-        margin-top: 0.5in;
-        margin-bottom: 0.51in;
+        margin-top: 0.2in;
+        margin-bottom: 0.41in;
     }
     @page {
-        margin-top: 0.6in;
-        margin-bottom: 0.51in;
+        margin-top: 0.3in;
+        margin-bottom: 0.41in;
         margin-left: 20px;
         margin-right: 20px;
     }
@@ -51,6 +51,10 @@ div.root{
         background-color: white;
     }
     #no-print {
-      display: none;
+        display: none;
+    }
+    #combo-box-demo {
+        display: none;
+        visibility: hidden;
     }
   }

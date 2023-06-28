@@ -259,14 +259,10 @@ export default function Customer() {
     };
 
     const createPDF = async () => {
-        const pdf = new jsPDF("portrait", "pt", "a4");
-        const data = await html2canvas(document.querySelector("#pdf"));
-        const img = data.toDataURL("image/png");
-        const imgProperties = pdf.getImageProperties(img);
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
-        pdf.addImage(img, "PNG", 0, 0, pdfWidth, pdfHeight) 
-        pdf.save(genQo+".pdf");
+        var originalTitle = document.title;
+        document.title = '\u00A0';
+        window.print();
+        document.title = originalTitle;
       };
 
     const handleGoNext = async () => {
@@ -284,10 +280,10 @@ export default function Customer() {
 
     return (
         <CustomerWrapper>
-            <div className="heading-container mt-1 d-flex justify-content-end pt-1">
-                <div className="col d-flex justify-content-end flex-row-reverse align-items-center customer-box-sl">
-                    <div className="col p-0">
-                        <div className="col p-0 d-flex justify-content-start">
+            <div className="heading-container mt-1 d-flex justify-content-end pt-1 no-print" id="no-print">
+                <div className="col d-flex justify-content-end flex-row-reverse align-items-center customer-box-sl" id="no-print">
+                    <div className="col p-0" id="no-print">
+                        <div className="col p-0 d-flex justify-content-start" id="no-print">
                             <Button variant="contained" className="mx-2 px-3 cs-add-btn confirm" color="primary"
                                     onClick={handleSubmitNext} type="submit" disabled={stateOfN}
                                     size="small">Confirm
@@ -300,7 +296,7 @@ export default function Customer() {
                     </div>
                     <ComboBox func={listenChange} dis={stateOfN}/>
                 </div>
-                <div className="row px-2">
+                <div className="row px-2" id="no-print">
                     <div className="p-0 d-flex justify-content-between align-items-center">
                         <IconButton variant="outlined" className="px-3 cs-add-btn" color="error"
                                     onClick={handleCreate}
@@ -504,20 +500,20 @@ export default function Customer() {
                         <div className="row m-2 pt-1 mb-0 mt-0 table-responsive">
 
                             <table className="qa-table splitForPrint">
-                                <thead className="bg-dark text-light">
-                                <tr>
-                                    <th scope="col" rowspan="2" className="px-2 py-2 w-45">No.</th>
-                                    <th scope="col" rowspan="2" className="px-2 py-2 w-desc">Description</th>
-                                    <th scope="col" rowspan="2" className="px-2 py-2 w-price">Quantity</th>
-                                    <th scope="col" rowspan="2" className="px-2 py-2 w-price">Unit</th>
-                                    <th scope="col" colspan="2" className="px-2 py-2">Unit Price</th>
-                                    <th scope="col" rowspan="2" className="px-2 py-2 w-12">Total <br/>Unit Price</th>
-                                    <th scope="col" rowspan="2" className="px-2 py-2 w-12">Total</th>
-                                </tr>
-                                <tr>
-                                    <th scope="col" className="px-2 py-2 w-1">Labour</th>
-                                    <th scope="col" className="px-2 py-2 w-1">Material</th>
-                                </tr>
+                            <thead className="bg-dark text-light">
+                                    <tr>
+                                        <th scope="col" rowspan="2" className="w-45">No.</th>
+                                        <th scope="col" rowspan="2" className="w-desc">Description</th>
+                                        <th scope="col" rowspan="2" className="w-price">Quantity</th>
+                                        <th scope="col" rowspan="2" className="w-price">Unit</th>
+                                        <th scope="col" colspan="2" className="">Unit Price</th>
+                                        <th scope="col" rowspan="2" className="w-12">Total <br/>Unit Price</th>
+                                        <th scope="col" rowspan="2" className="w-12">Total</th>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" className="w-1">Labour</th>
+                                        <th scope="col" className="w-1">Material</th>
+                                    </tr>
                                 </thead>
                                 <FormC roomCode={genQo} reOpen={openTwo} func={pull_total}/>
                                 <tbody className="min-h">
@@ -592,7 +588,7 @@ export default function Customer() {
                             </table>
 
                         </div>
-                        <div className="row m-2 justify-content-end mt-0">
+                        <div className="row m-2 justify-content-end mt-0" id="no-print">
                             <div className="col-2 p-0 mx-md-1 col-md-1 mx-2">
                                 <Button variant="outlined" className="w-100" color="primary" onClick={handleCreateTwo}
                                         size="small"><AddIcon/>
@@ -633,7 +629,7 @@ export default function Customer() {
                         </div>
                     </div>
                 </div>
-                    <div className="row justify-content-end mx-900 pb-4">
+                    <div className="row justify-content-end mx-900 pb-4" id="no-print">
                         <div className="col-4 p-0 mt-2 col-md-2 mx-1">
                             <Button variant="contained" className="w-100 cs-add-btn confirm" color="primary" onClick={createPDF}
                                 size="small">Save pdf
@@ -641,7 +637,7 @@ export default function Customer() {
                         </div>
                     </div>
                     {stateOfN?(
-                    <div className="row m-1 mt-0 justify-content-end">
+                    <div className="row m-1 mt-0 justify-content-end" id="no-print">
                         <div className="col-4 p-0 mt-2 col-md-2 mx-1">
                             <Button variant="contained" className="w-100 cs-add-btn confirm" color="primary" onClick={handleGoNext}
                                 size="small">Finish

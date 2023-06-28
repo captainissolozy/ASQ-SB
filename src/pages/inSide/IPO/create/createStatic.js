@@ -139,13 +139,20 @@ export default function Customer(props) {
         sessionStorage.setItem("projectID", formDataIn.genQo)
     };
 
+    const createPDF = async () => {
+        var originalTitle = document.title;
+        document.title = '\u00A0';
+        window.print();
+        document.title = originalTitle;
+      };
+
     return (
         <CustomerWrapper>
             <div className="wrapper-box pt-4">
-                <div className="row mx-900" id="no-pdf">
+                <div className="row mx-900" id="no-print">
                     <h4 className="pt-1 pt-md-1 px-2 mb-2">Quotation: {formDataIn.genQo}</h4>
                 </div>
-                <div className="container bg-white sm-containter mb-3 pb-3" id="no-pdf">
+                <div className="container bg-white sm-containter mb-3 pb-3" id="no-print">
                     <form>
                         <div className="row pt-2 pt-md-1 px-3 mb-0">
                             <div className="col px-2">
@@ -384,17 +391,17 @@ export default function Customer(props) {
                             <table className="qa-table">
                                 <thead className="bg-dark text-light">
                                     <tr>
-                                        <th scope="col" rowspan="2" className="px-2 py-2 w-45">No.</th>
-                                        <th scope="col" rowspan="2" className="px-2 py-2 w-desc">Description</th>
-                                        <th scope="col" rowspan="2" className="px-2 py-2 w-price">Quantity</th>
-                                        <th scope="col" rowspan="2" className="px-2 py-2 w-price">Unit</th>
-                                        <th scope="col" colspan="2" className="px-2 py-2">Unit Price</th>
-                                        <th scope="col" rowspan="2" className="px-2 py-2 w-12">Total <br/>Unit Price</th>
-                                        <th scope="col" rowspan="2" className="px-2 py-2 w-12">Total</th>
+                                        <th scope="col" rowspan="2" className="w-45">No.</th>
+                                        <th scope="col" rowspan="2" className="w-desc">Description</th>
+                                        <th scope="col" rowspan="2" className="w-price">Quantity</th>
+                                        <th scope="col" rowspan="2" className="w-price">Unit</th>
+                                        <th scope="col" colspan="2" className="">Unit Price</th>
+                                        <th scope="col" rowspan="2" className="w-12">Total <br/>Unit Price</th>
+                                        <th scope="col" rowspan="2" className="w-12">Total</th>
                                     </tr>
                                     <tr>
-                                        <th scope="col" className="px-2 py-2 w-1">Labour</th>
-                                        <th scope="col" className="px-2 py-2 w-1">Material</th>
+                                        <th scope="col" className="w-1">Labour</th>
+                                        <th scope="col" className="w-1">Material</th>
                                     </tr>
                                 </thead>
                                 <FormPStatic roomCode={formDataIn.genQo} currentCode={formDataIn.genQo+"_"+formDataIn.option}/>
@@ -481,7 +488,7 @@ export default function Customer(props) {
                                 </tbody>
                             </table>
                         </div>
-                        <div className="row m-2 justify-content-end mt-0" id="no-pdf">
+                        <div className="row m-2 justify-content-end mt-0" id="no-print">
                             <div className="col-2 p-0 mx-md-1 col-md-1 mx-2">
                                 <Button variant="outlined" className="w-100" color="primary" onClick={handleCreateTwo}
                                         size="small"><AddIcon/>
@@ -541,7 +548,14 @@ export default function Customer(props) {
                     </div>):(<></>)}
                     
                 </div>
-                <div className="row justify-content-end pb-2 mx-900" id="no-pdf">
+                <div className="row justify-content-end pb-2 mx-900" id="no-print">
+                    <div className="row p-1 pt-0 justify-content-end mx-900" id="no-print">
+                            <div className="col-4 p-0 mt-2 col-md-2 mx-1">
+                                <Button variant="contained" className="w-100 cs-add-btn confirm" color="primary" onClick={createPDF}
+                                    size="small">Save pdf
+                                </Button>
+                            </div>
+                        </div>
                     <div className="col-4 p-0 mt-2 col-md-2 mx-1">
                         <Button variant="contained" className="w-100 cs-add-btn confirm" color="primary" onClick={handleGoNext}
                                 size="small">Finish

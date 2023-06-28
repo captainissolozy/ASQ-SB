@@ -110,7 +110,7 @@ export default function Customer(props) {
 
     return (
         <CustomerWrapper>
-            <div className="wrapper-box">
+            <div className="wrapper-box pt-4">
                 <h4 className="pt-1 pt-md-1 px-2 mb-4 mx-900" id="no-print">Quotation: {formDataIn2.genQo}</h4>
                 <div className="container" id="pdf">
                     <div className="wrapper-header d-flex justify-content-between align-items-start px-4 mb-1">
@@ -327,20 +327,20 @@ export default function Customer(props) {
                         <div className="row m-2 pt-1 mb-0 mt-0">
 
                             <table className="qa-table splitForPrint" ref={myTable} style={height}>
-                                <thead className="bg-dark text-light">
-                                <tr>
-                                    <th scope="col" rowspan="2" className="px-2 py-2 w-45">No.</th>
-                                    <th scope="col" rowspan="2" className="px-2 py-2 w-desc">Description</th>
-                                    <th scope="col" rowspan="2" className="px-2 py-2 w-price">Quantity</th>
-                                    <th scope="col" rowspan="2" className="px-2 py-2 w-price">Unit</th>
-                                    <th scope="col" colspan="2" className="px-2 py-2">Unit Price</th>
-                                    <th scope="col" rowspan="2" className="px-2 py-2 w-12">Total <br/>Unit Price</th>
-                                    <th scope="col" rowspan="2" className="px-2 py-2 w-12">Total</th>
-                                </tr>
-                                <tr>
-                                    <th scope="col" className="px-2 py-2 w-1">Labour</th>
-                                    <th scope="col" className="px-2 py-2 w-1">Material</th>
-                                </tr>
+                            <thead className="bg-dark text-light">
+                                    <tr>
+                                        <th scope="col" rowspan="2" className="w-45">No.</th>
+                                        <th scope="col" rowspan="2" className="w-desc">Description</th>
+                                        <th scope="col" rowspan="2" className="w-price">Quantity</th>
+                                        <th scope="col" rowspan="2" className="w-price">Unit</th>
+                                        <th scope="col" colspan="2" className="">Unit Price</th>
+                                        <th scope="col" rowspan="2" className="w-12">Total <br/>Unit Price</th>
+                                        <th scope="col" rowspan="2" className="w-12">Total</th>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col" className="w-1">Labour</th>
+                                        <th scope="col" className="w-1">Material</th>
+                                    </tr>
                                 </thead>
                                 <FormPStatic2 func={pull_total}/>
                                 <tbody className="min-h">

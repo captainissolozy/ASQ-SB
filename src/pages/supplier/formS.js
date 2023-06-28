@@ -27,9 +27,9 @@ const AddTable = (s_name) => {
 
     return (
         formData.filter( result => {
-            return (result.v_box1.includes(s_name.s_name)
-                && result.v_box6.includes(s_name.s_status)
-                && result.v_box4.includes(s_name.s_nickname)
+            return (result.v_box1.toLowerCase().includes(s_name.s_name)
+                && result.v_box6.toLowerCase().includes(s_name.s_status)
+                && result.v_box4.toLowerCase().includes(s_name.s_nickname)
                 && result.v_box5.includes(s_name.s_tel))
         }).map((data) => (
             <tbody>

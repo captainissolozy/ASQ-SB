@@ -27,9 +27,9 @@ const AddTable = (props) => {
 
     return (
         formData.filter( result => {
-            return (result.v_box6.includes(props.status) 
+            return (result.v_box6.toLowerCase().includes(props.status) 
                     && result.genQo.includes(props.genQo)
-                    && result.sales.includes(props.sales) 
+                    && result.sales.toLowerCase().includes(props.sales) 
                     && result.date.toString().includes(props.day)
                     && result.month.toString().includes(props.month) 
                     && result.year.toString().includes(props.year))

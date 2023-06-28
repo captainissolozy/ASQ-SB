@@ -195,8 +195,8 @@ export default function Customer() {
                                 <th scope="col" className="t-stick px-3 py-2">status</th>
                             </tr>
                             </thead>
-                            <FormC s_name={searchChanged.name} s_status={searchChanged.status}
-                                   s_nickname={searchChanged.nickname} s_tel={searchChanged.tel}/>
+                            <FormC s_name={searchChanged.name.toLowerCase()} s_status={searchChanged.status.toLowerCase()}
+                                   s_nickname={searchChanged.nickname.toLowerCase()} s_tel={searchChanged.tel}/>
                         </table>
                         </div>
                     </div>

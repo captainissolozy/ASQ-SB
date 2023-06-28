@@ -24,8 +24,8 @@ const AddTable = (props) => {
                 <td className="text-center">{data.unit}</td>
                 <td className="ta-c px-2 py-2">{data.labor}</td>
                 <td className="ta-c px-2 py-2">{data.material}</td>
-                <td className="ta-c px-2 py-2"></td>
-                <td className="ta-c px-2 py-2"></td>
+                <td className="ta-c px-2 py-2">{(parseFloat(data.labor) + parseFloat(data.material)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
+                <td className="ta-c px-2 py-2">{((parseFloat(data.labor) + parseFloat(data.material))*parseFloat(data.quantity)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
             </tr>
             </tbody>
         ))

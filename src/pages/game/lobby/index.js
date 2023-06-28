@@ -203,7 +203,7 @@ export default function Lobby() {
                                     <th scope="col" className="t-stick th px-3">Status</th>
                                 </tr>
                                 </thead>
-                                <AddTable genQo={searchKey.genQo} sales={searchKey.sales} status={searchKey.status}
+                                <AddTable genQo={searchKey.genQo} sales={searchKey.sales.toLowerCase()} status={searchKey.status.toLowerCase()}
                                           day={searchKey.day} month={searchKey.month} year={searchKey.year}
                                 />
                             </table>

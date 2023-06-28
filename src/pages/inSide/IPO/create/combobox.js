@@ -28,6 +28,7 @@ export default function ComboBox(props) {
     }, [formData, formName])
 
     return (
+        <div className="container-fluid col-4" id="no-print">
         <Autocomplete
             disablePortal
             id="combo-box-demo"
@@ -43,8 +44,9 @@ export default function ComboBox(props) {
             onInputChange={(event, newInputValue) => {
                 setInputValue(newInputValue);
             }}
-            renderInput={(params) => <TextField {...params} label="Customer name"/>}
+            renderInput={(params) => <TextField id="no-print" {...params} label="Customer name"/>}
         />
+        </div>
     );
 }
 

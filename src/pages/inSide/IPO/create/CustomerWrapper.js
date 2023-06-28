@@ -15,7 +15,7 @@ const CustomerWrapper = styled.div`
     min-height: auto;
   }
   .txt {
-    font-size: 14px;
+    font-size: 12px;
   }
   .pos-top{
     top: 50px;
@@ -44,7 +44,7 @@ const CustomerWrapper = styled.div`
     background: #23354D;
   }
   .wrap-text {
-    font-size: 13px;
+    font-size: 12px;
     row-gap: 3px;
     page-break-inside:avoid; page-break-after:auto
  
@@ -72,7 +72,7 @@ const CustomerWrapper = styled.div`
     background-color: transparent;
     color: #302e38!important;
     border-radius: 6px!important;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 22px!important;
   }
   .cs-add-btn.confirm {
@@ -92,10 +92,11 @@ const CustomerWrapper = styled.div`
     background-color: #d7d7d7;
     color: #000!important;
     text-align: center;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 400;
     border: 1px solid #000;
     vertical-align: middle!important;
+    
   }
   table.qa-table tr td {
     border: 1px solid #000;
@@ -113,7 +114,7 @@ const CustomerWrapper = styled.div`
   }
   table tr.hs-border {
     border: 1px solid #000;
-    height: 33px;
+    height: 23px;
   }
   table tbody.min-h tr th {
     height: 33px;
@@ -159,7 +160,7 @@ const CustomerWrapper = styled.div`
     text-align: center;
   }
   .txt-hd {
-    font-size: 14px!important;
+    font-size: 12px!important;
     min-width: 55px;
     margin-right: 10px;
   }
@@ -177,6 +178,9 @@ const CustomerWrapper = styled.div`
   @media print {
     a[href]:after { content: none !important; }
     #no-print {
+      display: none;
+    }
+    .no-print {
       display: none;
     }
     .container {
