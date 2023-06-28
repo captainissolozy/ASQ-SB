@@ -53,7 +53,7 @@ const CustomerWrapper = styled.div`
     margin-left: 1px;
   }
   .inp-box {
-    max-width: 120px;
+    max-width: 90px;
   }
   .heading-container {
     max-width: 900px;
@@ -144,15 +144,15 @@ const CustomerWrapper = styled.div`
     gap: 5px;
   }
   .sign-namebox {
-    max-width: 400px;
+    max-width: 350px;
     margin-left: auto!important;
     margin-right: 0;
-    margin-bottom: 40px;
-    padding-right: 150px;
+    margin-bottom: 20px;
+    padding-top: 10px;
   }
   .line {
     height: 16px;
-    width: 300px;
+    width: 200px;
     border-bottom: 1px solid #000;
     margin-bottom: 15px;
   }
@@ -178,6 +178,12 @@ const CustomerWrapper = styled.div`
     border-bottom-style: none!important;
     border-bottom: transparent!important;
   }
+  table .dlt-icon {
+    cursor: pointer;
+  }
+  .MuiFormLabel-root.MuiInputLabel-root {
+    line-height: 1!important;
+  }
   @media print {
     a[href]:after { content: none !important; }
     #no-print {
@@ -194,8 +200,11 @@ const CustomerWrapper = styled.div`
       border-bottom: transparent!important;
     }
     .wrap-textfield .MuiInputBase-root.MuiInput-root{
-      // height: 20px;
-      line-height: 20px;
+      line-height: 12px;
+      height: 20px;
+    }
+    table .dlt-icon {
+      display:none!important;
     }
     resize:{
       fontSize:11px;

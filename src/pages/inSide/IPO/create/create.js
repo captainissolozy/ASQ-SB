@@ -280,7 +280,7 @@ export default function Customer() {
 
     return (
         <CustomerWrapper>
-            <div className="heading-container mt-1 d-flex justify-content-end pt-1 no-print" id="no-print">
+            <div className="heading-container mt-1 d-flex justify-content-end pt-1 no-print px-3" id="no-print">
                 <div className="col d-flex justify-content-end flex-row-reverse align-items-center customer-box-sl" id="no-print">
                     <div className="col p-0" id="no-print">
                         <div className="col p-0 d-flex justify-content-start" id="no-print">
@@ -307,7 +307,7 @@ export default function Customer() {
             </div>
             <div className="wrapper-box pt-3" id="pdf">
                 <div className="container pt-5 mb-3 bg-white">
-                    <div className="wrapper-header d-flex justify-content-between align-items-start px-4 mb-1">
+                    <div className="wrapper-header d-flex justify-content-between align-items-start mx-2 mb-1">
                         <div className="img-box"><img src="../../asq-logo.png" width="80"/></div>
                         <div className="wrap-text d-flex flex-column">
                             <p3 className="pb-1">ใบเสนอราคา/ใบสั่งซื้อ</p3>
@@ -501,6 +501,7 @@ export default function Customer() {
                                         <th scope="col" colspan="2" className="">Unit Price</th>
                                         <th scope="col" rowspan="2" className="w-12">Total <br/>Unit Price</th>
                                         <th scope="col" rowspan="2" className="w-12">Total</th>
+                                        <th scope="col" rowspan="2" className="w-45 dlt-icon"></th>
                                     </tr>
                                     <tr>
                                         <th scope="col" className="w-1">Labour</th>
@@ -518,6 +519,7 @@ export default function Customer() {
                                         <th></th>
                                         <th></th>
                                         <th></th>
+                                        <th className="dlt-icon"></th>
                                     </tr>
                                 </tbody>
                                 <tbody>
@@ -530,6 +532,7 @@ export default function Customer() {
                                         <td></td>
                                         <td></td>
                                         <td  className="ta-r px-2">{listenTotal.toLocaleString(undefined, {maximumFractionDigits:2})}</td>
+                                        <td className="dlt-icon"></td>
                                     </tr> 
                                     <tr>
                                         <td></td>
@@ -554,6 +557,7 @@ export default function Customer() {
                                             </TextField>
                                         </td>
                                         <td className="ta-r px-2 wrap-textfield">{(listenTotal+(listenTotal*formDataProject.overhead/100)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
+                                        <td className="dlt-icon"></td>
                                     </tr> 
                                     <tr>
                                         <td></td>
@@ -576,6 +580,7 @@ export default function Customer() {
                                             </TextField>
                                         </td>
                                         <td className="ta-r px-2">{(listenTotal+(listenTotal*formDataProject.overhead/100)-formDataProject.specialdiscount).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
+                                        <td className="dlt-icon"></td>
                                     </tr> 
                                     <tr>
                                         <td></td>
@@ -586,6 +591,7 @@ export default function Customer() {
                                         <td></td>
                                         <td className="ta-r px-2"></td>
                                         <td className="ta-r px-2">{((listenTotal+(listenTotal*formDataProject.overhead/100)-formDataProject.specialdiscount)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
+                                        <td className="dlt-icon"></td>
                                     </tr>
                                     <tr>
                                         <td></td>
@@ -596,11 +602,13 @@ export default function Customer() {
                                         <td></td>
                                         <td className="ta-r px-2">{((listenTotal+(listenTotal*formDataProject.overhead/100)-formDataProject.specialdiscount)*0.07).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                         <td className="ta-r px-2">{((listenTotal+(listenTotal*formDataProject.overhead/100)-formDataProject.specialdiscount)*1.07).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
+                                        <td className="dlt-icon"></td>
                                     </tr> 
                                     <tr className="hs-border">
                                         <td colspan="2" className="ta-border"></td>
                                         <td colspan="5" className="ta-border"></td>
                                         <td colspan="1" className="ta-border ta-r px-2">{((listenTotal+(listenTotal*formDataProject.overhead/100)-formDataProject.specialdiscount)*1.07).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
+                                        <td className="dlt-icon"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -615,10 +623,10 @@ export default function Customer() {
                             </div>
                         </div>):(<></>)}
                         <div className="row mx-2 mb-5 wrap-text">
-                            <p3>Validity: 30 Days From qouted</p3>
-                            <p3>Delivery: 90 Days after confirmation by purchase order</p3>
-                            <div className="col px-1 d-flex flex-row align-items-end">
-                                    <p3 className="mx-2">Payment: </p3>
+                            <p3 className="p-0">Validity: 30 Days From qouted</p3>
+                            <p3 className="p-0">Delivery: 90 Days after confirmation by purchase order</p3>
+                            <div className="col p-0 d-flex flex-row align-items-end">
+                                    <p3 className="">Payment: </p3>
                                     <div className="col p-0">
                                         <TextField name="payment" type="text" variant="standard" onChange={handleChangePro} InputLabelProps={{
                                             shrink: true,
@@ -636,7 +644,7 @@ export default function Customer() {
                         </div>
                         <div className="row wrap-text sign-namebox d-flex justify-content-center">
                             <div className="line"></div>
-                            <p3 className="txt-sty">(อธีร์ศิรินภาพันธ์)</p3>
+                            <p3 className="txt-sty">(อธีร์ ศิรินภาพันธ์)</p3>
                             <p3 className="txt-sty">Project Director</p3>
                         </div>
                         <div className="row m-2 pb-4">

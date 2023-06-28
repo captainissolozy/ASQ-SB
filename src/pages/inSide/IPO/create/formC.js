@@ -3,6 +3,9 @@ import db from "../../../../config/firebase-config"
 import {collection, doc, getDoc, onSnapshot} from "firebase/firestore"
 import {useNavigate} from "react-router-dom";
 import CustomerWrapper from "./CustomerWrapper";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons'
+
 
 
 const AddTable = (props) => {
@@ -32,6 +35,7 @@ const AddTable = (props) => {
                 <td className="ta-c px-2 py-2">{parseFloat(data.material).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                 <td className="ta-r px-2 py-2">{(parseFloat(data.labor) + parseFloat(data.material)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                 <td className="ta-r px-2 py-2">{((parseFloat(data.labor) + parseFloat(data.material))*parseFloat(data.quantity)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
+                <td className="text-center dlt-icon"><FontAwesomeIcon icon={faTrashCan} /></td>
             </tr>
             </tbody>
         ))

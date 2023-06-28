@@ -223,7 +223,7 @@ export default function Customer(props) {
                     </form>
                 </div>
                 <div className="container bg-white">
-                    <div className="wrapper-header d-flex justify-content-between align-items-start px-4 mb-1">
+                    <div className="wrapper-header d-flex justify-content-between align-items-start mb-1">
                         <div className="img-box"><img src="../../asq-logo.png" width="80"/></div>
                         <div className="wrap-text d-flex flex-column">
                             <p3 className="pb-1">ใบเสนอราคา/ใบสั่งซื้อ</p3>
@@ -422,6 +422,7 @@ export default function Customer(props) {
                                         <th scope="col" colspan="2" className="">Unit Price</th>
                                         <th scope="col" rowspan="2" className="w-12">Total <br/>Unit Price</th>
                                         <th scope="col" rowspan="2" className="w-12">Total</th>
+                                        <th scope="col" rowspan="2" className="w-45 dlt-icon"></th>
                                     </tr>
                                     <tr>
                                         <th scope="col" className="w-1">Labour</th>
@@ -439,6 +440,7 @@ export default function Customer(props) {
                                         <th></th>
                                         <th></th>
                                         <th></th>
+                                        <th className="dlt-icon"></th>
                                     </tr>
                                 </tbody>
                                 <tbody>
@@ -450,7 +452,8 @@ export default function Customer(props) {
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td  className="ta-r px-2"></td>
+                                        <td className="ta-r px-2"></td>
+                                        <td className="dlt-icon"></td>
                                     </tr> 
                                     <tr>
                                         <td></td>
@@ -475,6 +478,7 @@ export default function Customer(props) {
                                             </TextField>
                                         </td>
                                         <td className="ta-r px-2 wrap-textfield">{(listenTotal+(listenTotal*formDataProject2.overhead/100)||0).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
+                                        <td className="dlt-icon"></td>
                                     </tr> 
                                     <tr>
                                         <td></td>
@@ -497,6 +501,7 @@ export default function Customer(props) {
                                             </TextField>
                                         </td>
                                         <td className="ta-r px-2">{((listenTotal+(listenTotal*formDataProject2.overhead/100)|| 0) - (formDataProject2.specialdiscount||0)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
+                                        <td className="dlt-icon"></td>
                                     </tr> 
                                     <tr>
                                         <td></td>
@@ -507,6 +512,7 @@ export default function Customer(props) {
                                         <td></td>
                                         <td className="ta-r px-2"></td>
                                         <td className="ta-r px-2">{(((listenTotal+(listenTotal*formDataProject2.overhead/100)||0)-(formDataProject2.specialdiscount)||0)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
+                                        <td className="dlt-icon"></td>
                                     </tr>
                                     <tr>
                                         <td></td>
@@ -517,11 +523,13 @@ export default function Customer(props) {
                                         <td></td>
                                         <td className="ta-r px-2">{(((listenTotal+(listenTotal*formDataProject2.overhead/100)||0)-(formDataProject2.specialdiscount||0))*0.07).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                         <td className="ta-r px-2">{(((listenTotal+(listenTotal*formDataProject2.overhead/100)||0)-(formDataProject2.specialdiscount||0))*1.07).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
+                                        <td className="dlt-icon"></td>
                                     </tr> 
                                     <tr className="hs-border">
                                         <td colspan="2" className="ta-border"></td>
                                         <td colspan="5" className="ta-border"></td>
                                         <td colspan="1" className="ta-border ta-r px-2">{(((listenTotal+(listenTotal*formDataProject2.overhead/100)||0)-(formDataProject2.specialdiscount||0))*1.07).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
+                                        <td className="dlt-icon"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -571,9 +579,9 @@ export default function Customer(props) {
                                 </div>
                             </div> */}
                         </div>
-                        <div className="row wrap-text sign-namebox d-flex justify-content-cer">
+                        <div className="row wrap-text sign-namebox d-flex justify-content-center">
                             <div className="line"></div>
-                            <p3 className="txt-sty">(อธีร์ศิรินภาพันธ์)</p3>
+                            <p3 className="txt-sty">(อธีร์ ศิรินภาพันธ์)</p3>
                             <p3 className="txt-sty">Project Director</p3>
                         </div>
                         <div className="row p-0 pb-2 m-1">

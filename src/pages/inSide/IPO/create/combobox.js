@@ -28,7 +28,7 @@ export default function ComboBox(props) {
     }, [formData, formName])
 
     return (
-        <div className="container-fluid col-4" id="no-print">
+        <div className="container-fluid col-4 p-0" id="no-print">
         <Autocomplete
             disablePortal
             id="combo-box-demo"
