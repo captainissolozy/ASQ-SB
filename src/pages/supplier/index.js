@@ -50,7 +50,8 @@ export default function Customer() {
         name: "",
         status: "",
         nickname: "",
-        tel: ""
+        tel: "",
+        email: "",
     })
 
     useEffect(() => {
@@ -137,7 +138,7 @@ export default function Customer() {
                                                 height: "5px",
                                             },
                                         }}
-                                                   name="name" label="Name" className="w-100" onChange={joinChange}/>
+                                                   name="name" label="Company Name" className="w-100" onChange={joinChange}/>
                                     </div>
                                 </div>
                                 <div className="col p-0 col-md-3 flex-sm-fill">
@@ -158,8 +159,8 @@ export default function Customer() {
                                 </div>
                             </div>
                             <div className="row d-flex justify-content-center wrap-input p-0">
-                                <div className="col-md-6 p-0 col-8 flex-md-fill">
-                                    <div className="col p-0 pt-1 mb-2">
+                                <div className="col p-0 col">
+                                    <div className="p-0 pt-1 mb-2">
                                         <TextField id="outlined-search" type="name" InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
@@ -167,11 +168,24 @@ export default function Customer() {
                                                 height: "5px",
                                             },
                                         }}
-                                                   name="nickname" label="Nickname" className="w-100"
+                                                   name="nickname" label="Contact Person" className="w-100"
                                                    onChange={joinChange}/>
                                     </div>
                                 </div>
-                                <div className="col p-0 col-md-3 flex-sm-fill">
+                                <div className="p-0 col">
+                                    <div className="p-0 pt-1 mb-2">
+                                        <TextField id="outlined-search" type="name" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="email" label="E-Mail" className="w-100"
+                                                   onChange={joinChange}/>
+                                    </div>
+                                </div>
+                                <div className="col p-0">
                                     <div className="col p-0 pt-1 mb-2">
                                         <TextField id="outlined-search" type="search" InputLabelProps={{
                                             shrink: true,
@@ -182,7 +196,7 @@ export default function Customer() {
                                         }}
                                                    name="tel" label="Tel." className="w-100" onChange={joinChange}/>
                                     </div>
-                                </div>
+                                </div> 
                             </div>
                         </div>
                     </div>
@@ -192,13 +206,14 @@ export default function Customer() {
                             <thead className="bg-dark text-light">
                             <tr>
                                 <th scope="col" className="t-stick px-3 py-2">Name</th>
+                                <th scope="col" className="t-stick px-3 py-2">E-Mail</th>
                                 <th scope="col" className="t-stick px-3 py-2">Contact</th>
                                 <th scope="col" className="t-stick px-3 py-2">tel.</th>
                                 <th scope="col" className="t-stick px-3 py-2">status</th>
                             </tr>
                             </thead>
                             <FormS s_name={searchChanged.name.toLowerCase()} s_status={searchChanged.status.toLowerCase()}
-                                   s_nickname={searchChanged.nickname.toLowerCase()} s_tel={searchChanged.tel}/>
+                                   s_nickname={searchChanged.nickname.toLowerCase()} s_email={searchChanged.email.toLowerCase()} s_tel={searchChanged.tel}/>
                         </table>
                     </div>
                     </div>

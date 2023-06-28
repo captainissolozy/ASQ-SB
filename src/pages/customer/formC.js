@@ -30,11 +30,13 @@ const AddTable = (s_name) => {
             return (result.v_box1.toLowerCase().includes(s_name.s_name)
                 && (result.v_box6.toLowerCase() == (s_name.s_status) || s_name.s_status == "")
                 && result.v_box4.toLowerCase().includes(s_name.s_nickname)
+                && result.v_box3.toLowerCase().includes(s_name.s_email)
                 && result.v_box5.toLowerCase().includes(s_name.s_tel))
         }).map((data) => (
             <tbody>
             <tr onClick={() => handleJoinPublic(data.v_box1 + data.v_box2)} style={{cursor: "pointer"}}>
                 <td className="px-3 py-2">{data.v_box1}</td>
+                <td className="px-3 py-2">{data.v_box3}</td>
                 <td className="px-3 py-2">{data.v_box4}</td>
                 <td className="px-3 py-2">{data.v_box5}</td>
                 <td className="px-3 py-2">{data.v_box6}</td>

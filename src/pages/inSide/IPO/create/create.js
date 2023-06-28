@@ -306,7 +306,7 @@ export default function Customer() {
                 </div>
             </div>
             <div className="wrapper-box pt-4" id="pdf">
-                <div className="container pt-5 mb-3 bg-white shadow-sm">
+                <div className="container pt-5 mb-3 bg-white">
                     <div className="wrapper-header d-flex justify-content-between align-items-start px-4 mb-1">
                         <div className="img-box"><img src="../../asq-logo.png" width="80"/></div>
                         <div className="wrap-text d-flex flex-column">

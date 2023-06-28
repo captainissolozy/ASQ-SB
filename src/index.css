@@ -40,12 +40,18 @@ div.root{
     .wrapper-box{
         background-color: white;
     }
+    html {
+        background-color: white;
+    }
     body {
         background-color: white;
+        font-size: 10px!important;
+        line-height: 11px!important;
     }
     .container {
         background-color: white;
         padding-top: 0!important;
+        box-shadow: none!important;
     }
     #root{
         background-color: white;
