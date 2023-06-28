@@ -126,7 +126,7 @@ export default function Customer(props) {
             setCountQo(1)
             setStateOfN(true)
             const docRef1 = doc(db, "PO", formDataIn.genQo, "Quotation", formDataIn.genQo+"_"+formDataIn.option);
-            await setDoc(docRef1, {"genQo": `${formDataIn.genQo+"_"+formDataIn.option}`, "payment": formDataIn.payment})
+            await setDoc(docRef1, {"genQo": `${formDataIn.genQo+"_"+formDataIn.option}`, "payment": formDataIn.payment, "specialdiscount": formDataProject2.specialdiscount, "overhead": formDataProject2.overhead})
         }else {
             toast.error('Please Fill in all the value', {position: toast.POSITION.BOTTOM_CENTER});
         }
