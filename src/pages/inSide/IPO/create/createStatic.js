@@ -52,8 +52,9 @@ export default function Customer(props) {
             const docSnap = await getDoc(docRef1);
             const docRef2 = doc(db, "PO", sessionStorage.getItem("projectID"), "Quotation", sessionStorage.getItem("projectID"));
             const docSnap2 = await getDoc(docRef2);
-            setFormDataIn2(docSnap2.data())
-            console.log(formDataProject2)
+            if (docSnap2.exists()) {
+                setFormDataIn2(docSnap2.data())
+            }
             if (docSnap.exists()) {
                 setFormDataIn(docSnap.data())
                 if (count <= 1) {
@@ -548,7 +549,7 @@ export default function Customer(props) {
                                             label=""
                                             value=""
                                             disabled={true}
-                                            className="w-100 px-1"
+                                            className="w-100 px-1 wrap-textfield"
                                             required
                                     />
                                 </div>
@@ -587,7 +588,7 @@ export default function Customer(props) {
                 </div>
                 <div className="row justify-content-end pb-2 mx-900" id="no-print">
                     <div className="row p-1 pt-0 justify-content-end mx-900" id="no-print">
-                            <div className="col-4 p-0 mt-2 col-md-2 mx-1">
+                            <div className="col-4 p-0 mt-2 col-md-2">
                                 <Button variant="contained" className="w-100 cs-add-btn confirm" color="primary" onClick={createPDF}
                                     size="small">Save pdf
                                 </Button>

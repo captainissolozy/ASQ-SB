@@ -29,8 +29,8 @@ const AddTable = (props) => {
         formData.map((data) => (
             <tbody>
             <tr>
-                <td onClick={() => handleJoinPublic(data.genQo)}>{data.genQo}</td>
                 <td>{data.genQo}</td>
+                <td onClick={() => handleJoinPublic(data.genQo)} className="tb-click">{data.genQo}</td>
             </tr>
             </tbody>
 

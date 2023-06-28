@@ -164,16 +164,19 @@ const CustomerWrapper = styled.div`
     min-width: 55px;
     margin-right: 10px;
   }
-  .css-v4u5dn-MuiInputBase-root-MuiInput-root.Mui-disabled:before {
-    border-bottom: transparent;
+  table tbody tr td.tb-click {
+    cursor: pointer;
   }
   .MuiInputBase-input.MuiInput-input.Mui-disabled {
     -webkit-text-fill-color: unset;
   }
- 
   .mx-900 {
     max-width: 900px;
     margin: 0 auto;
+  }
+  .wrap-textfield .MuiInputBase-root.MuiInput-root.Mui-disabled::before {
+    border-bottom-style: none!important;
+    border-bottom: transparent!important;
   }
   @media print {
     a[href]:after { content: none !important; }
@@ -186,11 +189,13 @@ const CustomerWrapper = styled.div`
     .container {
       padding-top: 0!important;
     }
-    .css-v4u5dn-MuiInputBase-root-MuiInput-root:before {
+    .wrap-textfield .MuiInputBase-root.MuiInput-root::before {
+      border-bottom-style: none!important;
       border-bottom: transparent!important;
     }
-    .wrap-textfield{
-      height: 20px;
+    .wrap-textfield .MuiInputBase-root.MuiInput-root{
+      // height: 20px;
+      line-height: 20px;
     }
     resize:{
       fontSize:11px;

@@ -235,8 +235,7 @@ export default function Customer() {
     };
 
     const handleSubmitPrice = async (e) => {
-        e.preventDefault()
-        console.log(formDataProject)
+        e.preventDefault();
         const docRef1 = doc(db, "PO", genQo, "Quotation", genQo);
         await setDoc(docRef1, {genQo, "payment": formDataProject.payment, "specialdiscount": formDataProject.specialdiscount, "overhead": formDataProject.overhead});
         const docRef2 = doc(db, "PO", genQo, "Quotation", genQo, "work", docName.description);
@@ -629,7 +628,7 @@ export default function Customer() {
                                             },
                                         }}
                                                    label=""
-                                                   className="px-1 w-100"
+                                                   className="px-1 w-100 wrap-textfield"
                                                    required
                                                    />
                                     </div>

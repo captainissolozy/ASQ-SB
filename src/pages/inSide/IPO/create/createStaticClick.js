@@ -460,7 +460,7 @@ export default function Customer(props) {
                                                 label=""
                                                 value={formDataIn2.payment}
                                                 disabled={true}
-                                                className="w-100 px-1"
+                                                className="w-100 px-1 wrap-textfield"
                                                 required
                                         />
                                     </div>
