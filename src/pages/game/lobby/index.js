@@ -4,18 +4,13 @@ import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../../context/UserContexts";
 import {
-    Button,
-    FormControl,
-    FormControlLabel,
-    FormLabel,
+    InputLabel,
     IconButton,
-    Radio,
-    RadioGroup,
-    TextField
+    TextField,
+    Select,
+    MenuItem,
+    FormControl
 } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
-import SearchIcon from '@mui/icons-material/Search';
-import Modal from "@material-ui/core/Modal";
 import db from "../../../config/firebase-config"
 import {doc, getDoc, setDoc} from "firebase/firestore"
 import AddTable from "./AddTable";
@@ -178,14 +173,18 @@ export default function Lobby() {
                                 <div className="row d-flex justify-content-center">
                                     <div className="col p-0">
                                         <div className="col p-0 pt-1 mb-2 mx-2">
-                                            <TextField id="outlined-search" type="search" InputLabelProps={{
-                                                shrink: true,
-                                            }} inputProps={{
-                                                style: {
-                                                    height: "5px",
-                                                },
-                                            }}
-                                                       name="status" label="Status" className="w-100" onChange={joinChange}/>
+                                        <FormControl size="small" className="w-100">
+                                            <InputLabel id="demo-simple-select-label">Status</InputLabel>
+                                            <Select     id="demo-simple-select" labelId="demo-simple-select-label"
+                                                        name="status" label="Status" className="w-100"
+                                                        value={searchKey.status} onChange={joinChange}>
+                                                <MenuItem value="">
+                                                    <em>All</em>
+                                                </MenuItem>
+                                                <MenuItem value={"Completed"}>Completed</MenuItem>
+                                                <MenuItem value={"Incompleted"}>Incompleted</MenuItem>
+                                            </Select>
+                                        </FormControl>
                                         </div>
                                     </div>
                                 </div>

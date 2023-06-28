@@ -27,7 +27,7 @@ const AddTable = (props) => {
 
     return (
         formData.filter( result => {
-            return (result.v_box6.toLowerCase().includes(props.status) 
+            return ((result.v_box6.toLowerCase() == (props.status) || props.status == "")
                     && result.genQo.includes(props.genQo)
                     && result.sales.toLowerCase().includes(props.sales) 
                     && result.date.toString().includes(props.day)

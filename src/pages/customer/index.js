@@ -2,8 +2,7 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../context/UserContexts";
-import {Button, IconButton, TextField} from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
+import {Button, IconButton, TextField,  Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import Modal from "@material-ui/core/Modal";
 import db from "../../config/firebase-config"
 import {doc, setDoc} from "firebase/firestore"
@@ -143,15 +142,18 @@ export default function Customer() {
                                 </div>
                                 <div className="col p-0 flex-sm-fill col-md-3">
                                     <div className="col p-0 pt-1 mb-2">
-                                        <TextField id="outlined-search" type="search" InputLabelProps={{
-                                            shrink: true,
-                                        }} inputProps={{
-                                            style: {
-                                                height: "5px",
-                                            },
-                                        }}
-                                                   name="status" label="Status" className="w-100"
-                                                   onChange={joinChange}/>
+                                    <FormControl size="small" className="w-100">
+                                            <InputLabel id="demo-simple-select-label">Status</InputLabel>
+                                            <Select     id="demo-simple-select" labelId="demo-simple-select-label"
+                                                        name="status" label="Status" className="w-100"
+                                                        value={searchChanged.status} onChange={joinChange}>
+                                                <MenuItem value="">
+                                                    <em>All</em>
+                                                </MenuItem>
+                                                <MenuItem value={"Completed"}>Completed</MenuItem>
+                                                <MenuItem value={"Incompleted"}>Incompleted</MenuItem>
+                                            </Select>
+                                        </FormControl>
                                     </div>
                                 </div>
                             </div>
