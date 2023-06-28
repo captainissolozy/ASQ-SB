@@ -2,7 +2,7 @@ import * as React from "react";
 import {useEffect, useState, useRef} from "react";
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../../../context/UserContexts";
-import {Button, TextField} from "@mui/material";
+import {Button, TextField, InputAdornment} from "@mui/material";
 import db from "../../../../config/firebase-config"
 import {doc, getDoc} from "firebase/firestore"
 import {ToastContainer} from "react-toastify";
@@ -14,13 +14,20 @@ import FormPStatic2 from "./formPStatic2";
 
 export default function Customer(props) {
 
+    const initialFormDataProject = Object.freeze({
+        genQo: "",
+        payment: "",
+        overhead: 0,
+        specialdiscount: 0,
+    });
+
     const navigate = useNavigate()
     const {user} = useUserContext()
     const [formDataIn, setFormDataIn] = useState([])
-    const [formDataIn2, setFormDataIn2] = useState([])
+    const [formDataIn2, setFormDataIn2] = useState(initialFormDataProject)
     const [edit] = useState(true)
     const [box2, setBox2] = useState("Taxpayer-num")
-    const [box3, setBox3] = useState("Register-capital")
+    const [box3, setBox3] = useState("email")
     const [boxLa, setBoxLa] = useState("Agent")
     const [count, setCount] = useState(0)
     const [listenC, setListen] = useState("");
@@ -52,11 +59,11 @@ export default function Customer(props) {
         }
         const o_height = myTable.current.clientHeight
         var heightT_o = myTable.current.clientHeight;
-        if(heightT_o > 400 && heightT_o <= 700){
+        if(heightT_o > 500 && heightT_o <= 800){
             setHeight({
-                "min-height": 700 + "px"
+                "min-height": 800 + "px"
               });
-        }else if(heightT_o > 700 && heightT_o <= 1310){
+        }else if(heightT_o > 900 && heightT_o <= 1310){
             setHeight({
                 "min-height": 1310 + "px"
               });
@@ -79,7 +86,7 @@ export default function Customer(props) {
             setBoxLa("nickname")
         } else {
             setBoxLa("nickname")
-            setBox3("registeredCapital")
+            setBox3("email")
             setBox2("taxpayerNum")
         }
 
@@ -110,7 +117,7 @@ export default function Customer(props) {
 
     return (
         <CustomerWrapper>
-            <div className="wrapper-box pt-4">
+            <div className="wrapper-box pt-5">
                 <h4 className="pt-1 pt-md-1 px-2 mb-4 mx-900" id="no-print">Quotation: {formDataIn2.genQo}</h4>
                 <div className="container" id="pdf">
                     <div className="wrapper-header d-flex justify-content-between align-items-start px-4 mb-1">
@@ -125,7 +132,7 @@ export default function Customer(props) {
                                         height: "16px",
                                     },
                                 }} variant="standard"
-                                    name="qu_number" className="inp-box" value={formDataIn2.genQo}
+                                    name="qu_number" className="inp-box wrap-textfield" value={formDataIn2.genQo}
                                 />
                             </div>
                             {formDataIn.date ? (
@@ -136,7 +143,7 @@ export default function Customer(props) {
                                             height: "16px",
                                         },
                                     }} variant="standard"
-                                        name="qu_number" className="inp-box" value={formDataIn.date.toString() + "/" + formDataIn.month.toString().padStart(2, "0") + "/" + formDataIn.year.toString()}
+                                        name="qu_number" className="inp-box wrap-textfield" value={formDataIn.date.toString() + "/" + formDataIn.month.toString().padStart(2, "0") + "/" + formDataIn.year.toString()}
                                     />
                                 </div>
                                     ) : (
@@ -160,7 +167,7 @@ export default function Customer(props) {
                                                 color: "#000000"
                                             },
                                         }} variant="standard"
-                                                   name="v_box1" label="" className="w-100" required
+                                                   name="v_box1" label="" className="w-100 wrap-textfield" required
                                                    value={formDataIn.v_box1} disabled={true}/>
                                     </div>
                                 </div>
@@ -192,7 +199,7 @@ export default function Customer(props) {
                                                     color: "#000000"
                                                 },
                                             }} variant="standard"
-                                                    name="v_box7" label="" className="w-100" required
+                                                    name="v_box7" label="" className="w-100 wrap-textfield" required
                                                     value={formDataIn.v_box7} disabled={edit}/>
                                         </div>
                                     </div>
@@ -210,7 +217,7 @@ export default function Customer(props) {
                                                 color: "#000000",
                                             },
                                         }} variant="standard"
-                                                   name="v_box5" label="" className="w-100" required
+                                                   name="v_box5" label="" className="w-100 wrap-textfield" required
                                                    value={formDataIn.v_box5} disabled={edit}/>
                                     </div>
                                 </div>
@@ -230,12 +237,10 @@ export default function Customer(props) {
                             </div>
                             <div className="row">
                                 <div className="col px-2 d-flex flex-row align-items-center">
-                                {box3 == "email" ? (
+                                
                                     <p3 className="txt-hd">{box3.toUpperCase()}: </p3>
-                                    ) : (
-                                        <></>
-                                    )}
-                                    {box3 == "email" ? (
+                                    
+                                    
                                     <div className="col p-0">
                                         <TextField id="v_box3" type="search" InputLabelProps={{
                                             shrink: true,       
@@ -245,12 +250,10 @@ export default function Customer(props) {
                                                 color: "#000000"
                                             },
                                         }} variant="standard"
-                                               name="v_box3" label="" className="w-100" required
+                                               name="v_box3" label="" className="w-100 wrap-textfield" required
                                                value={formDataIn.v_box3} disabled={edit}/>
                                     </div>
-                                    ) : (
-                                        <></>
-                                    )}
+                                    
                                 </div>
                                 {/* <div className="col p-0">
                                     <div className="col p-0 pt-1 mb-2 mx-2">
@@ -280,7 +283,7 @@ export default function Customer(props) {
                                                     color: "#000000"
                                                 },
                                             }} variant="standard"
-                                                    name="subject" label="" className="w-100" value={formDataIn.subject} required disabled={true}
+                                                    name="subject" label="" className="w-100 wrap-textfield" value={formDataIn.subject} required disabled={true}
                                             />
                                         </div>
                                     </div>
@@ -297,7 +300,7 @@ export default function Customer(props) {
                                                     color: "#000000"
                                                 },
                                             }} variant="standard"
-                                                    name="projectNo" label="" className="w-100" required disabled={true}
+                                                    name="projectNo" label="" className="w-100 wrap-textfield" required disabled={true}
                                             />
                                         </div>
                                     </div>
@@ -312,7 +315,7 @@ export default function Customer(props) {
                                                     color: "#000000"
                                                 },
                                             }} variant="standard"
-                                                    name="projectName" label="" className="w-100" value={formDataIn.projectName} required disabled={true}
+                                                    name="projectName" label="" className="w-100 wrap-textfield" value={formDataIn.projectName} required disabled={true}
                                             />
                                         </div>
                                     </div>
@@ -373,8 +376,22 @@ export default function Customer(props) {
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td className="ta-r px-2"> %</td>
-                                        <td className="ta-r px-2"></td>
+                                        <td className="ta-r px-2"> 
+                                        <TextField name="overhead" type="text" variant="standard" 
+                                            InputProps={{
+                                                endAdornment: <InputAdornment className="p-0 m-0 wrap-textfield" position="end">%</InputAdornment>
+                                            }}
+                                            inputProps={{
+                                                style: {
+                                                    color: "#000000",
+                                                    height: "10px",
+                                                    textAlign: "right"
+                                                }
+                                            }}
+                                            className="w-100 ta-r wrap-textfield" value={formDataIn2.overhead}>
+                                            </TextField>
+                                        </td>
+                                        <td className="ta-r px-2">{(((formDataIn2.overhead/100)*listenTotal) || 0) + listenTotal}</td>
                                     </tr> 
                                     <tr>
                                         <td></td>
@@ -384,19 +401,19 @@ export default function Customer(props) {
                                         <td></td>
                                         <td></td>
                                         <td className="ta-r px-2">
-                                            <TextField name="special-discount" type="text" variant="standard" 
+                                            <TextField name="specialdiscount" type="text" variant="standard" 
                                             inputProps={{
                                                 style: {
                                                     color: "#000000",
-                                                    height: "16px",
+                                                    height: "10px",
                                                     textAlign: "right"
                                                 }
                                             }}
-                                            className="w-100 ta-r">
+                                            className="w-100 ta-r wrap-textfield" value={formDataIn2.specialdiscount}>
 
                                             </TextField>
                                         </td>
-                                        <td className="ta-r px-2"></td>
+                                        <td className="ta-r px-2">{((((formDataIn2.overhead/100)*listenTotal) || 0 )+ listenTotal) - (formDataIn2.specialdiscount || 0)}</td>
                                     </tr> 
                                     <tr>
                                         <td></td>
@@ -406,7 +423,7 @@ export default function Customer(props) {
                                         <td></td>
                                         <td></td>
                                         <td className="ta-r px-2"></td>
-                                        <td></td>
+                                        <td className="ta-r px-2">{((((formDataIn2.overhead/100)*listenTotal) || 0 )+ listenTotal) - (formDataIn2.specialdiscount || 0)}</td>
                                     </tr>
                                     <tr>
                                         <td></td>
@@ -415,13 +432,13 @@ export default function Customer(props) {
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td className="ta-r px-2"></td>
-                                        <td></td>
+                                        <td className="ta-r px-2">{(((((formDataIn2.overhead/100)*listenTotal) || 0 )+ listenTotal) - (formDataIn2.specialdiscount || 0))*0.07}</td>
+                                        <td className="ta-r px-2">{(((((formDataIn2.overhead/100)*listenTotal) || 0 )+ listenTotal) - (formDataIn2.specialdiscount || 0))*1.07}</td>
                                     </tr> 
                                     <tr className="hs-border">
                                         <td colspan="2" className="ta-border"></td>
                                         <td colspan="5" className="ta-border"></td>
-                                        <td colspan="1" className="ta-border"></td>
+                                        <td colspan="1" className="ta-border ta-r px-2">{(((((formDataIn2.overhead/100)*listenTotal) || 0 )+ listenTotal) - (formDataIn2.specialdiscount || 0))*1.07}</td>
                                     </tr>
                                 </tbody>
                             </table>

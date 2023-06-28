@@ -71,7 +71,7 @@ export default function Customer() {
             setBoxLa("nickname")
         } else {
             setBoxLa("nickname")
-            setBox3("registeredCapital")
+            setBox3("email")
             setBox2("taxpayerNum")
         }
         updateFormData({

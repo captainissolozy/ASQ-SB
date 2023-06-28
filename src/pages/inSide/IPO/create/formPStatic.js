@@ -12,7 +12,12 @@ const AddTable = (props) => {
         onSnapshot(collection(db, "PO", props.roomCode, "Quotation", props.currentCode, "work"), (snapshot) => {
             setFormData(snapshot.docs.map((doc) => doc.data()))
         });
-    }, [formData])
+        var total = 0;
+        for(var i in formData){
+            total += (parseFloat(formData[i].labor) + parseFloat(formData[i].material))*parseFloat(formData[i].quantity)
+        }
+        props.func(total)
+    }, [formData, props.reOpen])
 
     return (
         formData.map((data,i) => (

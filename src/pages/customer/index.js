@@ -81,9 +81,9 @@ export default function Customer() {
 
     const handleChangeToOrg = () => {
         setBox2("taxpayerNum")
-        setBox3("registerCapital")
+        setBox3("email")
         setSendTo(2)
-        setBoxLa("Agent")
+        setBoxLa("Contact Person")
     }
 
     const handleChangeToPer = () => {

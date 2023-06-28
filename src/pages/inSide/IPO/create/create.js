@@ -2,7 +2,7 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../../../context/UserContexts";
-import {Button, IconButton, TextField} from "@mui/material";
+import {Button, IconButton, TextField, InputAdornment} from "@mui/material";
 import Modal from "@material-ui/core/Modal";
 import db from "../../../../config/firebase-config"
 import {collection, doc, getDoc, setDoc, getDocs, deleteDoc} from "firebase/firestore"
@@ -12,8 +12,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import CustomerWrapper from "./CustomerWrapper";
 import AddIcon from "@mui/icons-material/Add";
 import ComboBox from "./combobox";
-import { jsPDF } from "jspdf";
-import * as html2canvas from "html2canvas";
 
 
 export default function Customer() {
@@ -49,7 +47,9 @@ export default function Customer() {
         date: current.getDate(),
         month: current.getMonth() + 1,
         year: current.getFullYear(),
-        payment: ""
+        payment: "",
+        overhead: 0,
+        specialdiscount: 0,
     });
 
     const initialDocData = Object.freeze({
@@ -73,8 +73,8 @@ export default function Customer() {
     const [formDataProject, updateFormDataProject] = useState(initialFormDataProject)
     const [edit] = useState(true)
     const [box2, setBox2] = useState("Taxpayer-num")
-    const [box3, setBox3] = useState("Register-capital")
-    const [boxLa, setBoxLa] = useState("Agent")
+    const [box3, setBox3] = useState("E-Mail")
+    const [boxLa, setBoxLa] = useState("Contact-Person")
     const [sendTo, setSendTo] = useState(2)
     const [count, setCount] = useState(0)
     const [docName, setDocName] = useState(initialDocData)
@@ -107,7 +107,7 @@ export default function Customer() {
             setBoxLa("nickname")
         } else {
             setBoxLa("nickname")
-            setBox3("registeredCapital")
+            setBox3("email")
             setBox2("taxpayerNum")
         }
     }, [count, formDataIn.type, listenC])
@@ -144,7 +144,7 @@ export default function Customer() {
 
     const handleChangeToOrg = () => {
         setBox2("taxpayerNum")
-        setBox3("registerCapital")
+        setBox3("email")
         setSendTo(2)
         setBoxLa("Agent")
     }
@@ -236,8 +236,9 @@ export default function Customer() {
 
     const handleSubmitPrice = async (e) => {
         e.preventDefault()
+        console.log(formDataProject)
         const docRef1 = doc(db, "PO", genQo, "Quotation", genQo);
-        await setDoc(docRef1, {genQo, "payment": formDataProject.payment});
+        await setDoc(docRef1, {genQo, "payment": formDataProject.payment, "specialdiscount": formDataProject.specialdiscount, "overhead": formDataProject.overhead});
         const docRef2 = doc(db, "PO", genQo, "Quotation", genQo, "work", docName.description);
         await setDoc(docRef2, docName);
         setOpenTwo(false)
@@ -266,10 +267,10 @@ export default function Customer() {
       };
 
     const handleGoNext = async () => {
-        if (stateOfN === false && formDataProject.projectName !== "" && formDataProject.subject !== ""
-            && listenC !== "" && listenC !== null) {
+        console.log(formDataProject)
+        if (formDataProject.projectName !== "" && formDataProject.subject !== "") {
             const docRef1 = doc(db, "PO", genQo, "Quotation", genQo);
-            await setDoc(docRef1, {genQo, "payment": formDataProject.payment});
+            await setDoc(docRef1, {genQo, "payment": formDataProject.payment, "specialdiscount": formDataProject.specialdiscount, "overhead": formDataProject.overhead});
             navigate("/insideQuotation")
             sessionStorage.setItem("projectID", genQo)
         }else {
@@ -305,7 +306,7 @@ export default function Customer() {
                     
                 </div>
             </div>
-            <div className="wrapper-box pt-4" id="pdf">
+            <div className="wrapper-box pt-3" id="pdf">
                 <div className="container pt-5 mb-3 bg-white">
                     <div className="wrapper-header d-flex justify-content-between align-items-start px-4 mb-1">
                         <div className="img-box"><img src="../../asq-logo.png" width="80"/></div>
@@ -319,7 +320,7 @@ export default function Customer() {
                                         height: "16px",
                                     },
                                 }} variant="standard"
-                                    name="qu_number" className="inp-box" value={genQo}
+                                    name="qu_number" className="inp-box wrap-textfield" value={genQo}
                                 />
                             </div>
                             <div className="wrap-input d-flex align-items-center">
@@ -329,7 +330,7 @@ export default function Customer() {
                                         height: "16px",
                                     },
                                 }} variant="standard"
-                                    name="qu_number" className="inp-box" value={formDataProject.date.toString() + "/" + formDataProject.month.toString().padStart(2, "0") + "/" + formDataProject.year.toString()}
+                                    name="qu_number" className="inp-box wrap-textfield" value={formDataProject.date.toString() + "/" + formDataProject.month.toString().padStart(2, "0") + "/" + formDataProject.year.toString()}
                                 />
                             </div>
                         </div>
@@ -338,18 +339,18 @@ export default function Customer() {
                         <div className="row mt-3 d-flex justify-content-center mb-2">
                             <div className="col d-flex flex-row mx-2 align-items-center">
                                 {/* <h6 className="pt-1 pt-md-1">Customer-info:</h6> */}
-                                <p3 className="txt-hd">Attn.: </p3>
+                                <p3 className="txt-hd">เรียน/Attn. : </p3>
                                 <div className="col p-0">
                                     <div className="col pt-1 col-md-12">
                                         <TextField id="v_box1" type="search" InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
                                             style: {
-                                                height: "16px",
+                                                height: "10px",
                                                 color: "#000000"
                                             },
                                         }} variant="standard"
-                                                   name="v_box1" label="" className="w-100" required
+                                                   name="v_box1" label="" className="w-100 wrap-textfield" required
                                                    value={formDataIn.v_box1} disabled={true}/>
                                     </div>
                                 </div>
@@ -376,11 +377,11 @@ export default function Customer() {
                                                 shrink: true,
                                             }} inputProps={{
                                                 style: {
-                                                    height: "16px",
+                                                    height: "10px",
                                                     color: "#000000"
                                                 },
                                             }} variant="standard"
-                                                    name="v_box7" label="" className="w-100" required
+                                                    name="v_box7" label="" className="w-100 wrap-textfield" required
                                                     value={formDataIn.v_box7} disabled={edit}/>
                                         </div>
                                     </div>
@@ -388,44 +389,36 @@ export default function Customer() {
                             </div>
                             <div className="row">
                                 <div className="col px-2 d-flex flex-row align-items-center">
-                                    <p3 className="txt-hd">Tel. :</p3>
+                                    <p3 className="txt-hd">โทร/Tel. :</p3>
                                     <div className="col p-0">
                                         <TextField id="v_box5" type="search" InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
                                             style: {
-                                                height: "16px",
+                                                height: "10px",
                                                 color: "#000000",
                                             },
                                         }} variant="standard"
-                                                   name="v_box5" label="" className="w-100" required
+                                                   name="v_box5" label="" className="w-100 wrap-textfield" required
                                                    value={formDataIn.v_box5} disabled={edit}/>
                                     </div>
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col px-2 d-flex flex-row align-items-center">
-                                {box3 == "email" ? (
                                     <p3 className="txt-hd">{box3.toUpperCase()}: </p3>
-                                    ) : (
-                                        <></>
-                                    )}
-                                    {box3 == "email" ? (
                                     <div className="col p-0">
                                         <TextField id="v_box3" type="search" InputLabelProps={{
                                             shrink: true,       
                                         }} inputProps={{
                                                 style: {
-                                                height: "16px",
+                                                height: "10px",
                                                 color: "#000000"
                                             },
                                         }} variant="standard"
-                                               name="v_box3" label="" className="w-100" required
+                                               name="v_box3" label="" className="w-100 wrap-textfield" required
                                                value={formDataIn.v_box3} disabled={edit}/>
                                     </div>
-                                    ) : (
-                                        <></>
-                                    )}
                                 </div>
                                 {/* <div className="col p-0">
                                     <div className="col p-0 pt-1 mb-2 mx-2">
@@ -444,34 +437,34 @@ export default function Customer() {
                             </div>
                             <div className="row">
                                 <div className="col px-2 d-flex flex-row align-items-center">
-                                    <p3 className="txt-hd">Subject: </p3>
+                                    <p3 className="txt-hd">Subject : </p3>
                                     <div className="col p-0">
                                         <TextField type="search" onChange={handleChangePro} InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
                                             style: {
-                                                height: "16px",
+                                                height: "10px",
                                                 color: "#000000"
                                             },
                                         }} variant="standard"
-                                                name="subject" label="" className="w-100" required disabled={stateOfN}
+                                                name="subject" label="" className="w-100 wrap-textfield" required disabled={stateOfN}
                                         />
                                     </div>
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col-4 px-2 d-flex flex-row align-items-center">
-                                    <p3 className="txt-hd">Project No.: </p3>
+                                    <p3 className="txt-hd">Project No.    : </p3>
                                     <div className="col p-0 pt-1">
                                         <TextField type="search" onChange={handleChangePro} InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
                                             style: {
-                                                height: "16px",
+                                                height: "10px",
                                                 color: "#000000"
                                             },
                                         }} variant="standard"
-                                                name="projectNo" label="" className="w-100" required disabled={stateOfN}
+                                                name="projectNo" label="" className="w-100 wrap-textfield" required disabled={stateOfN}
                                         />
                                     </div>
                                 </div>
@@ -482,11 +475,11 @@ export default function Customer() {
                                             shrink: true,
                                         }} inputProps={{
                                             style: {
-                                                height: "16px",
+                                                height: "10px",
                                                 color: "#000000"
                                             },
                                         }} variant="standard"
-                                                name="projectName" label="" className="w-100" required disabled={stateOfN}
+                                                name="projectName" label="" className="w-100 wrap-textfield" required disabled={stateOfN}
                                         />
                                     </div>
                                 </div>
@@ -546,8 +539,22 @@ export default function Customer() {
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td className="ta-r px-2"> %</td>
-                                        <td className="ta-r px-2"></td>
+                                        <td className="ta-r px-2">
+                                            <TextField name="overhead" type="text" variant="standard" onChange={handleChangePro}
+                                            InputProps={{
+                                                endAdornment: <InputAdornment className="p-0 m-0 wrap-textfield" position="end">%</InputAdornment>
+                                            }}
+                                            inputProps={{
+                                                style: {
+                                                    color: "#000000",
+                                                    height: "10px",
+                                                    textAlign: "right"
+                                                }
+                                            }}
+                                            className="w-100 wrap-textfield" value={formDataProject.overhead}>
+                                            </TextField>
+                                        </td>
+                                        <td className="ta-r px-2 wrap-textfield">{(listenTotal+(listenTotal*formDataProject.overhead/100)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                     </tr> 
                                     <tr>
                                         <td></td>
@@ -556,8 +563,20 @@ export default function Customer() {
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td className="ta-r px-2">-</td>
-                                        <td className="ta-r px-2"></td>
+                                        <td className="ta-r px-2 wrap-textfield">
+                                            <TextField name="specialdiscount" type="text" variant="standard" onChange={handleChangePro}
+                                            inputProps={{
+                                                style: {
+                                                    color: "#000000",
+                                                    height: "10px",
+                                                    textAlign: "right"
+                                                }
+                                            }}
+                                            className="w-100 wrap-textfield" value={formDataProject.specialdiscount}>
+
+                                            </TextField>
+                                        </td>
+                                        <td className="ta-r px-2">{(listenTotal+(listenTotal*formDataProject.overhead/100)-formDataProject.specialdiscount).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                     </tr> 
                                     <tr>
                                         <td></td>
@@ -567,7 +586,7 @@ export default function Customer() {
                                         <td></td>
                                         <td></td>
                                         <td className="ta-r px-2"></td>
-                                        <td></td>
+                                        <td className="ta-r px-2">{((listenTotal+(listenTotal*formDataProject.overhead/100)-formDataProject.specialdiscount)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                     </tr>
                                     <tr>
                                         <td></td>
@@ -576,25 +595,26 @@ export default function Customer() {
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td className="ta-r px-2"></td>
-                                        <td></td>
+                                        <td className="ta-r px-2">{((listenTotal+(listenTotal*formDataProject.overhead/100)-formDataProject.specialdiscount)*0.07).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
+                                        <td className="ta-r px-2">{((listenTotal+(listenTotal*formDataProject.overhead/100)-formDataProject.specialdiscount)*1.07).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                     </tr> 
                                     <tr className="hs-border">
                                         <td colspan="2" className="ta-border"></td>
                                         <td colspan="5" className="ta-border"></td>
-                                        <td colspan="1" className="ta-border"></td>
+                                        <td colspan="1" className="ta-border ta-r px-2">{((listenTotal+(listenTotal*formDataProject.overhead/100)-formDataProject.specialdiscount)*1.07).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                     </tr>
                                 </tbody>
                             </table>
 
                         </div>
-                        <div className="row m-2 justify-content-end mt-0" id="no-print">
+                        {stateOfN?(
+                        <div className="row m-2 justify-content-end mt-0" id="no-print" >
                             <div className="col-2 p-0 mx-md-1 col-md-1 mx-2">
                                 <Button variant="outlined" className="w-100" color="primary" onClick={handleCreateTwo}
                                         size="small"><AddIcon/>
                                 </Button>
                             </div>
-                        </div>
+                        </div>):(<></>)}
                         <div className="row mx-2 mb-5 wrap-text">
                             <p3>Validity: 30 Days From qouted</p3>
                             <p3>Delivery: 90 Days after confirmation by purchase order</p3>

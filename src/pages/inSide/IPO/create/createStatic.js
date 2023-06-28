@@ -2,7 +2,7 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../../../context/UserContexts";
-import {Button, IconButton, TextField} from "@mui/material";
+import {Button, IconButton, TextField, InputAdornment} from "@mui/material";
 import Modal from "@material-ui/core/Modal";
 import db from "../../../../config/firebase-config"
 import { doc, getDoc, setDoc} from "firebase/firestore"
@@ -22,48 +22,59 @@ export default function Customer(props) {
         labor: 0,
         material: 0
     });
-
+    const initialFormDataProject = Object.freeze({
+        genQo: "",
+        payment: "",
+        overhead: 0,
+        specialdiscount: 0,
+    });
 
     const navigate = useNavigate()
     const {user} = useUserContext()
     const [stateOfN, setStateOfN] = useState(false)
     const [openTwo, setOpenTwo] = useState(false)
     const [formDataIn, setFormDataIn] = useState([{name: "hi"}])
+    const [formDataProject2, setFormDataIn2] = useState(initialFormDataProject)
     const [edit] = useState(true)
     const [box2, setBox2] = useState("Taxpayer-num")
-    const [box3, setBox3] = useState("Register-capital")
+    const [box3, setBox3] = useState("email")
     const [boxLa, setBoxLa] = useState("Agent")
     const [count, setCount] = useState(0)
     const [docName, setDocName] = useState(initialDocData)
     const [listenC, setListen] = useState("");
     const [countQo, setCountQo] = useState(0);
+    const [listenTotal, setListenTotal] = useState(0);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
         async function fetchData() {
             const docRef1 = doc(db, "PO", sessionStorage.getItem("projectID"));
             const docSnap = await getDoc(docRef1);
+            const docRef2 = doc(db, "PO", sessionStorage.getItem("projectID"), "Quotation", sessionStorage.getItem("projectID"));
+            const docSnap2 = await getDoc(docRef2);
+            setFormDataIn2(docSnap2.data())
+            console.log(formDataProject2)
             if (docSnap.exists()) {
                 setFormDataIn(docSnap.data())
                 if (count <= 1) {
                     setCount(count + 1)
                 }
             }
+            
         }
         await fetchData()
     }, [count])
 
-    useEffect(() => {
+    useEffect(async () => {
         if (formDataIn.type === "Private") {
             setBox2("surname")
             setBox3("email")
             setBoxLa("nickname")
         } else {
             setBoxLa("nickname")
-            setBox3("registeredCapital")
+            setBox3("email")
             setBox2("taxpayerNum")
         }
-
     }, [count, formDataIn.type, listenC])
 
     useEffect(() => {
@@ -101,6 +112,14 @@ export default function Customer(props) {
             [e.target.name]: e.target.value
         })
     }
+
+    const handleChangePro2 = (e) => {
+        setFormDataIn2({
+            ...formDataProject2,
+            [e.target.name]: e.target.value
+        })
+    }
+
     const handleSubmitNext = async (e) => {
         e.preventDefault()
         if (formDataIn.option) {
@@ -146,6 +165,10 @@ export default function Customer(props) {
         document.title = originalTitle;
       };
 
+    const pull_total = async (data) => {
+        setListenTotal(data)
+    }
+
     return (
         <CustomerWrapper>
             <div className="wrapper-box pt-4">
@@ -164,7 +187,7 @@ export default function Customer(props) {
                                             height: "5px",
                                         },
                                     }}
-                                                name="option" label="Option" className="w-100" required
+                                                name="option" label="Option" className="w-100 wrap-textfield" required
                                     />
                                 </div>
                             </div>
@@ -177,7 +200,7 @@ export default function Customer(props) {
                                             height: "5px",
                                         },
                                     }}
-                                                name="sales" label="Sales" className="w-100" value={sessionStorage.getItem("email")} disabled={true}
+                                                name="sales" label="Sales" className="w-100 wrap-textfield" value={sessionStorage.getItem("email")} disabled={true}
                                     />
                                 </div>
                             </div>
@@ -211,7 +234,7 @@ export default function Customer(props) {
                                         height: "16px",
                                     },
                                 }} variant="standard"
-                                    name="qu_number" className="inp-box" value=""
+                                    name="qu_number" className="inp-box wrap-textfield" value={formDataIn.genQo +"_"+ formDataIn.option}
                                 />
                             </div>
                             {formDataIn.date ? (
@@ -222,7 +245,7 @@ export default function Customer(props) {
                                             height: "16px",
                                         },
                                     }} variant="standard"
-                                        name="qu_number" className="inp-box" value={formDataIn.date.toString() + "/" + formDataIn.month.toString().padStart(2, "0") + "/" + formDataIn.year.toString()}
+                                        name="qu_number" className="inp-box wrap-textfield" value={formDataIn.date.toString() + "/" + formDataIn.month.toString().padStart(2, "0") + "/" + formDataIn.year.toString()}
                                     />
                                 </div>
                                     ) : (
@@ -245,7 +268,7 @@ export default function Customer(props) {
                                             color: "#000000"
                                         },
                                     }} variant="standard"
-                                        name="v_box1" label="" className="w-100" required
+                                        name="v_box1" label="" className="w-100 wrap-textfield" required
                                         value={formDataIn.v_box1} disabled={true}/>
                                 </div>
                             </div>
@@ -263,7 +286,7 @@ export default function Customer(props) {
                                                 color: "#000000"
                                             },
                                         }} variant="standard"
-                                                name="v_box7" label="" className="w-100" required
+                                                name="v_box7" label="" className="w-100 wrap-textfield" required
                                                 value={formDataIn.v_box7} disabled={edit}/>
                                     </div>
                                 </div>
@@ -281,7 +304,7 @@ export default function Customer(props) {
                                             color: "#000000",
                                         },
                                     }} variant="standard"
-                                                name="v_box5" label="" className="w-100" required
+                                                name="v_box5" label="" className="w-100 wrap-textfield" required
                                                 value={formDataIn.v_box5} disabled={edit}/>
                                 </div>
                             </div>
@@ -298,7 +321,7 @@ export default function Customer(props) {
                                             color: "#000000",
                                         },
                                     }} variant="standard"
-                                                name="v_box3" label="" className="w-100" required
+                                                name="v_box3" label="" className="w-100 wrap-textfield" required
                                                 value={formDataIn.v_box3} disabled={edit}/>
                                 </div>
                             </div>
@@ -316,7 +339,7 @@ export default function Customer(props) {
                                                     color: "#000000"
                                                 },
                                             }} variant="standard"
-                                                    name="subject" label="" className="w-100" value={formDataIn.subject} required disabled={true}
+                                                    name="subject" label="" className="w-100 wrap-textfield" value={formDataIn.subject} required disabled={true}
                                             />
                                         </div>
                                     </div>
@@ -333,7 +356,7 @@ export default function Customer(props) {
                                                     color: "#000000"
                                                 },
                                             }} variant="standard"
-                                                    name="projectNo" label="" className="w-100" required disabled={true}
+                                                    name="projectNo" label="" className="w-100 wrap-textfield" required disabled={true}
                                             />
                                         </div>
                                     </div>
@@ -348,7 +371,7 @@ export default function Customer(props) {
                                                     color: "#000000"
                                                 },
                                             }} variant="standard"
-                                                    name="projectName" label="" className="w-100" value={formDataIn.projectName} required disabled={true}
+                                                    name="projectName" label="" className="w-100 wrap-textfield" value={formDataIn.projectName} required disabled={true}
                                             />
                                         </div>
                                     </div>
@@ -404,7 +427,7 @@ export default function Customer(props) {
                                         <th scope="col" className="w-1">Material</th>
                                     </tr>
                                 </thead>
-                                <FormPStatic roomCode={formDataIn.genQo} currentCode={formDataIn.genQo+"_"+formDataIn.option}/>
+                                <FormPStatic roomCode={formDataIn.genQo} currentCode={formDataIn.genQo+"_"+formDataIn.option} reOpen={openTwo} func={pull_total}/>
                                 <tbody className="min-h">
                                     <tr>
                                         <th></th>
@@ -435,8 +458,22 @@ export default function Customer(props) {
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td className="ta-r px-2"> %</td>
-                                        <td className="ta-r px-2"></td>
+                                        <td className="ta-r px-2">
+                                            <TextField name="overhead" type="text" variant="standard" onChange={handleChangePro2}
+                                            InputProps={{
+                                                endAdornment: <InputAdornment className="p-0 m-0 wrap-textfield" position="end">%</InputAdornment>
+                                            }}
+                                            inputProps={{
+                                                style: {
+                                                    color: "#000000",
+                                                    height: "10px",
+                                                    textAlign: "right"
+                                                }
+                                            }}
+                                            className="w-100 wrap-textfield" value={formDataProject2.overhead || 0}>
+                                            </TextField>
+                                        </td>
+                                        <td className="ta-r px-2 wrap-textfield">{(listenTotal+(listenTotal*formDataProject2.overhead/100)||0).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                     </tr> 
                                     <tr>
                                         <td></td>
@@ -445,20 +482,20 @@ export default function Customer(props) {
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td className="ta-r px-2">
-                                            <TextField name="special-discount" type="text" variant="standard" 
+                                        <td className="ta-r px-2 wrap-textfield">
+                                            <TextField name="specialdiscount" type="text" variant="standard" onChange={handleChangePro2}
                                             inputProps={{
                                                 style: {
                                                     color: "#000000",
-                                                    height: "16px",
+                                                    height: "10px",
                                                     textAlign: "right"
                                                 }
                                             }}
-                                            className="w-100 ta-r">
+                                            className="w-100 wrap-textfield" value={formDataProject2.specialdiscount}>
 
                                             </TextField>
                                         </td>
-                                        <td className="ta-r px-2"></td>
+                                        <td className="ta-r px-2">{((listenTotal+(listenTotal*formDataProject2.overhead/100)|| 0) - (formDataProject2.specialdiscount||0)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                     </tr> 
                                     <tr>
                                         <td></td>
@@ -468,7 +505,7 @@ export default function Customer(props) {
                                         <td></td>
                                         <td></td>
                                         <td className="ta-r px-2"></td>
-                                        <td></td>
+                                        <td className="ta-r px-2">{(((listenTotal+(listenTotal*formDataProject2.overhead/100)||0)-(formDataProject2.specialdiscount)||0)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                     </tr>
                                     <tr>
                                         <td></td>
@@ -477,13 +514,13 @@ export default function Customer(props) {
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td className="ta-r px-2"></td>
-                                        <td></td>
+                                        <td className="ta-r px-2">{(((listenTotal+(listenTotal*formDataProject2.overhead/100)||0)-(formDataProject2.specialdiscount||0))*0.07).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
+                                        <td className="ta-r px-2">{(((listenTotal+(listenTotal*formDataProject2.overhead/100)||0)-(formDataProject2.specialdiscount||0))*1.07).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                     </tr> 
                                     <tr className="hs-border">
                                         <td colspan="2" className="ta-border"></td>
                                         <td colspan="5" className="ta-border"></td>
-                                        <td colspan="1" className="ta-border"></td>
+                                        <td colspan="1" className="ta-border ta-r px-2">{(((listenTotal+(listenTotal*formDataProject2.overhead/100)||0)-(formDataProject2.specialdiscount||0))*1.07).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                     </tr>
                                 </tbody>
                             </table>

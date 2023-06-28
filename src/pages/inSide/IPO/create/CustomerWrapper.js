@@ -82,7 +82,7 @@ const CustomerWrapper = styled.div`
   }
   table.qa-table {
     margin-bottom: 20px;
-    min-height: 400px;
+    min-height: 500px;
   }
   table tbody.min-h {
     min-height: 33px;
@@ -188,6 +188,12 @@ const CustomerWrapper = styled.div`
     }
     .css-v4u5dn-MuiInputBase-root-MuiInput-root:before {
       border-bottom: transparent!important;
+    }
+    .wrap-textfield{
+      height: 20px;
+    }
+    resize:{
+      fontSize:11px;
     }
   }
 `
