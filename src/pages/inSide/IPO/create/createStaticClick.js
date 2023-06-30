@@ -4,11 +4,13 @@ import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../../../context/UserContexts";
 import {Button, TextField, InputAdornment} from "@mui/material";
 import db from "../../../../config/firebase-config"
-import {doc, getDoc} from "firebase/firestore"
+import {collection, doc, getDoc, setDoc} from "firebase/firestore"
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import CustomerWrapper from "./CustomerWrapper";
 import FormPStatic2 from "./formPStatic2";
+import AddIcon from "@mui/icons-material/Add";
+import Modal from "@material-ui/core/Modal";
 
 
 
@@ -19,6 +21,14 @@ export default function Customer(props) {
         payment: "",
         overhead: 0,
         specialdiscount: 0,
+    });
+
+    const initialDocData = Object.freeze({
+        description: "",
+        quantity: 1,
+        unit: "",
+        labor: 0,
+        material: 0
     });
 
     const navigate = useNavigate()
@@ -34,6 +44,8 @@ export default function Customer(props) {
     const [listenTotal, setListenTotal] = useState(0);
     const myTable = useRef(null);
     const [height, setHeight] = useState({});
+    const [openTwo, setOpenTwo] = useState(false)
+    const [docName, setDocName] = useState(initialDocData)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
@@ -48,7 +60,25 @@ export default function Customer(props) {
             }
         }
         await fetchData()
-
+        var heightT_o = myTable.current.clientHeight;
+        if(heightT_o > 500 && heightT_o <= 700){
+            setHeight({
+                "min-height": 700 + "px"
+              });
+        }else if(heightT_o > 700 && heightT_o <= 1450){
+            setHeight({
+                "min-height": 1450 + "px"
+              });
+           
+        }else if(heightT_o > 1450 && heightT_o <= 2150){
+            setHeight({
+                "min-height": 2150 + "px"
+              });
+        }else if(heightT_o > 2290 && heightT_o <= 3230){
+            setHeight({
+                "min-height": 3230 + "px"
+              });
+        }
     }, [count])
 
     useEffect(async () => {
@@ -56,26 +86,6 @@ export default function Customer(props) {
         const docSnap = await getDoc(docRef1);
         if (docSnap.exists()) {
             setFormDataIn2(docSnap.data())
-        }
-        const o_height = myTable.current.clientHeight
-        var heightT_o = myTable.current.clientHeight;
-        if(heightT_o > 500 && heightT_o <= 800){
-            setHeight({
-                "min-height": 800 + "px"
-              });
-        }else if(heightT_o > 900 && heightT_o <= 1310){
-            setHeight({
-                "min-height": 1310 + "px"
-              });
-           
-        }else if(heightT_o > 1310 && heightT_o <= 2290){
-            setHeight({
-                "min-height": 2290 + "px"
-              });
-        }else if(heightT_o > 2290 && heightT_o <= 3230){
-            setHeight({
-                "min-height": 3230 + "px"
-              });
         }
     }, [])
 
@@ -113,14 +123,79 @@ export default function Customer(props) {
         window.print();
         document.title = originalTitle;
       };
+    
+    const handleCreateTwo = () => {
+        setOpenTwo(true)
+    }
+
+    const handleCloseTwo = () => {
+        setOpenTwo(false)
+        setDocName({
+            ...docName,
+            total: 0,
+            labor: 0,
+            material: 0,
+            quantity: 1,
+            totalUnitPrice: 0
+        })
+    }
+
+    const handleChangeUpload = (e) => {
+        setDocName({
+            ...docName,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const handleChangePro2 = (e) => {
+        setFormDataIn2({
+            ...formDataIn2,
+            [e.target.name]: e.target.value
+        })
+    }
+
+
+    const handleSubmitPrice = async (e) => {
+        e.preventDefault()
+        setOpenTwo(false)
+        const docRef1 = doc(db, "PO", formDataIn.genQo, "Quotation", formDataIn2.genQo, "work", docName.description);
+        await setDoc(docRef1, docName);
+        setOpenTwo(false)
+        setDocName({
+            ...docName,
+            labor: 0,
+            material: 0,
+            quantity: 1,
+        })
+        
+        var heightT_o = myTable.current.clientHeight;
+        if(heightT_o > 500 && heightT_o <= 800){
+            setHeight({
+                "min-height": 700 + "px"
+              });
+        }else if(heightT_o > 900 && heightT_o <= 1450){
+            setHeight({
+                "min-height": 1450 + "px"
+              });
+           
+        }else if(heightT_o > 1450 && heightT_o <= 2150){
+            setHeight({
+                "min-height": 2150 + "px"
+              });
+        }else if(heightT_o > 2150 && heightT_o <= 3230){
+            setHeight({
+                "min-height": 3230 + "px"
+              });
+        }
+    };
       
 
     return (
         <CustomerWrapper>
-            <div className="wrapper-box pt-5">
+            <div className="wrapper-box pt-4">
                 <h4 className="pt-1 pt-md-1 px-2 mb-4 mx-900" id="no-print">Quotation: {formDataIn2.genQo}</h4>
                 <div className="container" id="pdf">
-                    <div className="wrapper-header d-flex justify-content-between align-items-start mb-1 mx-2">
+                    <div className="wrapper-header d-flex justify-content-between align-items-start mb-3 mx-2">
                         <div className="img-box"><img src="../../asq-logo.png" width="80"/></div>
                         <div className="wrap-text d-flex flex-column">
                             <p3 className="pb-1">ใบเสนอราคา/ใบสั่งซื้อ</p3>
@@ -346,7 +421,7 @@ export default function Customer(props) {
                                         <th scope="col" className="w-1">Material</th>
                                     </tr>
                                 </thead>
-                                <FormPStatic2 func={pull_total}/>
+                                <FormPStatic2 func={pull_total} reOpen={openTwo}/>
                                 <tbody className="min-h">
                                     <tr>
                                         <th></th>
@@ -380,7 +455,7 @@ export default function Customer(props) {
                                         <td></td>
                                         <td></td>
                                         <td className="ta-r px-2"> 
-                                        <TextField name="overhead" type="text" variant="standard" 
+                                        <TextField name="overhead" type="text" variant="standard" onChange={handleChangePro2}
                                             InputProps={{
                                                 endAdornment: <InputAdornment className="p-0 m-0 wrap-textfield" position="end">%</InputAdornment>
                                             }}
@@ -394,7 +469,7 @@ export default function Customer(props) {
                                             className="w-100 ta-r wrap-textfield" value={formDataIn2.overhead}>
                                             </TextField>
                                         </td>
-                                        <td className="ta-r px-2">{(((formDataIn2.overhead/100)*listenTotal) || 0) + listenTotal}</td>
+                                        <td className="ta-r px-2">{((((formDataIn2.overhead/100)*listenTotal) || 0) + listenTotal).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                         <td className="dlt-icon"></td>
                                     </tr> 
                                     <tr>
@@ -405,7 +480,7 @@ export default function Customer(props) {
                                         <td></td>
                                         <td></td>
                                         <td className="ta-r px-2">
-                                            <TextField name="specialdiscount" type="text" variant="standard" 
+                                            <TextField name="specialdiscount" type="text" variant="standard" onChange={handleChangePro2}
                                             inputProps={{
                                                 style: {
                                                     color: "#000000",
@@ -417,7 +492,7 @@ export default function Customer(props) {
 
                                             </TextField>
                                         </td>
-                                        <td className="ta-r px-2">{((((formDataIn2.overhead/100)*listenTotal) || 0 )+ listenTotal) - (formDataIn2.specialdiscount || 0)}</td>
+                                        <td className="ta-r px-2">{(((((formDataIn2.overhead/100)*listenTotal) || 0 )+ listenTotal) - (formDataIn2.specialdiscount || 0)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                         <td className="dlt-icon"></td>
                                     </tr> 
                                     <tr>
@@ -428,7 +503,7 @@ export default function Customer(props) {
                                         <td></td>
                                         <td></td>
                                         <td className="ta-r px-2"></td>
-                                        <td className="ta-r px-2">{((((formDataIn2.overhead/100)*listenTotal) || 0 )+ listenTotal) - (formDataIn2.specialdiscount || 0)}</td>
+                                        <td className="ta-r px-2">{(((((formDataIn2.overhead/100)*listenTotal) || 0 )+ listenTotal) - (formDataIn2.specialdiscount || 0)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                         <td className="dlt-icon"></td>
                                     </tr>
                                     <tr>
@@ -438,25 +513,32 @@ export default function Customer(props) {
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td className="ta-r px-2">{(((((formDataIn2.overhead/100)*listenTotal) || 0 )+ listenTotal) - (formDataIn2.specialdiscount || 0))*0.07}</td>
-                                        <td className="ta-r px-2">{(((((formDataIn2.overhead/100)*listenTotal) || 0 )+ listenTotal) - (formDataIn2.specialdiscount || 0))*1.07}</td>
+                                        <td className="ta-r px-2">{((((((formDataIn2.overhead/100)*listenTotal) || 0 )+ listenTotal) - (formDataIn2.specialdiscount || 0))*0.07).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
+                                        <td className="ta-r px-2">{((((((formDataIn2.overhead/100)*listenTotal) || 0 )+ listenTotal) - (formDataIn2.specialdiscount || 0))*1.07).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                         <td className="dlt-icon"></td>
                                     </tr> 
                                     <tr className="hs-border">
                                         <td colspan="2" className="ta-border"></td>
                                         <td colspan="5" className="ta-border"></td>
-                                        <td colspan="1" className="ta-border ta-r px-2">{(((((formDataIn2.overhead/100)*listenTotal) || 0 )+ listenTotal) - (formDataIn2.specialdiscount || 0))*1.07}</td>
+                                        <td colspan="1" className="ta-border ta-r px-2">{((((((formDataIn2.overhead/100)*listenTotal) || 0 )+ listenTotal) - (formDataIn2.specialdiscount || 0))*1.07).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                         <td className="dlt-icon"></td>
                                     </tr>
                                 </tbody>
                             </table>
                             
                         </div>
-                        <div className="row p-0 mb-5 wrap-text t-left mt-1">
-                            <p3>Validity: 30 Days From qouted</p3>
-                            <p3>Delivery: 90 Days after confirmation by purchase order</p3>
-                            <div className="col px-1 d-flex flex-row align-items-center">
-                                    <p3 className="mx-2">Payment: </p3>
+                        <div className="row m-2 justify-content-end mt-0" id="no-print">
+                            <div className="col-2 p-0 mx-md-1 col-md-1 mx-2">
+                                <Button variant="outlined" className="w-100" color="primary" onClick={handleCreateTwo}
+                                        size="small"><AddIcon/>
+                                </Button>
+                            </div>
+                        </div>
+                        <div className="row p-0 mb-5 wrap-text t-left mt-1 mx-2">
+                            <p3 className="p-0">Validity: 30 Days From qouted</p3>
+                            <p3 className="p-0">Delivery: 90 Days after confirmation by purchase order</p3>
+                            <div className="col p-0 d-flex flex-row align-items-center">
+                                    <p3 className="mr-2 p-0">Payment: </p3>
                                     <div className="col p-0">
                                         <TextField name="payment" type="text" variant="standard" InputLabelProps={{
                                             shrink: true,
@@ -479,12 +561,12 @@ export default function Customer(props) {
                             <p3 className="txt-sty">(อธีร์ ศิรินภาพันธ์)</p3>
                             <p3 className="txt-sty">Project Director</p3>
                         </div>
-                        <div className="row p-0 pb-2 m-1">
-                            <p2>บริษัท เอ สแควร์จํากัด</p2>
-                            <p2>A SQUARE LIMITED.</p2>
-                            <p2>26 ซอยนวมินทร์86 แขวงรามอินทรา เขตคันนายาว กรุงเทพฯ 10230</p2>
-                            <p2>26 Soi Nawamin 86 Ram Intra, Khan Na Yao, BANGKOK 10230</p2>
-                            <p2>Tel: (662) 0-2542-2108-9 ;Email: pracha.imail@gmail.com; www.asquare.co.th</p2>
+                        <div className="row p-0 pb-2 m-1 mx-2">
+                            <p2 className="p-0">บริษัท เอ สแควร์จํากัด</p2>
+                            <p2 className="p-0">A SQUARE LIMITED.</p2>
+                            <p2 className="p-0">26 ซอยนวมินทร์86 แขวงรามอินทรา เขตคันนายาว กรุงเทพฯ 10230</p2>
+                            <p2 className="p-0">26 Soi Nawamin 86 Ram Intra, Khan Na Yao, BANGKOK 10230</p2>
+                            <p2 className="p-0">Tel: (662) 0-2542-2108-9 ;Email: pracha.imail@gmail.com; www.asquare.co.th</p2>
                         </div>
                     </div>
                     
@@ -504,6 +586,134 @@ export default function Customer(props) {
                     </div>
                 </div>
             </div>
+            <Modal
+                open={openTwo}
+                onClose={handleCloseTwo}
+                className="d-flex justify-content-center align-items-center"
+
+            >
+
+                <form className="border border-secondary p-2 m-2 rounded-2 row bg-white py-4" style={{maxWidth: "900px"}}>
+                    <div className="pt-2">
+                        <h4 className="col d-flex justify-content-start px-2">Add work</h4>
+                        <div className="row mt-3 d-flex justify-content-center mb-2">
+                            <div className="row pt-1">
+                                <div className="col px-2">
+                                    <div className="col pt-1 col-md-12 mb-2">
+                                        <TextField onChange={handleChangeUpload} type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="description" label="Description" className="w-100"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row pt-1">
+                                <div className="col px-2">
+                                    <div className="col pt-1 col-md-12 mb-2">
+                                        <TextField onChange={handleChangeUpload} type="number" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="quantity" label="Quantity" className="w-100" Value={docName.quantity}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="col p-0">
+                                    <div className="col p-0 pt-1 mb-2 mx-2">
+                                        <TextField onChange={handleChangeUpload} type="text" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="unit" label="Unit" className="w-100"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col px-2">
+                                    <div className="col pt-1 col-md-12 mb-2">
+                                        <TextField onChange={handleChangeUpload} type="number" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="labor" label="Labor" className="w-100"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="col p-0">
+                                    <div className="col p-0 pt-1 mb-2 mx-2">
+                                        <TextField onChange={handleChangeUpload} type="number" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="material" label="Material" className="w-100"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col px-2">
+                                    <div className="col pt-1 col-md-12 mb-2">
+                                        <TextField type="number" disabled={true} InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="totalUnitPrice" label="TotalUnitPrice" className="w-100" value={(parseFloat(docName.labor)+parseFloat(docName.material))}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col px-2">
+                                    <div className="col pt-1 col-md-12 mb-2">
+                                        <TextField type="number" disabled={true} InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="total" label="Total" className="w-100" value={docName.quantity*(parseFloat(docName.labor)+parseFloat(docName.material))}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="row d-flex justify-content-center">
+                            <Button type="submit" variant="contained" color="error" className="mx-3 col-3"
+                                    onClick={handleCloseTwo}>
+                                Close
+                            </Button>
+                            <Button type="submit" variant="contained" color="primary" className="mx-3 px-2 col-3"
+                                    onClick={handleSubmitPrice}>
+                                Add
+                            </Button>
+
+                        </div>
+                    </div>
+                </form>
+            </Modal>
             <ToastContainer/>
         </CustomerWrapper>
 

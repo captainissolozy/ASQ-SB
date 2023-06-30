@@ -1,21 +1,12 @@
-import styled from "styled-components";
-
-const CustomerWrapper = styled.div`
-  .container{
+.container{
     min-height: 1080px;
     max-width: 900px !important;
     background: white;
     border-radius: 12px;
     overflow: hidden;
-    padding-top: 20px!important;
-    padding-left: 12px!important;
-    padding-right: 12px!important;
-  }
-  .sm-containter {
-    min-height: auto;
   }
   .txt {
-    font-size: 12px;
+    font-size: 14px;
   }
   .pos-top{
     top: 50px;
@@ -44,16 +35,11 @@ const CustomerWrapper = styled.div`
     background: #23354D;
   }
   .wrap-text {
-    font-size: 12px;
-    row-gap: 3px;
-    page-break-inside:avoid; page-break-after:auto
- 
-  }
-  .t-left{
-    margin-left: 1px;
+    font-size: 14px;
+    row-gap: 6px;
   }
   .inp-box {
-    max-width: 90px;
+    max-width: 120px;
   }
   .heading-container {
     max-width: 900px;
@@ -65,15 +51,15 @@ const CustomerWrapper = styled.div`
     background-color: #fff;
   }
   .customer-box-sl {
-    column-gap: 0px;
+    column-gap: 10px;
   }
   .cs-add-btn {
     border: 1px solid #302e38;
     background-color: transparent;
     color: #302e38!important;
     border-radius: 6px!important;
-    font-size: 12px;
-    line-height: 22px!important;
+    font-size: 14px;
+    line-height: 29px;
   }
   .cs-add-btn.confirm {
     background-color: #302e38;
@@ -82,21 +68,22 @@ const CustomerWrapper = styled.div`
   }
   table.qa-table {
     margin-bottom: 20px;
-    min-height: 480px;
+    min-height: 700px;
   }
   table tbody.min-h {
     min-height: 33px;
+    max-height: 670px;
     height: 100%;
   }
   table thead tr th {
     background-color: #d7d7d7;
     color: #000!important;
     text-align: center;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 400;
     border: 1px solid #000;
+    border-top: 1px solid #000!important;
     vertical-align: middle!important;
-    
   }
   table.qa-table tr td {
     border: 1px solid #000;
@@ -114,7 +101,7 @@ const CustomerWrapper = styled.div`
   }
   table tr.hs-border {
     border: 1px solid #000;
-    height: 23px;
+    height: 33px;
   }
   table tbody.min-h tr th {
     height: 33px;
@@ -140,19 +127,22 @@ const CustomerWrapper = styled.div`
   .ta-c {
     text-align: right;
   }
+  table tbody td {
+    font-size: 14px!important;
+  }
   .wrap-input {
-    gap: 5px;
+    gap: 10px;
   }
   .sign-namebox {
-    max-width: 350px;
+    max-width: 400px;
     margin-left: auto!important;
     margin-right: 0;
-    margin-bottom: 20px;
-    padding-top: 10px;
+    margin-bottom: 40px;
+    padding-right: 150px;
   }
   .line {
     height: 16px;
-    width: 200px;
+    width: 300px;
     border-bottom: 1px solid #000;
     margin-bottom: 15px;
   }
@@ -160,58 +150,29 @@ const CustomerWrapper = styled.div`
     text-align: center;
   }
   .txt-hd {
-    font-size: 12px!important;
+    font-size: 14px!important;
     min-width: 55px;
     margin-right: 10px;
   }
-  table tbody tr td.tb-click {
-    cursor: pointer;
+  .css-v4u5dn-MuiInputBase-root-MuiInput-root.Mui-disabled:before {
+    border-bottom: transparent;
   }
   .MuiInputBase-input.MuiInput-input.Mui-disabled {
     -webkit-text-fill-color: unset;
   }
-  .mx-900 {
-    max-width: 900px;
-    margin: 0 auto;
-  }
-  .wrap-textfield .MuiInputBase-root.MuiInput-root.Mui-disabled::before {
-    border-bottom-style: none!important;
-    border-bottom: transparent!important;
-  }
-  table .dlt-icon {
-    cursor: pointer;
-  }
-  .MuiFormLabel-root.MuiInputLabel-root {
-    line-height: 1!important;
-  }
-  no-click{
-    pointer-events: none;
-  }
   @media print {
-    a[href]:after { content: none !important; }
-    #no-print {
-      display: none;
-    }
-    .no-print {
-      display: none;
-    }
-    .container {
-      padding-top: 0!important;
-    }
-    .wrap-textfield .MuiInputBase-root.MuiInput-root::before {
-      border-bottom-style: none!important;
+    .css-v4u5dn-MuiInputBase-root-MuiInput-root:before {
       border-bottom: transparent!important;
     }
-    .wrap-textfield .MuiInputBase-root.MuiInput-root{
-      line-height: 12px;
-      height: 18px;
+    .customer-box-sl {
+      display: none!important; 
     }
-    table .dlt-icon {
-      display:none!important;
+    .container {
+      box-shadow: none!important;
     }
-    resize:{
-      fontSize:11px;
+    table thead tr th {
+      background-color: transparent!important;
+      border: 1px solid #000;
+
     }
   }
-`
-export default CustomerWrapper

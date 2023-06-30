@@ -1,11 +1,11 @@
 import * as React from "react";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useRef} from "react";
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../../../context/UserContexts";
 import {Button, IconButton, TextField, InputAdornment} from "@mui/material";
 import Modal from "@material-ui/core/Modal";
 import db from "../../../../config/firebase-config"
-import { doc, getDoc, setDoc} from "firebase/firestore"
+import { doc, getDoc, setDoc, collection} from "firebase/firestore"
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import CustomerWrapper from "./CustomerWrapper";
@@ -44,6 +44,8 @@ export default function Customer(props) {
     const [listenC, setListen] = useState("");
     const [countQo, setCountQo] = useState(0);
     const [listenTotal, setListenTotal] = useState(0);
+    const myTable = useRef(null);
+    const [height, setHeight] = useState({});
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
@@ -52,8 +54,10 @@ export default function Customer(props) {
             const docSnap = await getDoc(docRef1);
             const docRef2 = doc(db, "PO", sessionStorage.getItem("projectID"), "Quotation", sessionStorage.getItem("projectID"));
             const docSnap2 = await getDoc(docRef2);
-            if (docSnap2.exists()) {
+            if(docSnap2.exists()) {
                 setFormDataIn2(docSnap2.data())
+            }else{
+                setDoc(docRef2, {"genQo": sessionStorage.getItem("projectID") , "payment": formDataProject2.payment, "specialdiscount": formDataProject2.specialdiscount, "overhead": formDataProject2.overhead})
             }
             if (docSnap.exists()) {
                 setFormDataIn(docSnap.data())
@@ -64,6 +68,26 @@ export default function Customer(props) {
             
         }
         await fetchData()
+
+        var heightT_o = myTable.current.clientHeight;
+        if(heightT_o > 500 && heightT_o <= 700){
+            setHeight({
+                "min-height": 700 + "px"
+              });
+        }else if(heightT_o > 700 && heightT_o <= 1450){
+            setHeight({
+                "min-height": 1450 + "px"
+              });
+           
+        }else if(heightT_o > 1450 && heightT_o <= 2150){
+            setHeight({
+                "min-height": 2150 + "px"
+              });
+        }else if(heightT_o > 2290 && heightT_o <= 3230){
+            setHeight({
+                "min-height": 3230 + "px"
+              });
+        }
     }, [count])
 
     useEffect(async () => {
@@ -145,6 +169,25 @@ export default function Customer(props) {
             material: 0,
             quantity: 1,
         })
+        var heightT_o = myTable.current.clientHeight;
+        if(heightT_o > 500 && heightT_o <= 700){
+            setHeight({
+                "min-height": 700 + "px"
+              });
+        }else if(heightT_o > 700 && heightT_o <= 1450){
+            setHeight({
+                "min-height": 1450 + "px"
+              });
+           
+        }else if(heightT_o > 1450 && heightT_o <= 2150){
+            setHeight({
+                "min-height": 2150 + "px"
+              });
+        }else if(heightT_o > 2290 && heightT_o <= 3230){
+            setHeight({
+                "min-height": 3230 + "px"
+              });
+        }
     };
 
     const handleCancelNext = async (e) => {
@@ -172,7 +215,7 @@ export default function Customer(props) {
 
     return (
         <CustomerWrapper>
-            <div className="wrapper-box pt-4">
+            <div className="wrapper-box pt-3">
                 <div className="row mx-900" id="no-print">
                     <h4 className="pt-1 pt-md-1 px-2 mb-2">Quotation: {formDataIn.genQo}</h4>
                 </div>
@@ -223,7 +266,7 @@ export default function Customer(props) {
                     </form>
                 </div>
                 <div className="container bg-white">
-                    <div className="wrapper-header d-flex justify-content-between align-items-start mb-1">
+                    <div className="wrapper-header d-flex justify-content-between align-items-start mb-3">
                         <div className="img-box"><img src="../../asq-logo.png" width="80"/></div>
                         <div className="wrap-text d-flex flex-column">
                             <p3 className="pb-1">ใบเสนอราคา/ใบสั่งซื้อ</p3>
@@ -412,7 +455,7 @@ export default function Customer(props) {
                     </div>
                     {stateOfN?(<div className="container-fluid p-0">
                         <div className="row m-2 pt-1 mb-0">
-                            <table className="qa-table">
+                            <table className="qa-table" ref={myTable} style={height}>
                                 <thead className="bg-dark text-light">
                                     <tr>
                                         <th scope="col" rowspan="2" className="w-45">No.</th>
@@ -421,7 +464,7 @@ export default function Customer(props) {
                                         <th scope="col" rowspan="2" className="w-price">Unit</th>
                                         <th scope="col" colspan="2" className="">Unit Price</th>
                                         <th scope="col" rowspan="2" className="w-12">Total <br/>Unit Price</th>
-                                        <th scope="col" rowspan="2" className="w-12">Total</th>
+                                        <th scope="col" rowspan="2" className="w-12">Total (THB)</th>
                                         <th scope="col" rowspan="2" className="w-45 dlt-icon"></th>
                                     </tr>
                                     <tr>
@@ -541,11 +584,11 @@ export default function Customer(props) {
                                 </Button>
                             </div>
                         </div>
-                        <div className="row p-0 mb-5 wrap-text t-left mt-1">
-                            <p3>Validity: 30 Days From qouted</p3>
-                            <p3>Delivery: 90 Days after confirmation by purchase order</p3>
-                            <div className="col px-1 d-flex flex-row align-items-center">
-                                <p3 className="mx-2">Payment: </p3>
+                        <div className="row p-0 mb-5 wrap-text t-left mt-1 mx-2">
+                            <p3 className="p-0">Validity: 30 Days From qouted</p3>
+                            <p3 className="p-0">Delivery: 90 Days after confirmation by purchase order</p3>
+                            <div className="col p-0 d-flex flex-row align-items-center">
+                                <p3 className="mr-2">Payment: </p3>
                                 <div className="col p-0">
                                     <TextField name="payment" type="text" variant="standard" InputLabelProps={{
                                         shrink: true,
@@ -584,12 +627,12 @@ export default function Customer(props) {
                             <p3 className="txt-sty">(อธีร์ ศิรินภาพันธ์)</p3>
                             <p3 className="txt-sty">Project Director</p3>
                         </div>
-                        <div className="row p-0 pb-2 m-1">
-                            <p2>บริษัท เอ สแควร์จํากัด</p2>
-                            <p2>A SQUARE LIMITED.</p2>
-                            <p2>26 ซอยนวมินทร์86 แขวงรามอินทรา เขตคันนายาว กรุงเทพฯ 10230</p2>
-                            <p2>26 Soi Nawamin 86 Ram Intra, Khan Na Yao, BANGKOK 10230</p2>
-                            <p2>Tel: (662) 0-2542-2108-9 ;Email: pracha.imail@gmail.com; www.asquare.co.th</p2>
+                        <div className="row p-0 pb-2 m-1 mx-2">
+                            <p2 className="p-0">บริษัท เอ สแควร์จํากัด</p2>
+                            <p2 className="p-0">A SQUARE LIMITED.</p2>
+                            <p2 className="p-0">26 ซอยนวมินทร์86 แขวงรามอินทรา เขตคันนายาว กรุงเทพฯ 10230</p2>
+                            <p2 className="p-0">26 Soi Nawamin 86 Ram Intra, Khan Na Yao, BANGKOK 10230</p2>
+                            <p2 className="p-0">Tel: (662) 0-2542-2108-9 ;Email: pracha.imail@gmail.com; www.asquare.co.th</p2>
                         </div>
                     </div>):(<></>)}
                     

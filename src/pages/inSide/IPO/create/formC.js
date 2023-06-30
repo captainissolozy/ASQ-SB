@@ -1,6 +1,6 @@
-import {useEffect, useState} from "react";
+import {useEffect, useState, useRef} from "react";
 import db from "../../../../config/firebase-config"
-import {collection, doc, getDoc, onSnapshot} from "firebase/firestore"
+import {collection, doc, deleteDoc, onSnapshot} from "firebase/firestore"
 import {useNavigate} from "react-router-dom";
 import CustomerWrapper from "./CustomerWrapper";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,6 +11,7 @@ import { faTrashCan } from '@fortawesome/free-regular-svg-icons'
 const AddTable = (props) => {
 
     const [formData, setFormData] = useState([])
+    const myTable = useRef(null);
 
     useEffect(() => {
         onSnapshot(collection(db, "PO", props.roomCode, "Quotation", props.roomCode, "work"), (snapshot) => {
@@ -23,19 +24,28 @@ const AddTable = (props) => {
         props.func(total)
     }, [props.reOpen])
 
+    const onDelete = async (e) => {
+        console.log(e.target.id)
+        const docRef1 = doc(db, "PO", props.roomCode, "Quotation", props.roomCode, "work", e.target.id);
+        await deleteDoc(docRef1);
+    };
+
+
     return (
-        formData.map((data, i) => (
+        formData.filter( data => {
+            return ((data.dummy != "dummy"))
+            }).map((data, i) => (
             <tbody>
             <tr>
                 <td className="text-center">{(i+1).toString().padStart(2, "0")}</td>
-                <td className="px-2 py-2">{data.description}</td>
+                <td className="px-2 py-2" ref={myTable} >{data.description}</td>
                 <td className="text-center">{data.quantity}</td>
                 <td className="text-center">{data.unit}</td>
                 <td className="ta-c px-2 py-2">{parseFloat(data.labor).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                 <td className="ta-c px-2 py-2">{parseFloat(data.material).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                 <td className="ta-r px-2 py-2">{(parseFloat(data.labor) + parseFloat(data.material)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                 <td className="ta-r px-2 py-2">{((parseFloat(data.labor) + parseFloat(data.material))*parseFloat(data.quantity)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
-                <td className="text-center dlt-icon"><FontAwesomeIcon icon={faTrashCan} /></td>
+                <td className="text-center dlt-icon z-indie" onClick={onDelete} id={data.description}><FontAwesomeIcon id={data.description} icon={faTrashCan}/></td>
             </tr>
             </tbody>
         ))

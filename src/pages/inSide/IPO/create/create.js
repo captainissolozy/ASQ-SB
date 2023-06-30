@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useRef} from "react";
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../../../context/UserContexts";
 import {Button, IconButton, TextField, InputAdornment} from "@mui/material";
@@ -83,6 +83,8 @@ export default function Customer() {
     const [countQo, setCountQo] = useState(0);
     const [overHead, serOverHead] = useState(0);
     const [listenTotal, setListenTotal] = useState(0);
+    const [height, setHeight] = useState({});
+    const myTable = useRef(null);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
@@ -229,6 +231,8 @@ export default function Customer() {
             }
             const docRef1 = doc(db, "PO", genQo);
             await setDoc(docRef1, projectData);
+            const docRef2 = doc(db, "PO", genQo, "Quotation", genQo, "work", "dummy");
+            await setDoc(docRef2, {dummy: "dummy"});
         }else {
             toast.error('Please Fill in all the value', {position: toast.POSITION.BOTTOM_CENTER});
         }
@@ -249,6 +253,26 @@ export default function Customer() {
             totalUnitPrice: 0,
             total: 0
         })
+
+        var heightT_o = myTable.current.clientHeight;
+        if(heightT_o > 500 && heightT_o <= 700){
+            setHeight({
+                "min-height": 700 + "px"
+              });
+        }else if(heightT_o > 700 && heightT_o <= 1450){
+            setHeight({
+                "min-height": 1450 + "px"
+              });
+           
+        }else if(heightT_o > 1450 && heightT_o <= 2150){
+            setHeight({
+                "min-height": 2150 + "px"
+              });
+        }else if(heightT_o > 2290 && heightT_o <= 3230){
+            setHeight({
+                "min-height": 3230 + "px"
+              });
+        }
     };
 
     const handleCancelNext = async (e) => {
@@ -266,7 +290,6 @@ export default function Customer() {
       };
 
     const handleGoNext = async () => {
-        console.log(formDataProject)
         if (formDataProject.projectName !== "" && formDataProject.subject !== "") {
             const docRef1 = doc(db, "PO", genQo, "Quotation", genQo);
             await setDoc(docRef1, {genQo, "payment": formDataProject.payment, "specialdiscount": formDataProject.specialdiscount, "overhead": formDataProject.overhead});
@@ -307,7 +330,7 @@ export default function Customer() {
             </div>
             <div className="wrapper-box pt-3" id="pdf">
                 <div className="container pt-5 mb-3 bg-white">
-                    <div className="wrapper-header d-flex justify-content-between align-items-start mx-2 mb-1">
+                    <div className="wrapper-header d-flex justify-content-between align-items-start mx-2 mb-3">
                         <div className="img-box"><img src="../../asq-logo.png" width="80"/></div>
                         <div className="wrap-text d-flex flex-column">
                             <p3 className="pb-1">ใบเสนอราคา/ใบสั่งซื้อ</p3>
@@ -491,7 +514,7 @@ export default function Customer() {
                     <div className="container-fluid p-0">
                         <div className="row m-2 pt-1 mb-0 mt-0 table-responsive">
 
-                            <table className="qa-table splitForPrint">
+                            <table className="qa-table splitForPrint" ref={myTable} style={height}>
                             <thead className="bg-dark text-light">
                                     <tr>
                                         <th scope="col" rowspan="2" className="w-45">No.</th>
@@ -648,11 +671,11 @@ export default function Customer() {
                             <p3 className="txt-sty">Project Director</p3>
                         </div>
                         <div className="row m-2 pb-4">
-                            <p2>บริษัท เอ สแควร์จํากัด</p2>
-                            <p2>A SQUARE LIMITED.</p2>
-                            <p2>26 ซอยนวมินทร์86 แขวงรามอินทรา เขตคันนายาว กรุงเทพฯ 10230</p2>
-                            <p2>26 Soi Nawamin 86 Ram Intra, Khan Na Yao, BANGKOK 10230</p2>
-                            <p2>Tel: (662) 0-2542-2108-9 ;Email: pracha.imail@gmail.com; www.asquare.co.th</p2>
+                            <p2 className="p-0">บริษัท เอ สแควร์จํากัด</p2>
+                            <p2 className="p-0">A SQUARE LIMITED.</p2>
+                            <p2 className="p-0">26 ซอยนวมินทร์86 แขวงรามอินทรา เขตคันนายาว กรุงเทพฯ 10230</p2>
+                            <p2 className="p-0">26 Soi Nawamin 86 Ram Intra, Khan Na Yao, BANGKOK 10230</p2>
+                            <p2 className="p-0">Tel: (662) 0-2542-2108-9 ;Email: pracha.imail@gmail.com; www.asquare.co.th</p2>
                         </div>
                     </div>
                 </div>
