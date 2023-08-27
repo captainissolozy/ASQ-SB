@@ -36,6 +36,7 @@
     "react-scripts": "^5.0.0",
     "react-toastify": "^8.2.0",
     "styled-components": "^5.3.3",
+    "to-words": "^3.6.1",
     "uuid": "^9.0.0",
     "uuidv4": "^6.2.12",
     "web-vitals": "^2.1.4",

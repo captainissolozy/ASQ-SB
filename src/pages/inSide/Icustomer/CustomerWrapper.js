@@ -28,9 +28,9 @@ const CustomerWrapper = styled.div`
     background: #23354D;
   }
   .container{
-    height: 100vh;
     max-width: 900px !important;
     background: white;
+    border-radius: 10px
   }
 
 `

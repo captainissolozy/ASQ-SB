@@ -122,7 +122,7 @@ const Navbar = () => {
                                     <form
                                         className="nav-link active d-flex justify-content-center"
                                     ><Button className="m-0 p-0 text-secondary" variant="text"
-                                             onClick={handlePrPo}>Quotation</Button>
+                                             onClick={handlePrPo}>Project</Button>
                                     </form>
                                 </li>
                             ) : (

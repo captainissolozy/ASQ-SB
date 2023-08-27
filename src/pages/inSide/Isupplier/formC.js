@@ -1,6 +1,9 @@
 import {useEffect, useState} from "react";
 import db from "../../../config/firebase-config"
-import {collection, onSnapshot} from "firebase/firestore"
+import {collection, onSnapshot, doc, deleteDoc} from "firebase/firestore"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons'
+
 
 
 const AddTable = (props) => {
@@ -14,12 +17,19 @@ const AddTable = (props) => {
         });
     }, [props.docname])
 
+    const onDelete = async (e) => {
+        console.log(e.target.id)
+        const docRef1 = doc(db, "SuppliersDetail", props.docname, "media", e.target.id);
+        await deleteDoc(docRef1);
+    };
+
     return (
         formData.map((data) => (
             <tbody>
             <tr style={{cursor: "pointer"}}>
                 <td key={data.docName.name}>{data.docName.name}</td>
                 <td key={data.url}><a href={data.url} target="_blank">{data.docName.name}.png</a></td>
+                <td className="text-center dlt-icon z-indie" onClick={onDelete} id={data.docName.name}>x</td>
             </tr>
             </tbody>
 

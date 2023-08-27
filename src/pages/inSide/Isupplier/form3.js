@@ -10,23 +10,30 @@ const AddTable = (props) => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
-        onSnapshot(collection(db, "CustomersDetail", props.docname, "media"), (snapshot) => {
+        onSnapshot(collection(db, "SuppliersDetail", props.docname, "bb"), (snapshot) => {
             setFormData(snapshot.docs.map((doc) => doc.data()))
         });
     }, [props.docname])
 
     const onDelete = async (e) => {
         console.log(e.target.id)
-        const docRef1 = doc(db, "CustomersDetail", props.docname, "media", e.target.id);
+        const docRef1 = doc(db, "SuppliersDetail", props.docname, "bb", e.target.id);
         await deleteDoc(docRef1);
     };
 
+    if(formData.length > 0){
+        props.func("bb1")
+    }else{
+        props.func("bb0")
+    }
+
     return (
-        formData.map((data) => (
+        formData.map((data, i) => (
             <tbody>
             <tr style={{cursor: "pointer"}}>
-                <td key={data.docName.name}>{data.docName.name}</td>
-                <td key={data.url}><a href={data.url} target="_blank">{data.docName.name}</a></td>
+                <td key={data.docName.name}>{i+1}</td>
+                <td >{data.docName.name}</td>
+                <td key={data.url}><a href={data.url} target="_blank">download</a></td>
                 <td className="text-center dlt-icon z-indie" onClick={onDelete} id={data.docName.name}>x</td>
             </tr>
             </tbody>

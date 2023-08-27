@@ -58,6 +58,7 @@ export default function Customer() {
         if (!user) {
             navigate('/lobby')
         }
+        window.scrollTo(0, 0)
     }, [navigate, user])
 
     const handleCreate = () => {
@@ -143,17 +144,18 @@ export default function Customer() {
                                 </div>
                                 <div className="col p-0 col-md-3 flex-sm-fill">
                                     <div className="col p-0 pt-1 mb-2">
-                                    <FormControl size="small" className="w-100">
-                                            <InputLabel id="demo-simple-select-label">Status</InputLabel>
-                                            <Select     id="demo-simple-select" labelId="demo-simple-select-label"
-                                                        name="status" label="Status" className="w-100"
-                                                        value={searchChanged.status} onChange={joinChange}>
-                                                <MenuItem value="">
-                                                    <em>All</em>
-                                                </MenuItem>
-                                                <MenuItem value={"Completed"}>Completed</MenuItem>
-                                                <MenuItem value={"Incompleted"}>Incompleted</MenuItem>
-                                            </Select>
+                                        <FormControl size="small" className="w-100">
+                                                <InputLabel id="demo-simple-select-label">Status</InputLabel>
+                                                <Select     id="demo-simple-select" labelId="demo-simple-select-label"
+                                                            name="status" label="Status" className="w-100"
+                                                            value={searchChanged.status} onChange={joinChange}>
+                                                    <MenuItem value="">
+                                                        <em>All</em>
+                                                    </MenuItem>
+                                                    <MenuItem value={"Completed"}>Completed</MenuItem>
+                                                    <MenuItem value={"Incompleted"}>Incompleted</MenuItem>
+                                                    <MenuItem value={"BlackList"}>BlackList</MenuItem>
+                                                </Select>
                                         </FormControl>
                                     </div>
                                 </div>

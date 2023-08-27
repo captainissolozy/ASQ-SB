@@ -13,7 +13,7 @@ const AddTable = (props) => {
         onSnapshot(collection(db, "PO", props.roomCode, "Quotation"), (snapshot) => {
             setFormData(snapshot.docs.map((doc) => doc.data()))
         });
-    }, [])
+    }, [navigate, props.roomCode])
 
     const handleJoinPublic = async (id) => {
         console.log(id)
@@ -30,7 +30,7 @@ const AddTable = (props) => {
             <tbody>
             <tr>
                 <td>{data.genQo}</td>
-                <td onClick={() => handleJoinPublic(data.genQo)} className="tb-click">{data.genQo}</td>
+                <td onClick={() => handleJoinPublic(data.genQo)} className="tb-click text-decoration-underline text-primary">{data.status || "Pending"}</td>
             </tr>
             </tbody>
 

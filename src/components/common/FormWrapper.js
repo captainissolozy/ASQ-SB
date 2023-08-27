@@ -38,6 +38,13 @@ const FormWrapper = styled.div`
     width: 100%;
     max-width: 218px;
   }
+  .mxw {
+    max-width: 161px;
+    align-items: center; 
+  } 
+  .wrap-btnsubmit button {
+    min-width: 161px;
+  }
   button.mx-3 {
     background-color: #302e38;
     color: #e2f3e5;

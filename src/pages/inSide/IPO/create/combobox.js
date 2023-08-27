@@ -44,7 +44,7 @@ export default function ComboBox(props) {
             onInputChange={(event, newInputValue) => {
                 setInputValue(newInputValue);
             }}
-            renderInput={(params) => <TextField size="small" {...params} label="Customer name"/>}
+            renderInput={(params) => <TextField size="small" {...params} label="Choose Customer"/>}
         />
         </div>
     );

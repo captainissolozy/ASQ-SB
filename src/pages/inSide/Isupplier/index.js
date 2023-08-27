@@ -8,11 +8,18 @@ import db, {storage} from "../../../config/firebase-config"
 import {doc, getDoc, setDoc, updateDoc} from "firebase/firestore"
 import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage"
 import FormC from "./formC";
+import Form1 from "./form1";
+import Form2 from "./form2";
+import Form3 from "./form3";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import CustomerWrapper from "./CustomerWrapper";
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from "@mui/icons-material/Add";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons'
+import BlockIcon from '@mui/icons-material/Block';
+import UndoIcon from '@mui/icons-material/Undo';
 
 
 export default function Customer() {
@@ -34,6 +41,9 @@ export default function Customer() {
     const navigate = useNavigate()
     const {user} = useUserContext()
     const [open, setOpen] = useState(false)
+    const [open2, setOpen2] = useState(false)
+    const [open3, setOpen3] = useState(false)
+    const [open4, setOpen4] = useState(false)
     const [formDataIn, setFormDataIn] = useState([])
     const [formData, updateFormData] = useState(initialFormData)
     const [edit, setEdit] = useState(true)
@@ -46,6 +56,13 @@ export default function Customer() {
     const [docName, setDocName] = useState(initialDocData)
     const [file, setFile] = useState("");
     const [percent, setPercent] = useState(0);
+    const [boxIP, setBoxIP] = useState("ID")
+    const [boxIMP, setBoxIMP] = useState("Bookbank")
+    const [listenTotal, setListenTotal] = useState(0);
+    const [listen20, setListen20] = useState(0);
+    const [listenAid, setListenAid] = useState(0);
+    const [listenBB, setListenBB] = useState(0);
+    const [blockState, setBlockState] = useState(0);
 
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -60,19 +77,27 @@ export default function Customer() {
                 }
             }
         }
-
+        if(formDataIn.v_box6 === "BlackList"){
+            setBlockState(1)
+        }
         await fetchData()
-    }, [count])
+    }, [count, listen20, listenAid, listenBB])
 
     useEffect(() => {
         if (formDataIn.type === "Private") {
             setBox2("surname")
             setBox3("email")
             setBoxLa("nickname")
+            setBoxIP("ID")
+            setBoxIMP("BookBank")
+            setListenTotal(2)
         } else {
             setBoxLa("nickname")
             setBox3("email")
             setBox2("taxpayerNum")
+            setBoxIP("หนังสือรับรองบริษัท")
+            setBoxIMP("BookBank")
+            setListenTotal(3)
         }
         updateFormData({
             v_box1: formDataIn.v_box1,
@@ -89,10 +114,23 @@ export default function Customer() {
         if (!user) {
             navigate('/')
         }
+        window.scrollTo(0, 0)
     }, [navigate, user])
 
     const handleCreate = () => {
         setOpen(true)
+    }
+
+    const handleCreate2 = () => {
+        setOpen2(true)
+    }
+
+    const handleCreate3 = () => {
+        setOpen3(true)
+    }
+
+    const handleCreate4 = () => {
+        setOpen4(true)
     }
 
     const handleSubmitUpload = (e) => {
@@ -124,6 +162,94 @@ export default function Customer() {
         setDocName("")
     }
 
+    const handleSubmitUpload2 = (e) => {
+        e.preventDefault()
+        if (!file) {
+            alert("Please choose a file first!")
+        }
+        const storageRef = ref(storage, `/media/Supplier/20/${file.name}`)
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+                const percent = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+                // update progress
+                setPercent(percent);
+            },
+            (err) => console.log(err),
+            () => {
+                // download url
+                getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
+                    const docRef1 = doc(db, "SuppliersDetail", formData.v_box1 + formData.v_box2, "20", docName.name);
+                    await setDoc(docRef1, {docName, url});
+                });
+            }
+        );
+        setOpen2(false)
+        setDocName("")
+    }
+
+    const handleSubmitUpload3 = (e) => {
+        e.preventDefault()
+        if (!file) {
+            alert("Please choose a file first!")
+        }
+        const storageRef = ref(storage, `/media/Supplier/aid/${file.name}`)
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+                const percent = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+                // update progress
+                setPercent(percent);
+            },
+            (err) => console.log(err),
+            () => {
+                // download url
+                getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
+                    const docRef1 = doc(db, "SuppliersDetail", formData.v_box1 + formData.v_box2, "aid", docName.name);
+                    await setDoc(docRef1, {docName, url});
+                });
+            }
+        );
+        setOpen3(false)
+        setDocName("")
+    }
+
+    const handleSubmitUpload4 = (e) => {
+        e.preventDefault()
+        if (!file) {
+            alert("Please choose a file first!")
+        }
+        const storageRef = ref(storage, `/media/Supplier/bb/${file.name}`)
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+                const percent = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+                // update progress
+                setPercent(percent);
+            },
+            (err) => console.log(err),
+            () => {
+                // download url
+                getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
+                    const docRef1 = doc(db, "SuppliersDetail", formData.v_box1 + formData.v_box2, "bb", docName.name);
+                    await setDoc(docRef1, {docName, url});
+                });
+            }
+        );
+        setOpen4(false)
+        setDocName("")
+    }
+
+
     const handleChangeUploadFile = (e) => {
         setFile(e.target.files[0])
     }
@@ -139,6 +265,67 @@ export default function Customer() {
         setOpen(false)
         setFile("")
     }
+
+    const handleClose2 = () => {
+        setOpen2(false)
+        setFile("")
+    }
+
+    const handleClose3 = () => {
+        setOpen3(false)
+        setFile("")
+    }
+
+    const handleClose4 = () => {
+        setOpen4(false)
+        setFile("")
+    }
+
+    const pull_total = async (data) => {
+        if(blockState === 0){
+            if(data === "21"){
+                setListen20(1)
+            }else if(data === "20"){
+                setListen20(0)
+            }else if(data === "aid1"){
+                setListenAid(1)
+            }else if(data === "aid0"){
+                setListenAid(0)
+            }else if(data === "bb1"){
+                setListenBB(1)
+            }else if(data === "bb0"){
+                setListenBB(0)
+            }
+        }
+
+        if(blockState === 0){
+            if(listenTotal === (listen20 + listenAid + listenBB)){
+                const docRef1 = doc(db, "SuppliersDetail", formData.v_box1 + formData.v_box2);
+                await updateDoc(docRef1, {"v_box6": "Completed"});
+            }else{
+                const docRef1 = doc(db, "SuppliersDetail", formData.v_box1 + formData.v_box2);
+                await updateDoc(docRef1, {"v_box6": "Incompleted"});
+            }
+        }
+    };
+
+    const handleBlock = async (e) => {
+        setBlockState(1)
+        const docRef1 = doc(db, "SuppliersDetail", sessionStorage.getItem("roomKeySup"));
+        await updateDoc(docRef1, {"v_box6": "BlackList"});
+        setCount(count+1)
+        console.log(blockState)
+    };
+
+    const handleUnBlock = async (e) => {
+        setBlockState(0)
+        const docRef1 = doc(db, "SuppliersDetail", sessionStorage.getItem("roomKeySup"));
+        await updateDoc(docRef1, {"v_box6": "Incompleted"});
+        setCount(count-1)
+        
+    };
+
+
     const handleChange = (e) => {
         updateFormData({
             ...formData,
@@ -163,13 +350,22 @@ export default function Customer() {
 
     return (
         <CustomerWrapper>
-            <div className="wrapper-box pt-4">
-                <div className="container pt-5 mb-5">
-                    <div className="heading-container mt-2 d-flex justify-content-start px-2 pt-3">
+            <div className="wrapper-box pt-1">
+                <div className="container pt-3 px-2 mb-5 pb-4">
+                    <div className="heading-container mt-2 d-flex justify-content-start px-2 pt-1">
                         <h4 className="pt-1 pt-md-1">Supplier-Info:</h4>
                         <Button variant="outlined" color={textColor} className="mx-2 " onClick={handleSubmit}>
                             {textEdit} <EditIcon className="p-0"/>
                         </Button>
+                        {formDataIn.v_box6 !== "BlackList"?(
+                        <Button variant="outlined" color="error" className="mx-2 " onClick={handleBlock}>
+                            Blacklist <BlockIcon className="p-0"/>
+                        </Button>):(<></>)}
+                        
+                        {formDataIn.v_box6 === "BlackList"?(
+                        <Button variant="outlined" color="error" className="mx-2 " onClick={handleUnBlock}>
+                            Whitelist <UndoIcon className="p-0"/>
+                        </Button>):(<></>)}
                     </div>
                     <div className="row mt-3 d-flex justify-content-center">
                         <div className="row pt-1">
@@ -252,7 +448,7 @@ export default function Customer() {
                                         },
                                     }}
                                                name="v_box6" label="Status" className="w-100" onChange={handleChange}
-                                               value={formData.v_box6} disabled={edit}/>
+                                               value={formDataIn.v_box6} disabled={true}/>
                                 </div>
                             </div>
                         </div>
@@ -272,22 +468,80 @@ export default function Customer() {
                             </div>
                         </div>
                     </div>
+                    {formDataIn.type === "Organization"?(
+                    <div className="row m-2 pt-4 justify-content-end">
+                        <table className="table table-sm border-bottom-0">
+                            <thead className="bg-dark text-light">
+                            <tr>
+                                <th scope="col" className="t-stick w-25">ภ.พ.20</th>
+                                <th scope="col" className="t-stick w-35">Description</th>
+                                <th scope="col" className="t-stick w-25">File</th>
+                                <th scope="col" className="t-stick w-15 text-center"><FontAwesomeIcon icon={faTrashCan}/></th>
+                            </tr>
+                            </thead>
+                            <Form1 func={pull_total} docname={formData.v_box1 + formData.v_box2} name={docName.name}/>
+                        </table>
+                        <div className="col-2 p-0 mx-2">
+                            <Button variant="outlined" className="w-50" color="primary" onClick={handleCreate2}
+                                    size="small"><AddIcon/>
+                            </Button>
+                        </div>
+                    </div>):(<></>)}
+                    
+                    <div className="row m-2 pt-4 justify-content-end">
+                        <table className="table table-sm border-bottom-0">
+                            <thead className="bg-dark text-light">
+                            <tr>
+                            <th scope="col" className="t-stick w-25">{boxIP}</th>
+                                <th scope="col" className="t-stick w-35">Description</th>
+                                <th scope="col" className="t-stick w-25">File</th>
+                                <th scope="col" className="t-stick w-15 text-center"><FontAwesomeIcon icon={faTrashCan}/></th>
+                            </tr>
+                            </thead>
+                            <Form2 func={pull_total} docname={formData.v_box1 + formData.v_box2} name={docName.name}/>
+                        </table>
+                        <div className="col-2 p-0 mx-2">
+                            <Button variant="outlined" className="w-50" color="primary" onClick={handleCreate3}
+                                    size="small"><AddIcon/>
+                            </Button>
+                        </div>
+                    </div>
+                    
+                    <div className="row m-2 pt-4 justify-content-end">
+                        <table className="table table-sm border-bottom-0">
+                            <thead className="bg-dark text-light">
+                            <tr>
+                            <th scope="col" className="t-stick w-25">{boxIMP}</th>
+                                <th scope="col" className="t-stick w-35">Description</th>
+                                <th scope="col" className="t-stick w-25">File</th>
+                                <th scope="col" className="t-stick w-15 text-center"><FontAwesomeIcon icon={faTrashCan}/></th>
+                            </tr>
+                            </thead>
+                            <Form3 func={pull_total} docname={formData.v_box1 + formData.v_box2} name={docName.name}/>
+                        </table>
+                        <div className="col-2 p-0 mx-2">
+                            <Button variant="outlined" className="w-50" color="primary" onClick={handleCreate4}
+                                    size="small"><AddIcon/>
+                            </Button>
+                        </div>
+                    </div>
                     <div className="row m-2 pt-4">
 
                         <table className="table table-sm border-bottom-0">
                             <thead className="bg-dark text-light">
                             <tr>
-                                <th scope="col" className="t-stick">Document-name</th>
-                                <th scope="col" className="t-stick">File</th>
+                                <th scope="col" className="t-stick w-60">Related Document</th>
+                                <th scope="col" className="t-stick w-25">File</th>
+                                <th scope="col" className="t-stick w-15 text-center"><FontAwesomeIcon icon={faTrashCan}/></th>
                             </tr>
                             </thead>
                             <FormC docname={formData.v_box1 + formData.v_box2} name={docName.name}/>
                         </table>
 
                     </div>
-                    <div className="row m-2 pt-2 justify-content-end">
-                        <div className="col-2 p-0 mx-3">
-                            <Button variant="contained" className="w-100" color="secondary" onClick={handleCreate}
+                    <div className="row m-1 pt-2 justify-content-end">
+                        <div className="col-2 p-0 mx-2">
+                            <Button variant="outlined" className="w-50" color="secondary" onClick={handleCreate}
                                     size="small"><AddIcon/>
                             </Button>
                         </div>
@@ -319,13 +573,127 @@ export default function Customer() {
 
                         <div className="col d-flex justify-content-center">
 
-                            <Button type="submit" variant="contained" color="error" className="mx-3 col"
+                            <Button type="button" variant="contained" color="error" className="mx-3 col"
                                     onClick={handleClose}>
                                 Close
                             </Button>
 
                             <Button type="submit" variant="contained" color="primary" className="mx-3 col"
                                     onClick={handleSubmitUpload}>
+                                Add
+                            </Button>
+                        </div>
+                    </div>
+                </form>
+            </Modal>
+            <Modal
+                open={open2}
+                onClose={handleClose2}
+                className="d-flex justify-content-center align-items-center"
+
+            >
+
+                <form className="border border-secondary p-2 m-2 rounded-2 row bg-white py-4">
+                    <div className="pt-2">
+                        <h4 className="col d-flex justify-content-center">Add new-document</h4>
+                        <div className="col d-flex justify-content-center">
+
+                            <TextField className="m-3"
+                                       label="Description"
+                                       name="name"
+                                       required
+                                       size="small"
+                                       onChange={handleChangeUpload}
+                            />
+                            <input name="path" className="row d-flex justify-content-center px-2 mb-3 pt-4"
+                                   type="file" accept="image/*" onChange={handleChangeUploadFile}/>
+                        </div>
+
+                        <div className="col d-flex justify-content-center">
+
+                            <Button type="button" variant="contained" color="error" className="mx-3 col"
+                                    onClick={handleClose2}>
+                                Close
+                            </Button>
+
+                            <Button type="submit" variant="contained" color="primary" className="mx-3 col"
+                                    onClick={handleSubmitUpload2}>
+                                Add
+                            </Button>
+                        </div>
+                    </div>
+                </form>
+            </Modal>
+            <Modal
+                open={open3}
+                onClose={handleClose3}
+                className="d-flex justify-content-center align-items-center"
+
+            >
+
+                <form className="border border-secondary p-2 m-2 rounded-2 row bg-white py-4">
+                    <div className="pt-2">
+                        <h4 className="col d-flex justify-content-center">Add new-document</h4>
+                        <div className="col d-flex justify-content-center">
+
+                            <TextField className="m-3"
+                                       label="Description"
+                                       name="name"
+                                       required
+                                       size="small"
+                                       onChange={handleChangeUpload}
+                            />
+                            <input name="path" className="row d-flex justify-content-center px-2 mb-3 pt-4"
+                                   type="file" accept="image/*" onChange={handleChangeUploadFile}/>
+                        </div>
+
+                        <div className="col d-flex justify-content-center">
+
+                            <Button type="button" variant="contained" color="error" className="mx-3 col"
+                                    onClick={handleClose3}>
+                                Close
+                            </Button>
+
+                            <Button type="submit" variant="contained" color="primary" className="mx-3 col"
+                                    onClick={handleSubmitUpload3}>
+                                Add
+                            </Button>
+                        </div>
+                    </div>
+                </form>
+            </Modal>
+            <Modal
+                open={open4}
+                onClose={handleClose4}
+                className="d-flex justify-content-center align-items-center"
+
+            >
+
+                <form className="border border-secondary p-2 m-2 rounded-2 row bg-white py-4">
+                    <div className="pt-2">
+                        <h4 className="col d-flex justify-content-center">Add new-document</h4>
+                        <div className="col d-flex justify-content-center">
+
+                            <TextField className="m-3"
+                                       label="Description"
+                                       name="name"
+                                       required
+                                       size="small"
+                                       onChange={handleChangeUpload}
+                            />
+                            <input name="path" className="row d-flex justify-content-center px-2 mb-3 pt-4"
+                                   type="file" accept="image/*" onChange={handleChangeUploadFile}/>
+                        </div>
+
+                        <div className="col d-flex justify-content-center">
+
+                            <Button type="button" variant="contained" color="error" className="mx-3 col"
+                                    onClick={handleClose4}>
+                                Close
+                            </Button>
+
+                            <Button type="submit" variant="contained" color="primary" className="mx-3 col"
+                                    onClick={handleSubmitUpload4}>
                                 Add
                             </Button>
                         </div>

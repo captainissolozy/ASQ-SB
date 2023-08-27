@@ -1,13 +1,23 @@
 import * as React from "react";
-import {Button, TextField} from "@mui/material";
+import {Button, TextField, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import {MdOutlineArrowBackIos} from 'react-icons/md'
 import FormWrapper from "./FormWrapper";
 import {Link} from "react-router-dom";
+import {useEffect, useState} from "react";
 
 const BasicTextFieldsRegis = ({setPassword, setEmail, setRole, setName, handleAction}) => {
+
+    const [roleValue, setRoleValue] = useState("")
+
+
     const handleSubmit = e => {
         e.preventDefault();
 
+    };
+
+    const handleChange = (e) => {
+        setRole(e.target.value)
+        setRoleValue(e.target.value)
     };
 
     return (
@@ -40,16 +50,18 @@ const BasicTextFieldsRegis = ({setPassword, setEmail, setRole, setName, handleAc
                                required
                                onChange={(e) => setPassword(e.target.value)}
                     />
-                    <TextField className="my-3 mb-4"
-                               label="Role"
-                               variant="filled"
-                               type="role"
-                               required
-                               onChange={(e) => setRole(e.target.value)}
-                    />
-                    <div className="pt-2">
-
-
+                    <FormControl size="small" className="w-100 mxw">
+                                            <InputLabel id="demo-simple-select-label">Role</InputLabel>
+                                            <Select     id="demo-simple-select" labelId="demo-simple-select-label"
+                                                        name="status" label="Status" className="w-100"
+                                                        value={roleValue} onChange={handleChange}>
+                                                <MenuItem value={"Admin"}>Admin</MenuItem>
+                                                <MenuItem value={"Accountant"}>Accountant</MenuItem>
+                                                <MenuItem value={"Sales"}>Sales</MenuItem>
+                                                <MenuItem value={"Others"}>Others</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                    <div className="pt-2 d-flex justify-content-center wrap-btnsubmit mt-3">
                         <Button type="submit" variant="contained" color="primary" className="mx-3"
                                 onClick={handleAction}>
                             Signup

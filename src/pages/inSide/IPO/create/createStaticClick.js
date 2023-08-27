@@ -4,14 +4,14 @@ import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../../../context/UserContexts";
 import {Button, TextField, InputAdornment} from "@mui/material";
 import db from "../../../../config/firebase-config"
-import {collection, doc, getDoc, setDoc} from "firebase/firestore"
+import {collection, doc, getDoc, setDoc, updateDoc} from "firebase/firestore"
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import CustomerWrapper from "./CustomerWrapper";
 import FormPStatic2 from "./formPStatic2";
 import AddIcon from "@mui/icons-material/Add";
 import Modal from "@material-ui/core/Modal";
-
+import { ToWords } from 'to-words';
 
 
 export default function Customer(props) {
@@ -19,8 +19,12 @@ export default function Customer(props) {
     const initialFormDataProject = Object.freeze({
         genQo: "",
         payment: "",
+        payment2: "",
+        payment3: "",
         overhead: 0,
         specialdiscount: 0,
+        validity: "",
+        delivery: ""
     });
 
     const initialDocData = Object.freeze({
@@ -39,6 +43,7 @@ export default function Customer(props) {
     const [box2, setBox2] = useState("Taxpayer-num")
     const [box3, setBox3] = useState("email")
     const [boxLa, setBoxLa] = useState("Agent")
+    const [numWord, setNumword] = useState("Zero")
     const [count, setCount] = useState(0)
     const [listenC, setListen] = useState("");
     const [listenTotal, setListenTotal] = useState(0);
@@ -46,6 +51,9 @@ export default function Customer(props) {
     const [height, setHeight] = useState({});
     const [openTwo, setOpenTwo] = useState(false)
     const [docName, setDocName] = useState(initialDocData)
+    const [stateOfAD, setStateOfAD] = useState(false)
+    const [stateOfDA, setStateOfDA] = useState(false)
+    const role = sessionStorage.getItem("role")
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
@@ -87,6 +95,13 @@ export default function Customer(props) {
         if (docSnap.exists()) {
             setFormDataIn2(docSnap.data())
         }
+        if(formDataIn2.status === "Approved"){
+            setStateOfAD(true)
+            setStateOfDA(false)
+        }else if(formDataIn2.status === "Denied"){
+            setStateOfAD(false)
+            setStateOfDA(true)
+        }
     }, [])
 
     useEffect(() => {
@@ -106,16 +121,24 @@ export default function Customer(props) {
         if (!user) {
             navigate('/')
         }
+        window.scrollTo(0, 0)
     }, [navigate, user])
 
     const handleGoNext = async () => {
         navigate("/insideQuotation")
         sessionStorage.setItem("projectID", formDataIn.genQo)
+        const docRef1 = doc(db, "PO", sessionStorage.getItem("projectID"), "Quotation", sessionStorage.getItem("quotationID"));
+        await setDoc(docRef1, formDataIn2);
     };
 
     const pull_total = async (data) => {
         setListenTotal(data)
-    };
+        var total = ((listenTotal+(listenTotal*(formDataIn2.overhead/100)||0)||0)-(formDataIn2.specialdiscount||0))*1.07
+        const toWords = new ToWords({localeCode: 'en-US', converterOptions: {
+            ignoreDecimal: true}});
+        var words = toWords.convert(total)
+        setNumword(words)
+    }
 
     const createPDF = async () => {
         var originalTitle = document.title;
@@ -154,6 +177,27 @@ export default function Customer(props) {
         })
     }
 
+    const handleApprove = async (e) => {
+        setStateOfAD(true)
+        setStateOfDA(false)
+        const docRef1 = doc(db, "PO", formDataIn.genQo, "Quotation", formDataIn2.genQo);
+        await updateDoc(docRef1, {"status": "Approved"});
+        setFormDataIn2({
+            ...formDataIn2,
+            "status": "Approved"
+        })
+    }
+
+    const handleDenied = async (e) => {
+        setStateOfAD(false)
+        setStateOfDA(true)
+        const docRef1 = doc(db, "PO", formDataIn.genQo, "Quotation", formDataIn2.genQo);
+        await updateDoc(docRef1, {"status": "Denied"});
+        setFormDataIn2({
+            ...formDataIn2,
+            "status": "Denied"
+        })
+    }
 
     const handleSubmitPrice = async (e) => {
         e.preventDefault()
@@ -188,12 +232,22 @@ export default function Customer(props) {
               });
         }
     };
+
+    const handleKeypress = e => {
+        //it triggers by pressing the enter key
+        console.log("notnice")
+      if (e.keyCode === 13) {
+        handleSubmitPrice();
+        console.log("nice")
+      }
+    };
       
 
     return (
         <CustomerWrapper>
-            <div className="wrapper-box pt-4">
-                <h4 className="pt-1 pt-md-1 px-2 mb-4 mx-900" id="no-print">Quotation: {formDataIn2.genQo}</h4>
+            <div className="wrapper-box pt-4 pb-5">
+                <h4 className="pt-1 pt-md-1 px-2 mb-2 mx-900" id="no-print">Quotation: {formDataIn2.genQo}</h4>
+                <h4 className="pt-1 pt-md-1 px-2 mb-2 mx-900" id="no-print">Status: {formDataIn2.status || "Pending"}</h4>
                 <div className="container" id="pdf">
                     <div className="wrapper-header d-flex justify-content-between align-items-start mb-3 mx-2">
                         <div className="img-box"><img src="../../asq-logo.png" width="80"/></div>
@@ -375,7 +429,7 @@ export default function Customer(props) {
                                                     color: "#000000"
                                                 },
                                             }} variant="standard"
-                                                    name="projectNo" label="" className="w-100 wrap-textfield" required disabled={true}
+                                                    name="projectNo" label="" className="w-100 wrap-textfield" required disabled={true} value={formDataIn.genQo}
                                             />
                                         </div>
                                     </div>
@@ -444,7 +498,7 @@ export default function Customer(props) {
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td  className="ta-r px-2">{listenTotal}</td>
+                                        <td  className="ta-r px-2">{listenTotal.toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                         <td className="dlt-icon"></td>
                                     </tr> 
                                     <tr>
@@ -466,7 +520,7 @@ export default function Customer(props) {
                                                     textAlign: "right"
                                                 }
                                             }}
-                                            className="w-100 ta-r wrap-textfield" value={formDataIn2.overhead}>
+                                            className="w-100 ta-r wrap-textfield" value={formDataIn2.overhead || 0}>
                                             </TextField>
                                         </td>
                                         <td className="ta-r px-2">{((((formDataIn2.overhead/100)*listenTotal) || 0) + listenTotal).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
@@ -506,7 +560,7 @@ export default function Customer(props) {
                                         <td className="ta-r px-2">{(((((formDataIn2.overhead/100)*listenTotal) || 0 )+ listenTotal) - (formDataIn2.specialdiscount || 0)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                         <td className="dlt-icon"></td>
                                     </tr>
-                                    <tr>
+                                    <tr className="py-2">
                                         <td></td>
                                         <td className="ta-r px-2">VAT (7%)</td>
                                         <td></td>
@@ -519,7 +573,7 @@ export default function Customer(props) {
                                     </tr> 
                                     <tr className="hs-border">
                                         <td colspan="2" className="ta-border"></td>
-                                        <td colspan="5" className="ta-border"></td>
+                                        <td colspan="5" className="ta-border text-center">{numWord} THB</td>
                                         <td colspan="1" className="ta-border ta-r px-2">{((((((formDataIn2.overhead/100)*listenTotal) || 0 )+ listenTotal) - (formDataIn2.specialdiscount || 0))*1.07).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                         <td className="dlt-icon"></td>
                                     </tr>
@@ -534,34 +588,86 @@ export default function Customer(props) {
                                 </Button>
                             </div>
                         </div>
-                        <div className="row p-0 mb-5 wrap-text t-left mt-1 mx-2">
-                            <p3 className="p-0">Validity: 30 Days From qouted</p3>
-                            <p3 className="p-0">Delivery: 90 Days after confirmation by purchase order</p3>
-                            <div className="col p-0 d-flex flex-row align-items-center">
-                                    <p3 className="mr-2 p-0">Payment: </p3>
-                                    <div className="col p-0">
-                                        <TextField name="payment" type="text" variant="standard" InputLabelProps={{
-                                            shrink: true,
-                                        }} inputProps={{
-                                            style: {
-                                                height: "10px",
-                                            },
-                                        }}
-                                                label=""
-                                                value={formDataIn2.payment}
-                                                disabled={true}
-                                                className="w-100 px-1 wrap-textfield"
-                                                required
-                                        />
-                                    </div>
+                        <div className="row p-0 mb-5 wrap-text t-left mx-2">
+                        <div className="col-12 p-0 d-flex flex-row align-items-center">
+                                <p3 className="mr-2">Validity: </p3>
+                                <div className="col p-0">
+                                    <TextField name="validity" type="text" variant="standard" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "8px",
+                                        },
+                                    }}
+                                            onChange={handleChangePro2}
+                                            value={formDataIn2.validity}
+                                            disabled={false}
+                                            className="w-100 px-1 wrap-textfield"
+                                            required
+                                    />
                                 </div>
+                            </div>
+                            <div className="col-12 p-0 d-flex flex-row align-items-center">
+                                <p3 className="mr-2">Delivery: </p3>
+                                <div className="col p-0">
+                                    <TextField name="delivery" type="text" variant="standard" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "8px",
+                                        },
+                                    }}
+                                            onChange={handleChangePro2}
+                                            value={formDataIn2.delivery}
+                                            disabled={false}
+                                            className="w-100 px-1 wrap-textfield"
+                                            required
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-12 p-0 d-flex flex-row align-items-center">
+                                <p3 className="mr-2">Payment: </p3>
+                                <div className="col p-0">
+                                    <TextField name="payment" type="text" variant="standard" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "8px",
+                                        },
+                                    }}
+                                            onChange={handleChangePro2}
+                                            value={formDataIn2.payment}
+                                            disabled={false}
+                                            className="w-100 px-1 wrap-textfield"
+                                            required
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-12 p-0 d-flex flex-row align-items-center">
+                                <p3 className="mr-2"></p3>
+                                <div className="col p-0">
+                                    <TextField name="payment2" type="text" variant="standard" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "8px",
+                                        },
+                                    }}
+                                            onChange={handleChangePro2}
+                                            value={formDataIn2.payment2}
+                                            disabled={false}
+                                            className="w-100 px-1 wrap-textfield"
+                                            required
+                                    />
+                                </div>
+                            </div>
                         </div>
                         <div className="row wrap-text sign-namebox d-flex justify-content-center">
                             <div className="line"></div>
                             <p3 className="txt-sty">(อธีร์ ศิรินภาพันธ์)</p3>
                             <p3 className="txt-sty">Project Director</p3>
                         </div>
-                        <div className="row p-0 pb-2 m-1 mx-2">
+                        <div className="row p-0 mx-2">
                             <p2 className="p-0">บริษัท เอ สแควร์จํากัด</p2>
                             <p2 className="p-0">A SQUARE LIMITED.</p2>
                             <p2 className="p-0">26 ซอยนวมินทร์86 แขวงรามอินทรา เขตคันนายาว กรุงเทพฯ 10230</p2>
@@ -571,26 +677,41 @@ export default function Customer(props) {
                     </div>
                     
                 </div>
-                <div className="row p-1 pt-0 justify-content-end mx-900" id="no-print">
-                        <div className="col-4 p-0 mt-2 col-md-2 mx-1">
-                            <Button variant="contained" className="w-100 cs-add-btn confirm" color="primary" onClick={createPDF}
+                
+            </div>
+            <footer className="footer mb-2" id="no-print">
+                
+            <div className="row justify-content-end wrap-box" id="no-print">
+                <div className="row p-0 justify-content-end" id="no-print">
+                        {role === "Admin"?(<div className="col-4 wrap-btnfooter p-0 col-md-2">
+                            <Button variant="contained" className="w-100 confirm mx-wbtn" color="primary" onClick={handleApprove}
+                                size="small" disabled={stateOfAD}>Approve
+                            </Button>
+                        </div>):(<></>)}
+                        {role === "Admin"?(<div className="col-4 wrap-btnfooter p-0 col-md-2 mx-1">
+                            <Button variant="outlined" className="w-100 confirm mx-wbtn" color="error" onClick={handleDenied}
+                                size="small" disabled={stateOfDA}>Deny
+                            </Button>
+                        </div>):(<></>)}
+                        <div className="col-4 wrap-btnfooter p-0 col-md-2 ms-auto">
+                            <Button variant="contained" className="w-100 cs-add-btn confirm mx-wbtn" color="primary" onClick={createPDF}
                                 size="small">Save pdf
                             </Button>
                         </div>
-                    </div>
-                <div className="row p-1 pt-0 justify-content-end pb-4 mx-900" id="no-print">
-                    <div className="col-4 p-0 mt-2 col-md-2 mx-1">
-                        <Button  variant="contained" className="w-100 cs-add-btn confirm" color="secondary" onClick={handleGoNext}
-                                size="small">Back
+                        <div className="col-4 wrap-btnfooter p-0 col-md-2 mx-1">
+                        <Button variant="contained" className="w-100 cs-add-btn confirm mx-wbtn" color="primary" onClick={handleGoNext}
+                                size="small">Finish
                         </Button>
+                        </div>
+                        
                     </div>
                 </div>
-            </div>
+            </footer>
             <Modal
                 open={openTwo}
                 onClose={handleCloseTwo}
                 className="d-flex justify-content-center align-items-center"
-
+                onKeyDown={handleKeypress}
             >
 
                 <form className="border border-secondary p-2 m-2 rounded-2 row bg-white py-4" style={{maxWidth: "900px"}}>
@@ -608,6 +729,7 @@ export default function Customer(props) {
                                             },
                                         }}
                                                    name="description" label="Description" className="w-100"
+                                                   onKeyDown={handleKeypress}
                                         />
                                     </div>
                                 </div>
@@ -623,6 +745,7 @@ export default function Customer(props) {
                                             },
                                         }}
                                                    name="quantity" label="Quantity" className="w-100" Value={docName.quantity}
+                                                   onKeyDown={handleKeypress}
                                         />
                                     </div>
                                 </div>
@@ -701,7 +824,7 @@ export default function Customer(props) {
                         </div>
 
                         <div className="row d-flex justify-content-center">
-                            <Button type="submit" variant="contained" color="error" className="mx-3 col-3"
+                            <Button type="button" variant="contained" color="error" className="mx-3 col-3"
                                     onClick={handleCloseTwo}>
                                 Close
                             </Button>

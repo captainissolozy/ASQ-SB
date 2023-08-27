@@ -39,7 +39,7 @@ const AddTable = (props) => {
                 <td className="px-3">{data.genQo}</td>
                 <td className="px-3">{data.v_box1}</td>
                 <td className="px-3 overflow-hidden">{data.sales}</td>
-                <td className="px-3">{data.v_box6}</td>
+                <td className="px-3">{data.status || "Pending"}</td>
             </tr>
             </tbody>
 

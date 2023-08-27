@@ -11,8 +11,17 @@ const CustomerWrapper = styled.div`
     padding-left: 12px!important;
     padding-right: 12px!important;
   }
+  .wrap-btnfooter {
+    max-width: 6.25rem;
+  }
+  .wrapper-box {
+    padding-bottom: 5rem!important;
+  }
   .sm-containter {
     min-height: auto;
+  }
+  .mx-wbtn {
+    width: 6.25rem!important;
   }
   .txt {
     font-size: 12px;
@@ -147,8 +156,8 @@ const CustomerWrapper = styled.div`
     max-width: 350px;
     margin-left: auto!important;
     margin-right: 0;
-    margin-bottom: 20px;
-    padding-top: 10px;
+    margin-bottom: 10px;
+    padding-top: -20px;
   }
   .line {
     height: 16px;
@@ -184,8 +193,29 @@ const CustomerWrapper = styled.div`
   .MuiFormLabel-root.MuiInputLabel-root {
     line-height: 1!important;
   }
-  no-click{
+  .no-click{
     pointer-events: none;
+  }
+  .btn-save {
+    background-color: #302e38;
+  }
+
+  .footer{
+    background-color: rgb(255,255,255);
+    // backdrop-filter: blur(10px);
+    position: fixed;
+    width: 95%;
+    bottom: 0;
+    color: white;
+    font-size: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 6px;
+    padding: 10px;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgb(209, 213, 219) 0px 0px 0px 1px inset;
+  }
+  .footer .wrap-box {
+    width: 100%;
   }
   @media print {
     a[href]:after { content: none !important; }

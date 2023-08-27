@@ -2,7 +2,7 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../../../context/UserContexts";
-import {Button, IconButton, TextField} from "@mui/material";
+import {Button, IconButton, TextField,  Select, MenuItem, FormControl, InputLabel} from "@mui/material";
 import Modal from "@material-ui/core/Modal";
 import db, {storage} from "../../../../config/firebase-config"
 import {collection, doc, getDoc, setDoc, getDocs, deleteDoc} from "firebase/firestore"
@@ -18,14 +18,14 @@ import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
 export default function Customer() {
 
     const initialDocData = Object.freeze({
-        name: "",
+        status: "Pending",
     });
 
     const navigate = useNavigate()
     const {user} = useUserContext()
     const [open, setOpen] = useState(false)
     const [openTwo, setOpenTwo] = useState(false)
-    const [formDataIn, setFormDataIn] = useState([])
+    const [formDataIn, setFormDataIn] = useState(initialDocData)
     const [edit] = useState(true)
     const [box2, setBox2] = useState("Taxpayer-num")
     const [box3, setBox3] = useState("Register-capital")
@@ -33,6 +33,7 @@ export default function Customer() {
     const [count, setCount] = useState(0)
     const [docName, setDocName] = useState(initialDocData)
     const [file, setFile] = useState("");
+    const [state, setState] = useState(false);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
@@ -46,9 +47,9 @@ export default function Customer() {
                 }
             }
         }
-
+        console.log(formDataIn)
         await fetchData()
-    }, [count])
+    }, [count, navigate])
 
     useEffect(() => {
         if (formDataIn.type === "Private") {
@@ -67,6 +68,7 @@ export default function Customer() {
         if (!user) {
             navigate('/')
         }
+        window.scrollTo(0, 0)
     }, [navigate, user])
 
     const handleCreate = () => {
@@ -75,6 +77,13 @@ export default function Customer() {
     }
     const handleCreateTwo = () => {
         setOpenTwo(true)
+    }
+
+    const handleChangePro = (e) => {
+        setFormDataIn({
+            ...formDataIn,
+            [e.target.name]: e.target.value
+        })
     }
 
     const handleCloseTwo = () => {
@@ -98,6 +107,18 @@ export default function Customer() {
             ...docName,
             [e.target.name]: e.target.value
         })
+    }
+
+    const handleChangeData = async (e) => {
+        e.preventDefault()
+        const docRef1 = doc(db, "PO", sessionStorage.getItem("projectID"));
+        const docSnap = await setDoc(docRef1, formDataIn);
+        setState(true)
+    }
+
+    const handleEdit = (e) => {
+        e.preventDefault()
+        setState(false)
     }
 
     const handleSubmitUpload = (e) => {
@@ -131,9 +152,9 @@ export default function Customer() {
         <CustomerWrapper>
             <div className="wrapper-box pt-4">
                 <div className="container pt-5 mb-3">
-                    <h4 className="pt-1 pt-md-1 px-2 mb-0">Project: {formDataIn.projectName}</h4>
+                    <h4 className="pt-1 pt-md-1 px-2 mb-0">Project</h4>
                     <form>
-                        <div className="row pt-2 pt-md-1 px-3 mb-0">
+                        <div className="row pt-2 pt-md-1 px-3 mb-0 mt-2">
                             <div className="col px-2">
                                 <div className="col pt-1 col-md-12">
                                     <TextField type="search" InputLabelProps={{
@@ -143,7 +164,12 @@ export default function Customer() {
                                             height: "5px",
                                         },
                                     }}
-                                               name="subject" label="Subject" className="w-100" disabled={true} value={formDataIn.subject}
+                                               onChange={handleChangePro}
+                                               name="projectName" 
+                                               label="Name" 
+                                               className="w-100" 
+                                               disabled={state} 
+                                               value={formDataIn.projectName}
                                     />
                                 </div>
                             </div>
@@ -156,13 +182,67 @@ export default function Customer() {
                                             height: "5px",
                                         },
                                     }}
+                                                name="subject"
+                                                label="Subject"
+                                                className="w-100"
+                                                required
+                                                onChange={handleChangePro}
+                                                disabled={state}
+                                                value={formDataIn.subject}/>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row pt-2 pt-md-1 px-3 mb-0">
+                            <div className="col px-2">
+                                <div className="col pt-1 col-md-12">
+                                    <TextField type="search" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "7px",
+                                        },
+                                    }}
                                                label="sales"
                                                className="w-100"
                                                required
+                                               onChange={handleChangePro}
                                                disabled={true}
                                                value={formDataIn.sales}/>
                                 </div>
                             </div>
+                            <div className="col p-0">
+                                <div className="col p-0 pt-1 mb-2 mx-2">
+                                <FormControl size="small" className="w-100">
+                                                <InputLabel id="demo-simple-select-outlined">Status</InputLabel>
+                                                <Select 
+                                                            name="status" label="Status" className="w-100" defaultValue={formDataIn.status}
+                                                            inputProps={{ 'aria-label': 'Without label' }} disabled={state}
+                                                            value={formDataIn.status} onChange={handleChangePro}>
+                                                    <MenuItem value="Pending">Pending</MenuItem>
+                                                    <MenuItem  value={"Completed"}>Completed</MenuItem>
+                                                    <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
+                                                    <MenuItem value={"Denied"}>Denied</MenuItem>
+                                                </Select>
+                                        </FormControl>
+                                </div>
+                            </div>
+                            <div className="row p-0 mx-0 pe-2">
+                            <div className="col p-0 mb-3">
+                                <div className="col p-0 pt-1 mt-2 d-flex flex-row-reverse">
+                                    <Button variant="contained" className="btn-save" color="primary"
+                                    onClick={handleChangeData} disabled={state}
+                                            type="submit"
+                                            size="small">Save
+                                    </Button>
+                                    {state?(<Button variant="outlined" className="mx-1" color="primary"
+                                    onClick={handleEdit}
+                                            type="submit"
+                                            size="small">Edit
+                                    </Button>):(<></>)}
+                                </div>
+                                
+                            </div>
+                        </div>
                         </div>
                         <div className="row mt-1 d-flex justify-content-center">
                             <div className="row">
@@ -258,7 +338,7 @@ export default function Customer() {
                                 <thead className="bg-dark text-light">
                                 <tr>
                                     <th scope="col" className="">Quotation</th>
-                                    <th scope="col" className="">File</th>
+                                    <th scope="col" className="">Status</th>
                                 </tr>
                                 </thead>
                                 <FormP roomCode={sessionStorage.getItem("projectID")}/>

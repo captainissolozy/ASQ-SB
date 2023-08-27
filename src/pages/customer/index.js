@@ -57,6 +57,7 @@ export default function Customer() {
         if (!user) {
             navigate('/')
         }
+        window.scrollTo(0, 0)
     }, [navigate, user])
 
     const handleCreate = () => {
@@ -153,6 +154,7 @@ export default function Customer() {
                                                 </MenuItem>
                                                 <MenuItem value={"Completed"}>Completed</MenuItem>
                                                 <MenuItem value={"Incompleted"}>Incompleted</MenuItem>
+                                                <MenuItem value={"BlackList"}>BlackList</MenuItem>
                                             </Select>
                                         </FormControl>
                                     </div>

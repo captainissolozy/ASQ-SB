@@ -44,7 +44,7 @@ const AddTable = (props) => {
                 <td className="ta-c px-2 py-2">{parseFloat(data.material).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                 <td className="ta-r px-2 py-2">{(parseFloat(data.labor) + parseFloat(data.material)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                 <td className="ta-r px-2 py-2">{((parseFloat(data.labor) + parseFloat(data.material))*parseFloat(data.quantity)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
-                <td className="text-center dlt-icon z-indie" onClick={onDelete} id={data.description}><FontAwesomeIcon id={data.description} icon={faTrashCan} className="no-click"/></td>
+                <td className="text-center dlt-icon z-indie" onClick={onDelete} id={data.description}>x</td>
             </tr>
             </tbody>
         ))

@@ -103,7 +103,7 @@ export default function Lobby() {
                 <div className="container mb-5 py-4 px-3 shadow-sm" style={{height: "auto"}}>
                     <div className=''>
                     <div className="col px-2 d-flex align-items-center justify-content-between">
-                        <h4 className="mb-0">Quotation</h4>
+                        <h4 className="mb-0">Project</h4>
                         <IconButton variant="outlined" className="px-3 rounded-2 sty-addbtn" color="primary" onClick={handleCreate}
                                     size="small"><p3 className="mb-0">Add</p3></IconButton>
                     </div>
@@ -182,7 +182,9 @@ export default function Lobby() {
                                                     <em>All</em>
                                                 </MenuItem>
                                                 <MenuItem value={"Completed"}>Completed</MenuItem>
-                                                <MenuItem value={"Incompleted"}>Incompleted</MenuItem>
+                                                <MenuItem value={"Pending"}>Pending</MenuItem>
+                                                <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
+                                                <MenuItem value={"Denied"}>Denied</MenuItem>
                                             </Select>
                                         </FormControl>
                                         </div>
@@ -196,7 +198,7 @@ export default function Lobby() {
                             <table className="table border-bottom-0 overflow-auto" id="dtHorizontalExample" >
                                 <thead className="text-light">
                                 <tr>
-                                    <th scope="col" className="t-stick th px-3">Q-No</th>
+                                    <th scope="col" className="t-stick th px-3">Project-No</th>
                                     <th scope="col" className="t-stick th px-3">Customer</th>
                                     <th scope="col" className="t-stick th px-3">Sales</th>
                                     <th scope="col" className="t-stick th px-3">Status</th>

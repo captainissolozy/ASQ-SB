@@ -2,9 +2,12 @@ import styled from "styled-components";
 
 const CustomerWrapper = styled.div`
   .container{
-    height: 100vh;
     max-width: 900px !important;
     background: white;
+    border-radius: 10px;
+  }
+  .no-click{
+    pointer-events: none;
   }
   .t-height{
     max-height: 190px;
