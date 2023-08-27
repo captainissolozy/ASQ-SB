@@ -506,7 +506,9 @@ export default function Customer(props) {
                                         <th scope="col" className="w-1">Material</th>
                                     </tr>
                                 </thead>
-                                <FormPStatic roomCode={formDataIn.genQo} currentCode={formDataIn.genQo+"_"+formDataIn.option} reOpen={openTwo} func={pull_total}/>
+                                <tbody>
+                                    <FormPStatic roomCode={formDataIn.genQo} currentCode={formDataIn.genQo+"_"+formDataIn.option} reOpen={openTwo} func={pull_total}/>
+                                </tbody>
                                 <tbody className="min-h">
                                     <tr>
                                         <th></th>

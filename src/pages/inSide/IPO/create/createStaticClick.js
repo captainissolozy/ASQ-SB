@@ -475,7 +475,9 @@ export default function Customer(props) {
                                         <th scope="col" className="w-1">Material</th>
                                     </tr>
                                 </thead>
-                                <FormPStatic2 func={pull_total} reOpen={openTwo}/>
+                                <tbody>
+                                    <FormPStatic2 func={pull_total} reOpen={openTwo}/>
+                                </tbody>
                                 <tbody className="min-h">
                                     <tr>
                                         <th></th>

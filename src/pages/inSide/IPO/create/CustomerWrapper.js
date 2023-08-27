@@ -93,6 +93,12 @@ const CustomerWrapper = styled.div`
     margin-bottom: 20px;
     min-height: 480px;
   }
+  table.qa-table tbody {
+    vertical-align: inherit;
+  }
+  table.qa-table tbody tr {
+    height: 33px;
+  }
   table tbody.min-h {
     min-height: 33px;
     height: 100%;

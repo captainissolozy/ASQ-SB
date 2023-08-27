@@ -32,7 +32,7 @@ const AddTable = (props) => {
         formData.filter( data => {
             return ((data.dummy != "dummy"))
             }).map((data,i) => (
-            <tbody>
+            
             <tr>
                 <td className="text-center">{(i+1).toString().padStart(2, "0")}</td>
                 <td className="px-2 py-2" ref={myTable}>{data.description}</td>
@@ -44,7 +44,7 @@ const AddTable = (props) => {
                 <td className="ta-c px-2 py-2">{((parseFloat(data.labor) + parseFloat(data.material))*parseFloat(data.quantity)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                 <td className="text-center dlt-icon z-indie" onClick={onDelete} id={data.description}>x</td>
             </tr>
-            </tbody>
+            
         ))
     )
 }
