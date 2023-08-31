@@ -28,6 +28,8 @@ export default function Customer(props) {
         payment: "",
         payment2: "",
         payment3: "",
+        payment4: "",
+        payment5: "",
         overhead: 0,
         specialdiscount: 0,
         validity: "",
@@ -79,22 +81,23 @@ export default function Customer(props) {
         await fetchData()
 
         var heightT_o = myTable.current.clientHeight;
+        console.log(heightT_o)
         if(heightT_o > 500 && heightT_o <= 700){
             setHeight({
-                "min-height": 700 + "px"
+                "height": 700 + "px"
               });
         }else if(heightT_o > 700 && heightT_o <= 1450){
             setHeight({
-                "min-height": 1450 + "px"
+                "height": 1450 + "px"
               });
            
         }else if(heightT_o > 1450 && heightT_o <= 2150){
             setHeight({
-                "min-height": 2150 + "px"
+                "height": 2150 + "px"
               });
         }else if(heightT_o > 2290 && heightT_o <= 3230){
             setHeight({
-                "min-height": 3230 + "px"
+                "height": 3230 + "px"
               });
         }
     }, [count])
@@ -195,22 +198,23 @@ export default function Customer(props) {
             quantity: 1,
         })
         var heightT_o = myTable.current.clientHeight;
+        console.log(heightT_o)
         if(heightT_o > 500 && heightT_o <= 700){
             setHeight({
-                "min-height": 700 + "px"
+                "height": 700 + "px"
               });
         }else if(heightT_o > 700 && heightT_o <= 1450){
             setHeight({
-                "min-height": 1450 + "px"
+                "height": 1450 + "px"
               });
            
         }else if(heightT_o > 1450 && heightT_o <= 2150){
             setHeight({
-                "min-height": 2150 + "px"
+                "height": 2150 + "px"
               });
         }else if(heightT_o > 2290 && heightT_o <= 3230){
             setHeight({
-                "min-height": 3230 + "px"
+                "height": 3230 + "px"
               });
         }
     };
@@ -239,8 +243,8 @@ export default function Customer(props) {
     const pull_total = async (data) => {
         setListenTotal(data)
         var total = ((listenTotal+(listenTotal*(formDataProject2.overhead/100)||0)||0)-(formDataProject2.specialdiscount||0))*1.07
-        const toWords = new ToWords({localeCode: 'en-US', converterOptions: {
-            ignoreDecimal: true}});
+        const toWords = new ToWords({localeCode: 'en-US'});
+        total = Math.round(total*100)/100
         var words = toWords.convert(total)
         setNumword(words)
     }
@@ -299,9 +303,9 @@ export default function Customer(props) {
                         </div>
                     </form>
                 </div>
-                <div className="container bg-white">
-                    <div className="wrapper-header d-flex justify-content-between align-items-start mb-3">
-                        <div className="img-box"><img src="../../asq-logo.png" width="80"/></div>
+                <div className="container bg-white px-2">
+                    <div className="wrapper-header d-flex justify-content-between align-items-start mb-1">
+                        <div className="img-box px-1"><img src="../../asq-logo.png" width="75"/></div>
                         <div className="wrap-text d-flex flex-column">
                             <p3 className="pb-1">ใบเสนอราคา/ใบสั่งซื้อ</p3>
                             <p3 className="pb-1">Quotation/Purchase Order</p3>
@@ -489,7 +493,7 @@ export default function Customer(props) {
                     </div>
                     {stateOfN?(<div className="container-fluid p-0">
                         <div className="row m-2 pt-1 mb-0">
-                            <table className="qa-table" ref={myTable} style={height}>
+                            <table className="qa-table">
                                 <thead className="bg-dark text-light">
                                     <tr>
                                         <th scope="col" rowspan="2" className="w-45">No.</th>
@@ -506,10 +510,10 @@ export default function Customer(props) {
                                         <th scope="col" className="w-1">Material</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody ref={myTable}>
                                     <FormPStatic roomCode={formDataIn.genQo} currentCode={formDataIn.genQo+"_"+formDataIn.option} reOpen={openTwo} func={pull_total}/>
                                 </tbody>
-                                <tbody className="min-h">
+                                <tbody className="min-h" style={height}>
                                     <tr>
                                         <th></th>
                                         <th></th>
@@ -605,22 +609,22 @@ export default function Customer(props) {
                                         <td className="dlt-icon"></td>
                                     </tr> 
                                     <tr className="hs-border">
-                                        <td colspan="2" className="ta-border"></td>
-                                        <td colspan="5" className="ta-border text-center">{numWord} THB</td>
+                                        <td colspan="2" className="ta-border px-2"></td>
+                                        <td colspan="5" className="ia ta-border text-center px-2">{numWord} THB</td>
                                         <td colspan="1" className="ta-border ta-r px-2">{(((listenTotal+(listenTotal*(formDataProject2.overhead/100)||0)||0)-(formDataProject2.specialdiscount||0))*1.07).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                         <td className="dlt-icon"></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <div className="row m-2 justify-content-end mt-0" id="no-print">
+                        <div className="row mx-2 justify-content-end mt-0" id="no-print">
                             <div className="col-2 p-0 mx-md-1 col-md-1 mx-2">
                                 <Button variant="outlined" className="w-100" color="primary" onClick={handleCreateTwo}
                                         size="small"><AddIcon/>
                                 </Button>
                             </div>
                         </div>
-                        <div className="row p-0 mb-5 wrap-text t-left mx-2">
+                        <div className="row p-0 wrap-text t-left mx-2">
                         <div className="col-12 p-0 d-flex flex-row align-items-center">
                                 <p3 className="mr-2">Validity: </p3>
                                 <div className="col p-0">
@@ -687,6 +691,60 @@ export default function Customer(props) {
                                     }}
                                             onChange={handleChangePro2}
                                             value={formDataProject2.payment2}
+                                            disabled={false}
+                                            className="w-100 px-1 wrap-textfield"
+                                            required
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-12 p-0 d-flex flex-row align-items-center">
+                                <p3 className="mr-2"></p3>
+                                <div className="col p-0">
+                                    <TextField name="payment3" type="text" variant="standard" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "8px",
+                                        },
+                                    }}
+                                            onChange={handleChangePro2}
+                                            value={formDataProject2.payment3}
+                                            disabled={false}
+                                            className="w-100 px-1 wrap-textfield"
+                                            required
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-12 p-0 d-flex flex-row align-items-center">
+                                <p3 className="mr-2"></p3>
+                                <div className="col p-0">
+                                    <TextField name="payment4" type="text" variant="standard" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "8px",
+                                        },
+                                    }}
+                                            onChange={handleChangePro2}
+                                            value={formDataProject2.payment4}
+                                            disabled={false}
+                                            className="w-100 px-1 wrap-textfield"
+                                            required
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-12 p-0 d-flex flex-row align-items-center">
+                                <p3 className="mr-2"></p3>
+                                <div className="col p-0">
+                                    <TextField name="payment5" type="text" variant="standard" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "8px",
+                                        },
+                                    }}
+                                            onChange={handleChangePro2}
+                                            value={formDataProject2.payment5}
                                             disabled={false}
                                             className="w-100 px-1 wrap-textfield"
                                             required

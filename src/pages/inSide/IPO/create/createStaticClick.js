@@ -21,6 +21,8 @@ export default function Customer(props) {
         payment: "",
         payment2: "",
         payment3: "",
+        payment4: "",
+        payment5: "",
         overhead: 0,
         specialdiscount: 0,
         validity: "",
@@ -48,7 +50,9 @@ export default function Customer(props) {
     const [listenC, setListen] = useState("");
     const [listenTotal, setListenTotal] = useState(0);
     const myTable = useRef(null);
+    const myAllTable = useRef(null);
     const [height, setHeight] = useState({});
+    const [t_height, setTHeight] = useState({});
     const [openTwo, setOpenTwo] = useState(false)
     const [docName, setDocName] = useState(initialDocData)
     const [stateOfAD, setStateOfAD] = useState(false)
@@ -68,25 +72,6 @@ export default function Customer(props) {
             }
         }
         await fetchData()
-        var heightT_o = myTable.current.clientHeight;
-        if(heightT_o > 500 && heightT_o <= 700){
-            setHeight({
-                "min-height": 700 + "px"
-              });
-        }else if(heightT_o > 700 && heightT_o <= 1450){
-            setHeight({
-                "min-height": 1450 + "px"
-              });
-           
-        }else if(heightT_o > 1450 && heightT_o <= 2150){
-            setHeight({
-                "min-height": 2150 + "px"
-              });
-        }else if(heightT_o > 2290 && heightT_o <= 3230){
-            setHeight({
-                "min-height": 3230 + "px"
-              });
-        }
     }, [count])
 
     useEffect(async () => {
@@ -133,20 +118,55 @@ export default function Customer(props) {
 
     const pull_total = async (data) => {
         setListenTotal(data)
-        var total = ((listenTotal+(listenTotal*(formDataIn2.overhead/100)||0)||0)-(formDataIn2.specialdiscount||0))*1.07
-        const toWords = new ToWords({localeCode: 'en-US', converterOptions: {
-            ignoreDecimal: true}});
-        var words = toWords.convert(total)
+        var total = (((listenTotal+(listenTotal*(formDataIn2.overhead/100)||0)||0)-(formDataIn2.specialdiscount||0))*1.07)
+        total = Math.round(total*100)/100
+        const toWords = new ToWords({localeCode: 'en-US', });
+        var words = toWords.convert(parseFloat(total))
         setNumword(words)
     }
 
     const createPDF = async () => {
+        await handlePrint();
         var originalTitle = document.title;
         document.title = '\u00A0';
         window.print();
         document.title = originalTitle;
+        await handleClosePrint();
       };
     
+    const handlePrint = async () => {
+        var heightT_o = myTable.current.clientHeight;
+        var total_h = myAllTable.current.clientHeight;
+        if(heightT_o <= 337){
+            console.log(total_h, "1", heightT_o)
+            setHeight({
+                "height": (325 - heightT_o) + "px"
+              });
+        }else if(heightT_o <= 1373){
+            console.log(total_h, "2", heightT_o)
+            setHeight({
+                "height": (1373 - heightT_o) + "px"
+              });
+            console.log(total_h, "2", heightT_o)
+        }else if(heightT_o <= 2430){
+            setHeight({
+                "height": (2425 - heightT_o) + "px"
+              });
+        }else if(heightT_o <= 3430){
+            setHeight({
+                "height": (3425 - heightT_o) + "px"
+              });
+        }else{
+            setHeight({
+                "height": (heightT_o) + "px"
+              });
+        }
+    }
+
+    const handleClosePrint = async () => {
+        setHeight({});
+    }
+
     const handleCreateTwo = () => {
         setOpenTwo(true)
     }
@@ -211,34 +231,12 @@ export default function Customer(props) {
             material: 0,
             quantity: 1,
         })
-        
-        var heightT_o = myTable.current.clientHeight;
-        if(heightT_o > 500 && heightT_o <= 800){
-            setHeight({
-                "min-height": 700 + "px"
-              });
-        }else if(heightT_o > 900 && heightT_o <= 1450){
-            setHeight({
-                "min-height": 1450 + "px"
-              });
-           
-        }else if(heightT_o > 1450 && heightT_o <= 2150){
-            setHeight({
-                "min-height": 2150 + "px"
-              });
-        }else if(heightT_o > 2150 && heightT_o <= 3230){
-            setHeight({
-                "min-height": 3230 + "px"
-              });
-        }
     };
 
     const handleKeypress = e => {
         //it triggers by pressing the enter key
-        console.log("notnice")
       if (e.keyCode === 13) {
         handleSubmitPrice();
-        console.log("nice")
       }
     };
       
@@ -248,9 +246,9 @@ export default function Customer(props) {
             <div className="wrapper-box pt-4 pb-5">
                 <h4 className="pt-1 pt-md-1 px-2 mb-2 mx-900" id="no-print">Quotation: {formDataIn2.genQo}</h4>
                 <h4 className="pt-1 pt-md-1 px-2 mb-2 mx-900" id="no-print">Status: {formDataIn2.status || "Pending"}</h4>
-                <div className="container" id="pdf">
-                    <div className="wrapper-header d-flex justify-content-between align-items-start mb-3 mx-2">
-                        <div className="img-box"><img src="../../asq-logo.png" width="80"/></div>
+                <div className="container px-3" id="pdf">
+                    <div className="wrapper-header d-flex justify-content-between align-items-start mb-1 mx-2">
+                        <div className="img-box px-1"><img src="../../asq-logo.png" width="75"/></div>
                         <div className="wrap-text d-flex flex-column">
                             <p3 className="pb-1">ใบเสนอราคา/ใบสั่งซื้อ</p3>
                             <p3 className="pb-1">Quotation/Purchase Order</p3>
@@ -456,9 +454,9 @@ export default function Customer(props) {
                         <p3 className="p-0">บริษัทฯ ยินดีเสนอราคาสินค้าดังรายการต่อไปนี้</p3>
                     </div>
                     <div className="container-fluid p-0">
-                        <div className="row m-2 pt-1 mb-0 mt-0">
+                        <div className="row m-2 pt-1 mb-0 mt-0" ref={myAllTable}>
 
-                            <table className="qa-table splitForPrint" ref={myTable} style={height}>
+                            <table className="qa-table splitForPrint">
                             <thead className="bg-dark text-light">
                                     <tr>
                                         <th scope="col" rowspan="2" className="w-45">No.</th>
@@ -475,10 +473,10 @@ export default function Customer(props) {
                                         <th scope="col" className="w-1">Material</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody ref={myTable}>
                                     <FormPStatic2 func={pull_total} reOpen={openTwo}/>
                                 </tbody>
-                                <tbody className="min-h">
+                                <tbody className="min-h" style={height}>
                                     <tr>
                                         <th></th>
                                         <th></th>
@@ -574,8 +572,8 @@ export default function Customer(props) {
                                         <td className="dlt-icon"></td>
                                     </tr> 
                                     <tr className="hs-border">
-                                        <td colspan="2" className="ta-border"></td>
-                                        <td colspan="5" className="ta-border text-center">{numWord} THB</td>
+                                        <td colspan="2" className="ta-border px-2"></td>
+                                        <td colspan="5" className="ia ta-border text-center px-2">{numWord} THB</td>
                                         <td colspan="1" className="ta-border ta-r px-2">{((((((formDataIn2.overhead/100)*listenTotal) || 0 )+ listenTotal) - (formDataIn2.specialdiscount || 0))*1.07).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                                         <td className="dlt-icon"></td>
                                     </tr>
@@ -583,14 +581,14 @@ export default function Customer(props) {
                             </table>
                             
                         </div>
-                        <div className="row m-2 justify-content-end mt-0" id="no-print">
+                        <div className="row mx-2 justify-content-end mt-0" id="no-print">
                             <div className="col-2 p-0 mx-md-1 col-md-1 mx-2">
                                 <Button variant="outlined" className="w-100" color="primary" onClick={handleCreateTwo}
                                         size="small"><AddIcon/>
                                 </Button>
                             </div>
                         </div>
-                        <div className="row p-0 mb-5 wrap-text t-left mx-2">
+                        <div className="row p-0 wrap-text t-left mx-2">
                         <div className="col-12 p-0 d-flex flex-row align-items-center">
                                 <p3 className="mr-2">Validity: </p3>
                                 <div className="col p-0">
@@ -604,7 +602,7 @@ export default function Customer(props) {
                                             onChange={handleChangePro2}
                                             value={formDataIn2.validity}
                                             disabled={false}
-                                            className="w-100 px-1 wrap-textfield"
+                                            className="w-100 px-1 wrap-textfield py-0"
                                             required
                                     />
                                 </div>
@@ -663,19 +661,76 @@ export default function Customer(props) {
                                     />
                                 </div>
                             </div>
+                            <div className="col-12 p-0 d-flex flex-row align-items-center">
+                                <p3 className="mr-2"></p3>
+                                <div className="col p-0">
+                                    <TextField name="payment3" type="text" variant="standard" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "8px",
+                                        },
+                                    }}
+                                            onChange={handleChangePro2}
+                                            value={formDataIn2.payment3}
+                                            disabled={false}
+                                            className="w-100 px-1 wrap-textfield"
+                                            required
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-12 p-0 d-flex flex-row align-items-center">
+                                <p3 className="mr-2"></p3>
+                                <div className="col p-0">
+                                    <TextField name="payment4" type="text" variant="standard" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "8px",
+                                        },
+                                    }}
+                                            onChange={handleChangePro2}
+                                            value={formDataIn2.payment4}
+                                            disabled={false}
+                                            className="w-100 px-1 wrap-textfield"
+                                            required
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-12 p-0 d-flex flex-row align-items-center">
+                                <p3 className="mr-2"></p3>
+                                <div className="col p-0">
+                                    <TextField name="payment5" type="text" variant="standard" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "8px",
+                                        },
+                                    }}
+                                            onChange={handleChangePro2}
+                                            value={formDataIn2.payment5}
+                                            disabled={false}
+                                            className="w-100 px-1 wrap-textfield"
+                                            required
+                                    />
+                                </div>
+                            </div>
                         </div>
-                        <div className="row wrap-text sign-namebox d-flex justify-content-center">
-                            <div className="line"></div>
-                            <p3 className="txt-sty">(อธีร์ ศิรินภาพันธ์)</p3>
-                            <p3 className="txt-sty">Project Director</p3>
+                        <div className="col">
+                            <div className="row wrap-text sign-namebox d-flex justify-content-center">
+                                <div className="line"></div>
+                                <p3 className="txt-sty">(อธีร์ ศิรินภาพันธ์)</p3>
+                                <p3 className="txt-sty">Project Director</p3>
+                            </div>
+                            <div className="row p-0 mx-2">
+                                <p2 className="p-0">บริษัท เอ สแควร์จํากัด</p2>
+                                <p2 className="p-0">A SQUARE LIMITED.</p2>
+                                <p2 className="p-0">26 ซอยนวมินทร์86 แขวงรามอินทรา เขตคันนายาว กรุงเทพฯ 10230</p2>
+                                <p2 className="p-0">26 Soi Nawamin 86 Ram Intra, Khan Na Yao, BANGKOK 10230</p2>
+                                <p2 className="p-0">Tel: (662) 0-2542-2108-9 ;Email: pracha.imail@gmail.com; www.asquare.co.th</p2>
+                            </div>
                         </div>
-                        <div className="row p-0 mx-2">
-                            <p2 className="p-0">บริษัท เอ สแควร์จํากัด</p2>
-                            <p2 className="p-0">A SQUARE LIMITED.</p2>
-                            <p2 className="p-0">26 ซอยนวมินทร์86 แขวงรามอินทรา เขตคันนายาว กรุงเทพฯ 10230</p2>
-                            <p2 className="p-0">26 Soi Nawamin 86 Ram Intra, Khan Na Yao, BANGKOK 10230</p2>
-                            <p2 className="p-0">Tel: (662) 0-2542-2108-9 ;Email: pracha.imail@gmail.com; www.asquare.co.th</p2>
-                        </div>
+                        
                     </div>
                     
                 </div>

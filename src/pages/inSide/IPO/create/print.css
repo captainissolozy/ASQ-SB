@@ -123,6 +123,7 @@
   }
   .ta-r {
     text-align: right;
+    vertical-align: middle;
   }
   .ta-c {
     text-align: right;
@@ -174,5 +175,9 @@
       background-color: transparent!important;
       border: 1px solid #000;
 
+    }
+    .ta-r {
+      text-align: right;
+      vertical-align: middle;
     }
   }

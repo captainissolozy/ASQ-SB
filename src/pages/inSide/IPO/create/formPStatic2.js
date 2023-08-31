@@ -35,15 +35,15 @@ const AddTable = (props) => {
             return ((data.dummy != "dummy"))
             }).map((data,i) => (
             <tr>
-                <td className="text-center">{(i+1).toString().padStart(2, "0")}</td>
+                <td className="text-center px-2 py-2">{(i+1).toString().padStart(2, "0")}</td>
                 <td className="px-2 py-2" ref={myTable}>{data.description}</td>
-                <td className="text-center">{data.quantity}</td>
-                <td className="text-center">{data.unit}</td>
+                <td className="text-center px-2 py-2">{data.quantity}</td>
+                <td className="text-center px-2 py-2">{data.unit}</td>
                 <td className="ta-c px-2 py-2">{parseFloat(data.labor).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                 <td className="ta-c px-2 py-2">{parseFloat(data.material).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                 <td className="ta-r px-2 py-2">{(parseFloat(data.labor) + parseFloat(data.material)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                 <td className="ta-r px-2 py-2">{((parseFloat(data.labor) + parseFloat(data.material))*parseFloat(data.quantity)).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
-                <td className="text-center dlt-icon z-indie" onClick={onDelete} id={data.description}>x</td>
+                <td className="text-center dlt-icon z-indie px-2 py-2" onClick={onDelete} id={data.description}>x</td>
             </tr>
         ))
     )

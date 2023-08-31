@@ -90,18 +90,20 @@ const CustomerWrapper = styled.div`
     box-shadow: none;
   }
   table.qa-table {
-    margin-bottom: 20px;
-    min-height: 480px;
+    margin-bottom: 5px;
+    display:block;
+    padding: 0;
   }
   table.qa-table tbody {
     vertical-align: inherit;
   }
   table.qa-table tbody tr {
-    height: 33px;
+    height: 25px;
   }
   table tbody.min-h {
-    min-height: 33px;
-    height: 100%;
+  }
+  table tbody.min-h tr {
+    
   }
   table thead tr th {
     background-color: #d7d7d7;
@@ -132,7 +134,7 @@ const CustomerWrapper = styled.div`
     height: 23px;
   }
   table tbody.min-h tr th {
-    height: 33px;
+
   }
   .w-desc {
     width: 250px;
@@ -162,7 +164,7 @@ const CustomerWrapper = styled.div`
     max-width: 350px;
     margin-left: auto!important;
     margin-right: 0;
-    margin-bottom: 10px;
+    margin-bottom: 0px;
     padding-top: -20px;
   }
   .line {
@@ -223,6 +225,8 @@ const CustomerWrapper = styled.div`
   .footer .wrap-box {
     width: 100%;
   }
+
+  
   @media print {
     a[href]:after { content: none !important; }
     #no-print {
@@ -234,6 +238,7 @@ const CustomerWrapper = styled.div`
     .container {
       padding-top: 0!important;
     }
+
     .wrap-textfield .MuiInputBase-root.MuiInput-root::before {
       border-bottom-style: none!important;
       border-bottom: transparent!important;
@@ -241,6 +246,10 @@ const CustomerWrapper = styled.div`
     .wrap-textfield .MuiInputBase-root.MuiInput-root{
       line-height: 12px;
       height: 18px;
+    }
+    .ta-r {
+      text-align: right;
+      vertical-align: middle;
     }
     table .dlt-icon {
       display:none!important;
