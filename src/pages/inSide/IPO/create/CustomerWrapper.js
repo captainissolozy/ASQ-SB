@@ -247,6 +247,9 @@ const CustomerWrapper = styled.div`
       line-height: 12px;
       height: 18px;
     }
+    .ia{
+      vertical-align: middle;
+    }
     .ta-r {
       text-align: right;
       vertical-align: middle;

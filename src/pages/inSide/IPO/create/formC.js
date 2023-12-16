@@ -25,7 +25,6 @@ const AddTable = (props) => {
     }, [props.reOpen])
 
     const onDelete = async (e) => {
-        console.log(e.target.id)
         const docRef1 = doc(db, "PO", props.roomCode, "Quotation", props.roomCode, "work", e.target.id);
         await deleteDoc(docRef1);
     };

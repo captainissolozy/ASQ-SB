@@ -15,6 +15,11 @@ import CreateQuote from "./pages/inSide/IPO/create/create"
 import InsideQuote from "./pages/inSide/IPO/create/inProject"
 import StaticQuote from "./pages/inSide/IPO/create/createStatic"
 import StaticQuote2 from "./pages/inSide/IPO/create/createStaticClick"
+import Accounting from "./pages/accounting";
+import Balance from "./pages/accounting/balance";
+import Taxes from "./pages/accounting/taxes";
+import Lent from "./pages/accounting/lent";
+import Record from "./pages/accounting/record";
 
 
 function App() {
@@ -33,16 +38,13 @@ function App() {
             <Routes>
                 <Route path="/" element={<LoginPage/>}/>
                 <Route path="/home" element={<Home/>}/>
-                <Route
-                    path="/login"
-                    element={<LoginPage
-                    />}
-                />
-                <Route
-                    path="/regis"
-                    element={<RegisPage
-                    />}
-                />
+                <Route path="/login" element={<LoginPage/>}/>
+                <Route path="/regis" element={<RegisPage/>}/>
+                <Route path="/accounting" element={<Accounting/>}/>
+                <Route path="/taxes" element={<Taxes/>}/>
+                <Route path="/balance" element={<Balance/>}/>
+                <Route path="/record" element={<Record/>}/>
+                <Route path="/lent" element={<Lent/>}/>
                 <Route path="/lobby" element={<Lobby/>}/>
                 <Route path="/customer" element={<Customer/>}/>
                 <Route path="/supplier" element={<Supplier/>}/>

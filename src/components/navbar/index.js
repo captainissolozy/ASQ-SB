@@ -43,7 +43,7 @@ const Navbar = () => {
         navigate("/lobby")
     }
 
-    if (userInfo === {}) return null;
+    if (userInfo == {}) return null;
     return (
         <NavWrapper>
             <nav className="navbar navbar-expand-lg navbar-dark fixed-top mb-4" id="no-print">
@@ -124,6 +124,21 @@ const Navbar = () => {
                                     ><Button className="m-0 p-0 text-secondary" variant="text"
                                              onClick={handlePrPo}>Project</Button>
                                     </form>
+                                </li>
+                            ) : (
+                                <></>
+                            )}
+                            {userInfo.role === "Admin" && user ? (
+                                <li className="nav-item"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#navbarTogglerDemo02"
+                                    aria-controls="navbarTogglerDemo02">
+                                    <Link
+                                        to={"/accounting"}
+                                        className="nav-link d-flex justify-content-center"
+                                    >
+                                        <Button className="mt-0 p-0 text-secondary" color="secondary" variant="text">Accounting</Button>
+                                    </Link>
                                 </li>
                             ) : (
                                 <></>

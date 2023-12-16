@@ -9,44 +9,42 @@ import {
     TextField,
     Select,
     MenuItem,
-    FormControl
+    FormControl,
+    Button
 } from "@mui/material";
 import db from "../../../config/firebase-config"
-import {doc, getDoc, setDoc} from "firebase/firestore"
+import {doc, getDoc, setDoc, } from "firebase/firestore"
 import AddTable from "./AddTable";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import Modal from "@material-ui/core/Modal";
 
 
 export default function Lobby() {
 
     const initialFormData = Object.freeze({
-        email: sessionStorage.getItem('email'),
-        title: "",
-        timeLimit: 0,
-        gameState: true,
-        turn: 0,
-        pubLic: "no",
-        WinState: false,
-        UniqueKey: "",
-        winCon: 0
+        name: "",
+        mode: "",
+        amount: "",
+        form: "",
+        day: "",
+        month: "",
+        year: ""
     });
 
     const initialSearchKey = Object.freeze({
-        sales: "",
-        genQo: "",
+        name: "",
+        mode: "",
+        form: "",
         day: "",
         month: "",
-        year: "",
-        status: "",
+        year: ""
     });
 
     const navigate = useNavigate()
     const {user} = useUserContext()
     const [open, setOpen] = useState(false)
     const [formData, updateFormData] = useState(initialFormData)
-    const [gameData, upDateGameData] = useState()
-    const [pKey, generatePKey] = useState("")
     const [searchKey, setSearchKey] = useState(initialSearchKey)
 
     useEffect(() => {
@@ -57,10 +55,17 @@ export default function Lobby() {
 
     const handleCreate = () => {
         setOpen(true)
-        sessionStorage.removeItem('roomKeyCus');
-        sessionStorage.removeItem('selectCus');
-        navigate('/createQuotation')
     }
+    const handleClose = () => {
+        setOpen(false)
+    }
+    const handleChange = (e) => {
+        updateFormData({
+            ...formData,
+            [e.target.name]: e.target.value.trim()
+        })
+    }
+
 
     const joinChange = (e) => {
         setSearchKey({
@@ -69,13 +74,20 @@ export default function Lobby() {
         })
     }
 
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        const docRef1 = doc(db, "accounting", "incomeExpense", "record", formData.name+formData.amount);
+        await setDoc(docRef1, formData);
+        setOpen(false)
+    };
+
     return (
         <LobbyWrapper>
             <div className="wrapper-box pt-4">
                 <div className="container mb-5 py-4 px-3 shadow-sm" style={{height: "auto"}}>
                     <div className=''>
                     <div className="col px-2 d-flex align-items-center justify-content-between">
-                        <h4 className="mb-0">Project</h4>
+                        <h4 className="mb-0">Income & Expense</h4>
                         <IconButton variant="outlined" className="px-3 rounded-2 sty-addbtn" color="primary" onClick={handleCreate}
                                     size="small"><p3 className="mb-0">Add</p3></IconButton>
                     </div>
@@ -90,7 +102,7 @@ export default function Lobby() {
                                             height: "5px",
                                         },
                                     }}
-                                               name="genQo" label="Quotation Id" className="w-100" onChange={joinChange}/>
+                                               name="name" label="Description" className="w-100" onChange={joinChange}/>
                                 </div>
                             </div>
                             <div className="col-md-4 p-0 col">
@@ -102,7 +114,7 @@ export default function Lobby() {
                                             height: "5px",
                                         },
                                     }}
-                                               name="sales" label="Sales" className="w-100" onChange={joinChange}/>
+                                               name="form" label="Form" className="w-100" onChange={joinChange}/>
                                 </div>
                             </div>
                         </div>
@@ -148,15 +160,13 @@ export default function Lobby() {
                                         <FormControl size="small" className="w-100">
                                             <InputLabel id="demo-simple-select-label">Status</InputLabel>
                                             <Select     id="demo-simple-select" labelId="demo-simple-select-label"
-                                                        name="status" label="Status" className="w-100"
-                                                        value={searchKey.status} onChange={joinChange}>
+                                                        name="mode" label="Type" className="w-100"
+                                                        value={searchKey.mode} onChange={joinChange}>
                                                 <MenuItem value="">
                                                     <em>All</em>
                                                 </MenuItem>
-                                                <MenuItem value={"Completed"}>Completed</MenuItem>
-                                                <MenuItem value={"Pending"}>Pending</MenuItem>
-                                                <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
-                                                <MenuItem value={"Denied"}>Denied</MenuItem>
+                                                <MenuItem value={"Income"}>Income</MenuItem>
+                                                <MenuItem value={"Expense"}>Expense</MenuItem>
                                             </Select>
                                         </FormControl>
                                         </div>
@@ -170,13 +180,14 @@ export default function Lobby() {
                             <table className="table border-bottom-0 overflow-auto" id="dtHorizontalExample" >
                                 <thead className="text-light">
                                 <tr>
-                                    <th scope="col" className="t-stick th px-3">Project-No</th>
-                                    <th scope="col" className="t-stick th px-3">Customer</th>
-                                    <th scope="col" className="t-stick th px-3">Sales</th>
-                                    <th scope="col" className="t-stick th px-3">Status</th>
+                                    <th scope="col" className="t-stick th px-3">Type</th>
+                                    <th scope="col" className="t-stick th px-3">Description</th>
+                                    <th scope="col" className="t-stick th px-3">Form</th>
+                                    <th scope="col" className="t-stick th px-3">Amount</th>
+                                    <th scope="col" className="t-stick th px-3">Date</th>
                                 </tr>
                                 </thead>
-                                <AddTable genQo={searchKey.genQo} sales={searchKey.sales.toLowerCase()} status={searchKey.status.toLowerCase()}
+                                <AddTable name={searchKey.name} form={searchKey.form.toLowerCase()} mode={searchKey.mode}
                                           day={searchKey.day} month={searchKey.month} year={searchKey.year}
                                 />
                             </table>
@@ -184,6 +195,81 @@ export default function Lobby() {
                 </div>
 
             </div>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                className="d-flex justify-content-center align-items-center"
+                disableEnforceFocus
+            >
+
+                <form className="border border-secondary p-4 m-2 rounded-2 row bg-white" style={{maxWidth: "600px"}}>
+                    <div className="heading-container mt-2 mb-2 p-0 d-flex justify-content-start">
+                        <h3>Income & Expense</h3>
+                    </div>
+                    <InputLabel id="demo-simple-select-label" >Type</InputLabel>
+                        <Select id="demo-simple-select" labelId="demo-simple-select-label" name="mode" label="Type" className="w-100 mb-2"
+                            value={formData.mode} onChange={handleChange}>
+                                <MenuItem value={"Income"}>Income</MenuItem>
+                                <MenuItem value={"Expense"}>Expense</MenuItem>
+                        </Select>
+                    <TextField className="my-2"
+                               label="Description"
+                               name="name"
+                               required
+                               onChange={handleChange}
+                    />
+                    <TextField className="my-2"
+                               label="Amount"
+                               name="amount"
+                               type="text"
+                               required
+                               onChange={handleChange}
+                    />
+                    <TextField className="my-2"
+                               label="Form"
+                               name="form"
+                               type="text"
+                               required
+                               onChange={handleChange}
+                    />
+                    <div className="px-0 mb-2">
+                        <div className="col d-flex justify-content-between w-100">
+                        <TextField className="my-2"
+                               label="Day"
+                               name="day"
+                               type="text"
+                               required
+                               onChange={handleChange}/>
+                    <TextField className="my-2"
+                               label="Month"
+                               name="month"
+                               type="text"
+                               required
+                               onChange={handleChange}/>
+                    <TextField className="my-2"
+                               label="Year"
+                               name="year"
+                               type="text"
+                               required
+                               onChange={handleChange}/>
+                        </div>
+                    </div>
+
+                    <div className="pt-2">
+                        <div className="col d-flex justify-content-center">
+                            <Button type="submit" variant="contained" color="secondary" className="mx-3 m"
+                                    onClick={handleClose}>
+                                Close
+                            </Button>
+
+                            <Button type="submit" variant="contained" color="primary" className="mx-3"
+                                    onClick={handleSubmit}>
+                                Create
+                            </Button>
+                        </div>
+                    </div>
+                </form>
+            </Modal>
             <ToastContainer/>
         </LobbyWrapper>
 

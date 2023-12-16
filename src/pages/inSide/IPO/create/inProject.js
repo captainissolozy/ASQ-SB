@@ -25,6 +25,7 @@ export default function Customer() {
     const {user} = useUserContext()
     const [open, setOpen] = useState(false)
     const [openTwo, setOpenTwo] = useState(false)
+    const [openThree, setOpenThree] = useState(false)
     const [formDataIn, setFormDataIn] = useState(initialDocData)
     const [edit] = useState(true)
     const [box2, setBox2] = useState("Taxpayer-num")
@@ -32,6 +33,8 @@ export default function Customer() {
     const [boxLa, setBoxLa] = useState("Agent")
     const [count, setCount] = useState(0)
     const [docName, setDocName] = useState(initialDocData)
+    const [inComeDoc, setIncomeDoc] = useState(initialDocData)
+    const [exPenseDoc, setExpenseDoc] = useState(initialDocData)
     const [file, setFile] = useState("");
     const [state, setState] = useState(false);
 
@@ -75,8 +78,13 @@ export default function Customer() {
         setOpen(true)
         navigate('/StaticQuotation')
     }
+
     const handleCreateTwo = () => {
         setOpenTwo(true)
+    }
+
+    const handleCreateThree = () => {
+        setOpenThree(true)
     }
 
     const handleChangePro = (e) => {
@@ -98,6 +106,17 @@ export default function Customer() {
         })
     }
 
+    const handleCloseThree = () => {
+        setOpenThree(false)
+        setIncomeDoc({
+            ...docName,
+            income: "",
+            amount: 0,
+            date: "",
+            file: "",
+        })
+    }
+
     const handleChangeUploadFile = (e) => {
         setFile(e.target.files[0])
     }
@@ -105,6 +124,20 @@ export default function Customer() {
     const handleChangeUpload = (e) => {
         setDocName({
             ...docName,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const handleChangeIncome = (e) => {
+        setIncomeDoc({
+            ...inComeDoc,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const handleChangeExpense = (e) => {
+        setExpenseDoc({
+            ...exPenseDoc,
             [e.target.name]: e.target.value
         })
     }
@@ -145,6 +178,33 @@ export default function Customer() {
             }
         );
         setOpenTwo(false)
+        setDocName("")
+    }
+
+    const handleSubmitIncome = (e) => {
+        e.preventDefault()
+        if (!file) {
+            alert("Please choose a file first!")
+        }
+        const storageRef = ref(storage, `/media/PO/${file.name}`)
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+                const percent = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+            },
+            (err) => console.log(err),
+            () => {
+                // download url
+                getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
+                    const docRef1 = doc(db, "PO", sessionStorage.getItem("projectID"), "income", docName.name);
+                    await setDoc(docRef1, {inComeDoc, url});
+                });
+            }
+        );
+        setOpenThree(false)
         setDocName("")
     }
 
@@ -366,14 +426,60 @@ export default function Customer() {
                         </div>
                         <div className="row m-2 justify-content-end mt-0">
                             <div className="col-2 p-0 mx-md-1 col-md-1 mx-2">
-                                <Button variant="outlined" className="w-100" color="primary" onClick={handleCreateTwo}
+                                <Button variant="outlined" className="w-100" color="primary" onClick={handleCreateThree}
                                         size="small"><AddIcon/>
                                 </Button>
                             </div>
                         </div>
                     </div>
                     <div className="container-fluid p-0">
+                        <div className="row m-2 pt-1 mb-0 mt-4">
+                        <h6 className="">Income:</h6>
+                            <table className="table table-sm border-bottom-0">
+                                <thead className="bg-dark text-light">
+                                <tr>
+                                    <th scope="col" className="">Income</th>
+                                    <th scope="col" className="">Amount</th>
+                                    <th scope="col" className="">Date</th>
+                                    <th scope="col" className="">File</th>
+                                </tr>
+                                </thead>
+                                <FormP2 roomCode={sessionStorage.getItem("projectID")}/>
+                            </table>
+                        </div>
+                        <div className="row m-2 justify-content-end mt-0">
+                            <div className="col-2 p-0 mx-md-1 col-md-1 mx-2">
+                                <Button variant="outlined" className="w-100" color="primary" onClick={handleCreateThree}
+                                        size="small"><AddIcon/>
+                                </Button>
+                            </div>
+                        </div>
                     </div>
+                    <div className="container-fluid p-0">
+                        <div className="row m-2 pt-1 mb-0 mt-4">
+                        <h6 className="">Expense:</h6>
+                            <table className="table table-sm border-bottom-0">
+                                <thead className="bg-dark text-light">
+                                <tr>
+                                    <th scope="col" className="">Expense</th>
+                                    <th scope="col" className="">Amount</th>
+                                    <th scope="col" className="">Date</th>
+                                    <th scope="col" className="">Suplier</th>
+                                    <th scope="col" className="">file</th>
+                                </tr>
+                                </thead>
+                                <FormP2 roomCode={sessionStorage.getItem("projectID")}/>
+                            </table>
+                        </div>
+                        <div className="row m-2 justify-content-end mt-0">
+                            <div className="col-2 p-0 mx-md-1 col-md-1 mx-2">
+                                <Button variant="outlined" className="w-100" color="primary" onClick={handleCreateTwo}
+                                        size="small"><AddIcon/>
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
             <Modal
@@ -407,6 +513,57 @@ export default function Customer() {
 
                             <Button type="submit" variant="contained" color="primary" className="mx-3 col"
                                     onClick={handleSubmitUpload}>
+                                Add
+                            </Button>
+                        </div>
+                    </div>
+                </form>
+            </Modal>
+            <Modal
+                open={openThree}
+                onClose={handleCloseThree}
+                className="d-flex justify-content-center align-items-center"
+
+            >
+                <form className="border border-secondary p-2 m-2 rounded-2 row bg-white py-4" style={{maxWidth: "900px"}}>
+                    <div className="pt-2">
+                        <h4 className="col d-flex justify-content-center">Add new-Income</h4>
+                        <div className="col d-flex justify-content-center">
+
+                            <TextField className="m-3"
+                                       label="Income"
+                                       name="income"
+                                       required
+                                       size="small"
+                                       onChange={handleChangeIncome}
+                            />
+                            <TextField className="m-3"
+                                       label="Amount"
+                                       name="amount"
+                                       required
+                                       size="small"
+                                       onChange={handleChangeIncome}
+                            />
+                            <TextField className="m-3"
+                                       label="Date"
+                                       name="date"
+                                       required
+                                       size="small"
+                                       onChange={handleChangeIncome}
+                            />
+                            <input name="path" className="row d-flex justify-content-center px-2 mb-3 pt-4"
+                                   type="file" accept="image/*" onChange={handleChangeUploadFile}/>
+                        </div>
+
+                        <div className="col-4 d-flex justify-content-center">
+
+                            <Button type="submit" variant="contained" color="error" className="mx-3 col"
+                                    onClick={handleCloseThree}>
+                                Close
+                            </Button>
+
+                            <Button type="submit" variant="contained" color="primary" className="mx-3 col"
+                                    onClick={handleSubmitIncome}>
                                 Add
                             </Button>
                         </div>

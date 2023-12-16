@@ -126,7 +126,9 @@ export default function Customer(props) {
     }
 
     const createPDF = async () => {
-        await handlePrint();
+        var total_h = myAllTable.current.clientHeight;
+        console.log("ni", total_h)
+        await handlePrint(total_h);
         var originalTitle = document.title;
         document.title = '\u00A0';
         window.print();
@@ -134,20 +136,24 @@ export default function Customer(props) {
         await handleClosePrint();
       };
     
-    const handlePrint = async () => {
+    const handlePrint = async (total_h) => {
+        //11 decrease 10 px
+        //
         var heightT_o = myTable.current.clientHeight;
-        var total_h = myAllTable.current.clientHeight;
         if(heightT_o <= 337){
-            console.log(total_h, "1", heightT_o)
             setHeight({
                 "height": (325 - heightT_o) + "px"
               });
+              setTHeight({
+                "height": "500" + "px"
+            });
         }else if(heightT_o <= 1373){
-            console.log(total_h, "2", heightT_o)
             setHeight({
                 "height": (1373 - heightT_o) + "px"
               });
-            console.log(total_h, "2", heightT_o)
+              setTHeight({
+                "height": "1740" + "px"
+            });
         }else if(heightT_o <= 2430){
             setHeight({
                 "height": (2425 - heightT_o) + "px"
@@ -165,6 +171,7 @@ export default function Customer(props) {
 
     const handleClosePrint = async () => {
         setHeight({});
+        setTHeight({});
     }
 
     const handleCreateTwo = () => {
@@ -453,8 +460,8 @@ export default function Customer(props) {
                     <div className="row mx-2 mt-1 wrap-text">
                         <p3 className="p-0">บริษัทฯ ยินดีเสนอราคาสินค้าดังรายการต่อไปนี้</p3>
                     </div>
-                    <div className="container-fluid p-0">
-                        <div className="row m-2 pt-1 mb-0 mt-0" ref={myAllTable}>
+                    <div className="container-fluid p-0" ref={myAllTable} style={t_height}>
+                        <div className="row m-2 pt-1 mb-0 mt-0"  >
 
                             <table className="qa-table splitForPrint">
                             <thead className="bg-dark text-light">
