@@ -19,10 +19,6 @@ export default function Accounting() {
         }
     }, [navigate, user]);
 
-    const handleNavToIncome = () => {
-        navigate("/incomeExpense");
-    };
-
     return (
         <LobbyWrapper>
             <div className="wrapper-box pt-4">

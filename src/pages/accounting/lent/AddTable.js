@@ -17,7 +17,7 @@ const AddTable = (props) => {
 
     return (
         formData.filter( result => {
-            return ((result.name.toLowerCase() == (props.name) || props.name == "")
+            return ((result.name.toLowerCase().includes(props.name.toLowerCase()) || props.name == "")
                     && result.description.includes(props.description)
                     && result.day.includes(props.day)
                     && result.month.includes(props.month) 
@@ -34,10 +34,10 @@ const AddTable = (props) => {
                 <td className="px-3">{data.name}</td>
                 <td className="px-3">{data.description}</td>
                 <td className="px-3 text-center">{data.day+"/"+data.month+"/"+data.year}</td>
-                <td className="px-3 overflow-hidden text-end">{data.lent}</td>
+                <td className="px-3 overflow-hidden text-end">{parseFloat(data.lent).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                 <td className="px-3 text-center">{data.pday+"/"+data.pmonth+"/"+data.pyear}</td>
-                <td className="px-3 text-end">{data.payback}</td>
-                <td className="px-3 text-end">{data.lent - data.payback}</td>
+                <td className="px-3 text-end">{parseFloat(data.payback).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
+                <td className="px-3 text-end">{parseFloat(data.lent - data.payback).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
             </tr>
             </tbody>
             

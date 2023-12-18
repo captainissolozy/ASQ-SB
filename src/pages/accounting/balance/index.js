@@ -44,6 +44,7 @@ export default function Lobby() {
     const navigate = useNavigate()
     const {user} = useUserContext()
     const [open, setOpen] = useState(false)
+    const [total, setTotal] = useState(0)
     const [formData, updateFormData] = useState(initialFormData)
     const [searchKey, setSearchKey] = useState(initialSearchKey)
 
@@ -58,12 +59,17 @@ export default function Lobby() {
     }
     const handleClose = () => {
         setOpen(false)
+        updateFormData({})
     }
     const handleChange = (e) => {
         updateFormData({
             ...formData,
             [e.target.name]: e.target.value.trim()
         })
+    }
+
+    const listenTotal = (data) => {
+        setTotal(data)
     }
 
 
@@ -76,9 +82,13 @@ export default function Lobby() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const docRef1 = doc(db, "accounting", "incomeExpense", "record", formData.name+formData.amount);
-        await setDoc(docRef1, formData);
-        setOpen(false)
+        if(formData.amount == "" || formData.day == "" || formData.month == ""|| formData.year == ""){
+
+        }else{
+            const docRef1 = doc(db, "accounting", "incomeExpense", "record", formData.name+formData.amount);
+            await setDoc(docRef1, formData);
+            setOpen(false)
+        }
     };
 
     return (
@@ -183,14 +193,15 @@ export default function Lobby() {
                                     <th scope="col" className="t-stick th px-3">Type</th>
                                     <th scope="col" className="t-stick th px-3">Description</th>
                                     <th scope="col" className="t-stick th px-3">Form</th>
-                                    <th scope="col" className="t-stick th px-3">Amount</th>
                                     <th scope="col" className="t-stick th px-3">Date</th>
+                                    <th scope="col" className="t-stick th px-3 text-end">Amount</th>
                                 </tr>
                                 </thead>
                                 <AddTable name={searchKey.name} form={searchKey.form.toLowerCase()} mode={searchKey.mode}
-                                          day={searchKey.day} month={searchKey.month} year={searchKey.year}
+                                          day={searchKey.day} month={searchKey.month} year={searchKey.year} total={listenTotal}
                                 />
                             </table>
+                            <h5 className="d-flex justify-content-end">Total : {total.toLocaleString(undefined, {maximumFractionDigits:2})}</h5>
                     </div>
                 </div>
 

@@ -7,6 +7,9 @@ const LobbyWrapper = styled.div`
     background: white;
     border-radius: 12px;
   }
+  .text-s{
+    font-size: 16px;
+  }
 .t-tab{
     height: calc(75vh - 62.5px);
     border-bottom: black;

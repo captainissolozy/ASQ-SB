@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import db from "../../../config/firebase-config"
 import {collection, doc, getDoc, onSnapshot} from "firebase/firestore"
-import ComboBox from "./combobox";
 
 
 const AddTable = (props) => {
@@ -28,8 +27,8 @@ const AddTable = (props) => {
                 <td className="px-3">{data.bank}</td>
                 <td className="px-3">{data.number}</td>
                 <td className="px-3">{data.description}</td>
-                <td className="px-3 text-end">{data.day+"/"+data.month+"/"+data.year}</td>
-                <td className="px-3 overflow-hidden">{data.amount}</td>
+                <td className="px-3">{data.day+"/"+data.month+"/"+data.year}</td>
+                <td className="px-3 overflow-hidden text-end">{parseFloat(data.amount).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
             </tr>
             </tbody>
 
