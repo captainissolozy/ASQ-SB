@@ -50,7 +50,6 @@ export default function Customer() {
                 }
             }
         }
-        console.log(formDataIn)
         await fetchData()
     }, [count, navigate])
 
@@ -277,7 +276,7 @@ export default function Customer() {
                                                 <Select 
                                                             name="status" label="Status" className="w-100" defaultValue={formDataIn.status}
                                                             inputProps={{ 'aria-label': 'Without label' }} disabled={state}
-                                                            value={formDataIn.status} onChange={handleChangePro}>
+                                                            value={formDataIn.status || "Pending"} onChange={handleChangePro}>
                                                     <MenuItem value="Pending">Pending</MenuItem>
                                                     <MenuItem  value={"Completed"}>Completed</MenuItem>
                                                     <MenuItem value={"Cancelled"}>Cancelled</MenuItem>

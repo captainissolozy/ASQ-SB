@@ -17,6 +17,7 @@ export default function Accounting() {
         if (!user) {
             navigate("/");
         }
+        window.scrollTo(0, 0)
     }, [navigate, user]);
 
     return (

@@ -50,6 +50,7 @@ const NavWrapper = styled.div`
 .btn-res{
   @media screen and (max-width: 769px){
     display: none!important;
+    
   }
 }
   .collapsible .content {
@@ -70,6 +71,9 @@ const NavWrapper = styled.div`
     @media screen and (max-width: 769px){
       display: block;
     }
+  }
+  @media (min-width: 768px) { 
+    .navbar-expand-md .navbar-collapse { height: auto !important; }
   }
 `
 export default NavWrapper

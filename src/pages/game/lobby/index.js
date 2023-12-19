@@ -53,6 +53,7 @@ export default function Lobby() {
         if (!user) {
             navigate('/')
         }
+        window.scrollTo(0, 0)
     }, [navigate, user])
 
     const handleCreate = () => {
