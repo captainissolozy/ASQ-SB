@@ -1,9 +1,12 @@
 import styled from "styled-components";
 
 const NavWrapper = styled.div` 
+  @media (min-width: 768px) { 
+    .navbar-expand-md .navbar-collapse { height: auto !important; }
+  }
   .navbar{
     background: #302e38;
-    position: static;
+    position: sticky;
   }
   .lmh{
     max-width: 1400px;
@@ -71,9 +74,6 @@ const NavWrapper = styled.div`
     @media screen and (max-width: 769px){
       display: block;
     }
-  }
-  @media (min-width: 768px) { 
-    .navbar-expand-md .navbar-collapse { height: auto !important; }
   }
 `
 export default NavWrapper

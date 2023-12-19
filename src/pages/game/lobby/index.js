@@ -72,7 +72,7 @@ export default function Lobby() {
 
     return (
         <LobbyWrapper>
-            <div className="wrapper-box pt-4">
+            <div className="wrapper-box">
                 <div className="container mb-5 py-4 px-3 shadow-sm" style={{height: "auto"}}>
                     <div className=''>
                     <div className="col px-2 d-flex align-items-center justify-content-between">
