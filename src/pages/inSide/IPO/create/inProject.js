@@ -397,8 +397,8 @@ export default function Customer() {
                             <table className="table table-sm border-bottom-0 common-table">
                                 <thead className="bg-dark text-light">
                                 <tr>
-                                    <th scope="col" className="">Quotation</th>
-                                    <th scope="col" className="">Status</th>
+                                    <th style={{width: 60+'%'}} className="">Quotation</th>
+                                    <th scope="col-4" className="">Status</th>
                                 </tr>
                                 </thead>
                                 <FormP roomCode={sessionStorage.getItem("projectID")}/>
@@ -417,8 +417,8 @@ export default function Customer() {
                             <table className="table table-sm border-bottom-0">
                                 <thead className="bg-dark text-light">
                                 <tr>
-                                    <th scope="col" className="">Description</th>
-                                    <th scope="col" className="">Document</th>
+                                    <th style={{width: 60+'%'}} className="">Description</th>
+                                    <th scope="col-2" className="">Document</th>
                                 </tr>
                                 </thead>
                                 <FormP2 roomCode={sessionStorage.getItem("projectID")}/>
@@ -426,7 +426,7 @@ export default function Customer() {
                         </div>
                         <div className="row m-2 justify-content-end mt-0">
                             <div className="col-2 p-0 mx-md-1 col-md-1 mx-2">
-                                <Button variant="outlined" className="w-100" color="primary" onClick={handleCreateThree}
+                                <Button variant="outlined" className="w-100" color="primary" onClick={handleCreateTwo}
                                         size="small"><AddIcon/>
                                 </Button>
                             </div>
@@ -438,10 +438,10 @@ export default function Customer() {
                             <table className="table table-sm border-bottom-0">
                                 <thead className="bg-dark text-light">
                                 <tr>
-                                    <th scope="col" className="">Income</th>
-                                    <th scope="col" className="">Amount</th>
-                                    <th scope="col" className="">Date</th>
-                                    <th scope="col" className="">File</th>
+                                    <th style={{width: 40+'%'}} className="">Income</th>
+                                    <th style={{width: 20+'%'}} className="">Amount</th>
+                                    <th style={{width: 20+'%'}} className="">Date</th>
+                                    <th style={{width: 20+'%'}} className="">File</th>
                                 </tr>
                                 </thead>
                                 <FormP2 roomCode={sessionStorage.getItem("projectID")}/>
@@ -461,11 +461,11 @@ export default function Customer() {
                             <table className="table table-sm border-bottom-0">
                                 <thead className="bg-dark text-light">
                                 <tr>
-                                    <th scope="col" className="">Expense</th>
-                                    <th scope="col" className="">Amount</th>
-                                    <th scope="col" className="">Date</th>
-                                    <th scope="col" className="">Suplier</th>
-                                    <th scope="col" className="">file</th>
+                                    <th style={{width: 40+'%'}} className="">Expense</th>
+                                    <th style={{width: 20+'%'}} className="">Suplier</th>
+                                    <th style={{width: 15+'%'}} className="">Amount</th>
+                                    <th style={{width: 15+'%'}} className="">Date</th>
+                                    <th style={{width: 10+'%'}} className="">file</th>
                                 </tr>
                                 </thead>
                                 <FormP2 roomCode={sessionStorage.getItem("projectID")}/>
@@ -473,7 +473,7 @@ export default function Customer() {
                         </div>
                         <div className="row m-2 justify-content-end mt-0">
                             <div className="col-2 p-0 mx-md-1 col-md-1 mx-2">
-                                <Button variant="outlined" className="w-100" color="primary" onClick={handleCreateTwo}
+                                <Button variant="outlined" className="w-100" color="primary" onClick={handleCreateThree}
                                         size="small"><AddIcon/>
                                 </Button>
                             </div>

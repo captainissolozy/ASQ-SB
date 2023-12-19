@@ -20,7 +20,7 @@ const AddTable = (props) => {
             <tbody>
             <tr>
                 <td>{data.docName.name}</td>
-                <td key={data.url}><a href={data.url} target="_blank">{data.docName.name}.png</a></td>
+                <td key={data.url} className="text-center"><a href={data.url} target="_blank">{data.docName.name}.png</a></td>
             </tr>
             </tbody>
 

@@ -29,7 +29,7 @@ const AddTable = (props) => {
             <tbody>
             <tr>
                 <td>{data.genQo}</td>
-                <td onClick={() => handleJoinPublic(data.genQo)} className="tb-click text-decoration-underline text-primary">{data.status || "Pending"}</td>
+                <td onClick={() => handleJoinPublic(data.genQo)} className="tb-click text-decoration-underline text-primary text-center">{data.status || "Pending"}</td>
             </tr>
             </tbody>
 
