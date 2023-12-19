@@ -84,7 +84,7 @@ export default function Lobby() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         if(formData.amount == "" || formData.day == "" || formData.month == ""|| formData.year == ""){
-
+            
         }else{
             const docRef1 = doc(db, "accounting", "incomeExpense", "record", formData.name+formData.amount);
             await setDoc(docRef1, formData);

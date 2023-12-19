@@ -350,7 +350,7 @@ export default function Customer() {
 
     return (
         <CustomerWrapper>
-            <div className="wrapper-box pt-1">
+            <div className="wrapper-box pt-4">
                 <div className="container pt-3 px-2 mb-5 pb-4">
                     <div className="heading-container mt-2 d-flex justify-content-start px-2 pt-1">
                         <h4 className="pt-1 pt-md-1">Supplier-Info:</h4>

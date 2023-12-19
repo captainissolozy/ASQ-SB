@@ -10,7 +10,7 @@ const AddTable = (props) => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        onSnapshot(collection(db, "PO", props.roomCode, "media"), (snapshot) => {
+        onSnapshot(collection(db, "PO", props.roomCode, "expense"), (snapshot) => {
             setFormData(snapshot.docs.map((doc) => doc.data()))
         });
     }, [navigate])
@@ -19,8 +19,11 @@ const AddTable = (props) => {
         formData.map((data) => (
             <tbody>
             <tr>
-                <td>{data.docName.name}</td>
-                <td key={data.url}><a href={data.url} target="_blank">{data.docName.name}.png</a></td>
+                <td>{data.exPenseDoc.name}</td>
+                <td className="text-center"></td>
+                <td className="text-center">{data.exPenseDoc.amount}</td>
+                <td className="text-center">{data.exPenseDoc.day+"/"+data.exPenseDoc.month+"/"+data.exPenseDoc.year}</td>
+                <td key={data.url} className="text-center"><a href={data.url} target="_blank">{data.exPenseDoc.name}.png</a></td>
             </tr>
             </tbody>
 

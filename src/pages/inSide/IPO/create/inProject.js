@@ -8,6 +8,8 @@ import db, {storage} from "../../../../config/firebase-config"
 import {collection, doc, getDoc, setDoc, getDocs, deleteDoc} from "firebase/firestore"
 import FormP from "./formP";
 import FormP2 from "./formP2";
+import FormIncome from "./formIncome";
+import FormExpense from "./formExpense";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import CustomerWrapper from "./CustomerWrapper";
@@ -21,11 +23,32 @@ export default function Customer() {
         status: "Pending",
     });
 
+    const initialIncome = Object.freeze({
+        name: "",
+        mode: "Income",
+        amount: "",
+        form: sessionStorage.getItem("projectID"),
+        day: "",
+        month: "",
+        year: ""
+    });
+
+    const initialExpense = Object.freeze({
+        name: "",
+        mode: "Expense",
+        amount: "",
+        form: sessionStorage.getItem("projectID"),
+        day: "",
+        month: "",
+        year: ""
+    });
+
     const navigate = useNavigate()
     const {user} = useUserContext()
     const [open, setOpen] = useState(false)
     const [openTwo, setOpenTwo] = useState(false)
     const [openThree, setOpenThree] = useState(false)
+    const [openFour, setOpenFour] = useState(false)
     const [formDataIn, setFormDataIn] = useState(initialDocData)
     const [edit] = useState(true)
     const [box2, setBox2] = useState("Taxpayer-num")
@@ -33,8 +56,8 @@ export default function Customer() {
     const [boxLa, setBoxLa] = useState("Agent")
     const [count, setCount] = useState(0)
     const [docName, setDocName] = useState(initialDocData)
-    const [inComeDoc, setIncomeDoc] = useState(initialDocData)
-    const [exPenseDoc, setExpenseDoc] = useState(initialDocData)
+    const [inComeDoc, setIncomeDoc] = useState(initialIncome)
+    const [exPenseDoc, setExpenseDoc] = useState(initialExpense)
     const [file, setFile] = useState("");
     const [state, setState] = useState(false);
 
@@ -86,6 +109,10 @@ export default function Customer() {
         setOpenThree(true)
     }
 
+    const handleCreateFour = () => {
+        setOpenFour(true)
+    }
+
     const handleChangePro = (e) => {
         setFormDataIn({
             ...formDataIn,
@@ -103,17 +130,19 @@ export default function Customer() {
             quantity: 1,
             totalUnitPrice: 0
         })
+        setFile()
     }
 
     const handleCloseThree = () => {
         setOpenThree(false)
-        setIncomeDoc({
-            ...docName,
-            income: "",
-            amount: 0,
-            date: "",
-            file: "",
-        })
+        setIncomeDoc(initialIncome)
+        setFile()
+    }
+
+    const handleCloseFour = () => {
+        setOpenFour(false)
+        setExpenseDoc(initialExpense)
+        setFile()
     }
 
     const handleChangeUploadFile = (e) => {
@@ -178,9 +207,10 @@ export default function Customer() {
         );
         setOpenTwo(false)
         setDocName("")
+        setFile()
     }
 
-    const handleSubmitIncome = (e) => {
+    const handleSubmitIncome = async (e) => {
         e.preventDefault()
         if (!file) {
             alert("Please choose a file first!")
@@ -198,13 +228,50 @@ export default function Customer() {
             () => {
                 // download url
                 getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
-                    const docRef1 = doc(db, "PO", sessionStorage.getItem("projectID"), "income", docName.name);
+                    const docRef1 = doc(db, "PO", sessionStorage.getItem("projectID"), "income", inComeDoc.name+inComeDoc.form);
                     await setDoc(docRef1, {inComeDoc, url});
                 });
             }
         );
+        if(inComeDoc.amount != "" || inComeDoc.day != "" || inComeDoc.month != ""|| inComeDoc.year != ""){
+            const docRef1 = doc(db, "accounting", "incomeExpense", "record", inComeDoc.name+inComeDoc.amount);
+            await setDoc(docRef1, inComeDoc);
+        }
         setOpenThree(false)
-        setDocName("")
+        setIncomeDoc(initialIncome)
+        setFile()
+    }
+
+    const handleSubmitExpense = async (e) => {
+        e.preventDefault()
+        if (!file) {
+            alert("Please choose a file first!")
+        }
+        const storageRef = ref(storage, `/media/PO/${file.name}`)
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+                const percent = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+            },
+            (err) => console.log(err),
+            () => {
+                // download url
+                getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
+                    const docRef1 = doc(db, "PO", sessionStorage.getItem("projectID"), "expense", exPenseDoc.name+exPenseDoc.form);
+                    await setDoc(docRef1, {exPenseDoc, url});
+                });
+            }
+        );
+        if(exPenseDoc.amount != "" || exPenseDoc.day != "" || exPenseDoc.month != ""|| exPenseDoc.year != ""){
+            const docRef1 = doc(db, "accounting", "incomeExpense", "record", exPenseDoc.name+exPenseDoc.amount);
+            await setDoc(docRef1, exPenseDoc);
+        }
+        setOpenFour(false)
+        setIncomeDoc(initialExpense)
+        setFile()
     }
 
     return (
@@ -443,7 +510,7 @@ export default function Customer() {
                                     <th style={{width: 20+'%'}} className="">File</th>
                                 </tr>
                                 </thead>
-                                <FormP2 roomCode={sessionStorage.getItem("projectID")}/>
+                                <FormIncome roomCode={sessionStorage.getItem("projectID")}/>
                             </table>
                         </div>
                         <div className="row m-2 justify-content-end mt-0">
@@ -467,12 +534,12 @@ export default function Customer() {
                                     <th style={{width: 10+'%'}} className="">file</th>
                                 </tr>
                                 </thead>
-                                <FormP2 roomCode={sessionStorage.getItem("projectID")}/>
+                                <FormExpense roomCode={sessionStorage.getItem("projectID")}/>
                             </table>
                         </div>
                         <div className="row m-2 justify-content-end mt-0">
                             <div className="col-2 p-0 mx-md-1 col-md-1 mx-2">
-                                <Button variant="outlined" className="w-100" color="primary" onClick={handleCreateThree}
+                                <Button variant="outlined" className="w-100" color="primary" onClick={handleCreateFour}
                                         size="small"><AddIcon/>
                                 </Button>
                             </div>
@@ -524,45 +591,120 @@ export default function Customer() {
                 className="d-flex justify-content-center align-items-center"
 
             >
-                <form className="border border-secondary p-2 m-2 rounded-2 row bg-white py-4" style={{maxWidth: "900px"}}>
-                    <div className="pt-2">
-                        <h4 className="col d-flex justify-content-center">Add new-Income</h4>
-                        <div className="col d-flex justify-content-center">
-
-                            <TextField className="m-3"
-                                       label="Income"
-                                       name="income"
-                                       required
-                                       size="small"
-                                       onChange={handleChangeIncome}
+                <form className="border border-secondary p-4 m-2 rounded-2 row bg-white" style={{maxWidth: "600px"}}>
+                    <div className="heading-container mt-2 mb-2 p-0 d-flex justify-content-start">
+                        <h3>Income</h3>
+                    </div>
+                            <TextField className="my-2"
+                                    label="Description"
+                                    name="name"
+                                    required
+                                    onChange={handleChangeIncome}
                             />
-                            <TextField className="m-3"
-                                       label="Amount"
-                                       name="amount"
-                                       required
-                                       size="small"
-                                       onChange={handleChangeIncome}
+                            <TextField className="my-2"
+                                    label="Amount"
+                                    name="amount"
+                                    type="text"
+                                    required
+                                    onChange={handleChangeIncome}
                             />
-                            <TextField className="m-3"
-                                       label="Date"
-                                       name="date"
-                                       required
-                                       size="small"
-                                       onChange={handleChangeIncome}
-                            />
-                            <input name="path" className="row d-flex justify-content-center px-2 mb-3 pt-4"
+                            <div className="px-0 mb-2">
+                                <div className="col d-flex justify-content-between w-100">
+                                <TextField className="my-2"
+                                    label="Day"
+                                    name="day"
+                                    type="text"
+                                    required
+                                    onChange={handleChangeIncome}/>
+                                <TextField className="my-2"
+                                        label="Month"
+                                        name="month"
+                                        type="text"
+                                        required
+                                        onChange={handleChangeIncome}/>
+                                <TextField className="my-2"
+                                        label="Year"
+                                        name="year"
+                                        type="text"
+                                        required
+                                        onChange={handleChangeIncome}/>
+                                </div>
+                            </div>
+                            <input name="path" className="row d-flex justify-content-center p-2 mb-3"
                                    type="file" accept="image/*" onChange={handleChangeUploadFile}/>
-                        </div>
-
-                        <div className="col-4 d-flex justify-content-center">
-
-                            <Button type="submit" variant="contained" color="error" className="mx-3 col"
+                        
+                        <div className="pt-2">
+                        <div className="col d-flex justify-content-center">
+                            <Button type="submit" variant="contained" color="secondary" className="mx-3 m"
                                     onClick={handleCloseThree}>
                                 Close
                             </Button>
 
-                            <Button type="submit" variant="contained" color="primary" className="mx-3 col"
+                            <Button type="submit" variant="contained" color="primary" className="mx-3"
                                     onClick={handleSubmitIncome}>
+                                Add
+                            </Button>
+                        </div>
+                    </div>
+                </form>
+            </Modal>
+            <Modal
+                open={openFour}
+                onClose={handleCloseFour}
+                className="d-flex justify-content-center align-items-center"
+
+            >
+                <form className="border border-secondary p-4 m-2 rounded-2 row bg-white" style={{maxWidth: "600px"}}>
+                    <div className="heading-container mt-2 mb-2 p-0 d-flex justify-content-start">
+                        <h3>Expense</h3>
+                    </div>
+                            <TextField className="my-2"
+                                    label="Description"
+                                    name="name"
+                                    required
+                                    onChange={handleChangeExpense}
+                            />
+                            <TextField className="my-2"
+                                    label="Amount"
+                                    name="amount"
+                                    type="text"
+                                    required
+                                    onChange={handleChangeExpense}
+                            />
+                            <div className="px-0 mb-2">
+                                <div className="col d-flex justify-content-between w-100">
+                                <TextField className="my-2"
+                                    label="Day"
+                                    name="day"
+                                    type="text"
+                                    required
+                                    onChange={handleChangeExpense}/>
+                                <TextField className="my-2"
+                                        label="Month"
+                                        name="month"
+                                        type="text"
+                                        required
+                                        onChange={handleChangeExpense}/>
+                                <TextField className="my-2"
+                                        label="Year"
+                                        name="year"
+                                        type="text"
+                                        required
+                                        onChange={handleChangeExpense}/>
+                                </div>
+                            </div>
+                            <input name="path" className="row d-flex justify-content-center p-2 mb-3"
+                                   type="file" accept="image/*" onChange={handleChangeUploadFile}/>
+                        
+                        <div className="pt-2">
+                        <div className="col d-flex justify-content-center">
+                            <Button type="submit" variant="contained" color="secondary" className="mx-3 m"
+                                    onClick={handleCloseFour}>
+                                Close
+                            </Button>
+
+                            <Button type="submit" variant="contained" color="primary" className="mx-3"
+                                    onClick={handleSubmitExpense}>
                                 Add
                             </Button>
                         </div>

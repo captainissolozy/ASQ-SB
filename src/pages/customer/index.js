@@ -119,7 +119,7 @@ export default function Customer() {
 
     return (
         <CustomerWrapper>
-            <div className="wrapper-box shadow-sm container px-0">
+            <div className="wrapper-box shadow-sm container px-0 mt-4">
                 <div className="container-fluid bg-white bg-cus">
                     <div className="my-1 p-3 pb-3 row d-flex justify-content-center">
                         <div className="col-10 px-2 d-flex justify-content-between align-items-center col-md-9 wrap-header">
