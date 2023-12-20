@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import CustomerWrapper from "./CustomerWrapper";
 import AddIcon from "@mui/icons-material/Add";
 import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
+import ComboBox2 from "./combobox2";
 
 
 export default function Customer() {
@@ -37,6 +38,7 @@ export default function Customer() {
         name: "",
         mode: "Expense",
         amount: "",
+        supplier: "",
         form: sessionStorage.getItem("projectID"),
         day: "",
         month: "",
@@ -117,6 +119,13 @@ export default function Customer() {
         setFormDataIn({
             ...formDataIn,
             [e.target.name]: e.target.value
+        })
+    }
+
+    const listenChange = (data) => {
+        setExpenseDoc({
+            ...exPenseDoc,
+            supplier: data
         })
     }
 
@@ -658,6 +667,7 @@ export default function Customer() {
                     <div className="heading-container mt-2 mb-2 p-0 d-flex justify-content-start">
                         <h3>Expense</h3>
                     </div>
+                            <ComboBox2 className="w-100" func={listenChange}/>
                             <TextField className="my-2"
                                     label="Description"
                                     name="name"

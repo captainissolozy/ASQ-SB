@@ -3,7 +3,7 @@ import {useEffect, useState} from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import {collection, onSnapshot} from "firebase/firestore";
-import db from "../../../config/firebase-config";
+import db from "../../../../config/firebase-config";
 
 const options = ['Option 1', 'Option 2'];
 
