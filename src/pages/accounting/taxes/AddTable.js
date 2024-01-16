@@ -23,7 +23,10 @@ const AddTable = (props) => {
                     && result.year.includes(props.year))
         }).map((data, i) => (
             <tbody>
-            <tr>
+            <tr style={{cursor: "pointer"}} onClick={() => {
+                sessionStorage.setItem("taxesID", data.mode+data.bank+data.amount+data.day+data.month)
+                props.truth(true);}}
+            >
                 <td className="px-3">{data.mode}</td>
                 <td className="px-3">{data.bank}</td>
                 <td className="px-3">{data.day+"/"+data.month+"/"+data.year}</td>

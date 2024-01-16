@@ -23,7 +23,10 @@ const AddTable = (props) => {
                     && result.year.includes(props.year))
         }).map((data, i) => (
             <tbody>
-            <tr>
+            <tr style={{cursor: "pointer"}} onClick={() => {
+                sessionStorage.setItem("recordID", data.number+data.description)
+                props.truth(true);}}
+            >
                 <td className="px-3">{data.bank}</td>
                 <td className="px-3">{data.number}</td>
                 <td className="px-3">{data.description}</td>

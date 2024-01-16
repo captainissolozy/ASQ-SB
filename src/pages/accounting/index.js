@@ -34,6 +34,11 @@ export default function Accounting() {
                     </div>
                     <div className="mt-4 d-flex mb-2 justify-content-center row">
                         <div className="mb-2 col-11">
+                            <Link to={"/balanceProj"} className="nav-link d-flex justify-content-center">
+                                <Button className="p-2 w-50" color="primary" variant="contained">Project Balance</Button>
+                            </Link>
+                        </div>
+                        <div className="pt-4 mb-2 col-11">
                             <Link to={"/balance"} className="nav-link d-flex justify-content-center">
                                 <Button className="p-2 w-50" color="primary" variant="contained">Income & Expense</Button>
                             </Link>

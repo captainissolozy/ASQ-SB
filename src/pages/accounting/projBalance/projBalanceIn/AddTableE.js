@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import db from "../../../config/firebase-config"
+import db from "../../../../config/firebase-config"
 import {collection, doc, getDoc, onSnapshot} from "firebase/firestore"
 import {useNavigate} from "react-router-dom";
 
@@ -37,10 +37,7 @@ const AddTable = (props) => {
         }).map((data, i) => (
             <tbody>
                 {sumofAmount(parseFloat(data.amount), data.mode)}
-            <tr style={{cursor: "pointer"}} onClick={() => {
-                sessionStorage.setItem("balanceID", data.name+data.amount)
-                props.truth(true);}}
-                >
+            <tr>
                 <td className="px-3">{data.mode}</td>
                 <td className="px-3">{data.name}</td>
                 <td className="px-3">{data.form}</td>

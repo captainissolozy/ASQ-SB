@@ -10,7 +10,7 @@ const AddTable = (props) => {
     let amount = 0
 
     useEffect(() => {
-        onSnapshot(collection(db, "accounting", "incomeExpense", "record"), (snapshot) => {
+        onSnapshot(collection(db, "accounting", "IncomeExpenseO", "record"), (snapshot) => {
             setFormData(snapshot.docs.map((doc) => doc.data()))
         });
     }, [])
@@ -37,10 +37,7 @@ const AddTable = (props) => {
         }).map((data, i) => (
             <tbody>
                 {sumofAmount(parseFloat(data.amount), data.mode)}
-            <tr style={{cursor: "pointer"}} onClick={() => {
-                sessionStorage.setItem("balanceID", data.name+data.amount)
-                props.truth(true);}}
-                >
+            <tr>
                 <td className="px-3">{data.mode}</td>
                 <td className="px-3">{data.name}</td>
                 <td className="px-3">{data.form}</td>

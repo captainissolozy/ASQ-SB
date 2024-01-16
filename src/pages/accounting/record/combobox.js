@@ -4,6 +4,7 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import {collection, onSnapshot} from "firebase/firestore";
 import db from "../../../config/firebase-config";
+import { FormControl } from '@mui/material';
 
 const options = ['Option 1', 'Option 2'];
 
@@ -28,21 +29,21 @@ export default function ComboBox(props) {
     }, [formData, formName])
 
     return (
-        <div className="w-100 p-0 mb-2" id="no-print">
+        <div className="w-100 p-0" id="no-print">
         <Autocomplete
             disablePortal
             id="combo-box-demo"
             options={formName}
             onChange={(event, newValue) => {
                 setValue(newValue);
-                sessionStorage.setItem("selectBank", newValue)
+                console.log(newValue)
                 props.func(newValue)
             }}
             inputValue={inputValue}
             onInputChange={(event, newInputValue) => {
                 setInputValue(newInputValue);
             }}
-            renderInput={(params) => <TextField {...params} label="Choose Bank"/>}
+            renderInput={(params) => <TextField {...params} size='small' label="Choose Bank"/>}
         />
         </div>
     );
