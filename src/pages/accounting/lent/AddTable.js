@@ -24,7 +24,7 @@ const AddTable = (props) => {
                     && result.year.includes(props.year)
                     && (result.status.includes(props.mode) || props.mode == "")
                     )
-        }).map((data, i) => (
+        }).sort((a, b) => Date.parse(a.month+"/"+a.day+"/"+a.year) - Date.parse(b.month+"/"+b.day+"/"+b.year)).map((data, i) => (
             <tbody>
             <tr style={{cursor: "pointer"}} onClick={() => {
                 sessionStorage.setItem("PayID", data.name+data.description)

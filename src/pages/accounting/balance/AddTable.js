@@ -34,7 +34,7 @@ const AddTable = (props) => {
                     && result.day.includes(props.day)
                     && result.month.includes(props.month) 
                     && result.year.includes(props.year))
-        }).map((data, i) => (
+        }).sort((a, b) => Date.parse(a.month+"/"+a.day+"/"+a.year) - Date.parse(b.month+"/"+b.day+"/"+b.year)).map((data, i) => (
             <tbody>
                 {sumofAmount(parseFloat(data.amount), data.mode)}
             <tr style={{cursor: "pointer"}} onClick={() => {

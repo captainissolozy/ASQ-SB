@@ -7,13 +7,33 @@ import {useNavigate} from "react-router-dom";
 const AddTable = (props) => {
 
     const [formData, setFormData] = useState([])
+    const [formData2, setFormData2] = useState([])
+    const [realData, setRealData] = useState([])
     let amount = 0
+    
 
     useEffect(() => {
-        onSnapshot(collection(db, "accounting", "incomeExpense", "record"), (snapshot) => {
+        onSnapshot(collection(db, "PO", props.roomcode, "income"), (snapshot) => {
             setFormData(snapshot.docs.map((doc) => doc.data()))
         });
+        onSnapshot(collection(db, "PO", props.roomcode, "expense"), (snapshot) => {
+            setFormData2(snapshot.docs.map((doc) => doc.data()))
+        });
     }, [])
+
+    useEffect(() => {
+        var realLength = formData.length + formData2.length - 1
+        while(realLength > 0){
+            for(var i in formData){
+                realData[realLength] = formData[i].inComeDoc
+                realLength -= 1
+            }
+            for(var i in formData2){
+                realData[realLength] = formData2[i].exPenseDoc
+                realLength -= 1
+            }
+        }
+    }, [formData, formData2])
 
     const sumofAmount = (data, mode) => {
         if(mode == "Expense"){
@@ -23,18 +43,17 @@ const AddTable = (props) => {
             amount += data
             props.total(amount)
         }
-        
     }
 
     return (
-        formData.filter( result => {
+        realData.filter( result => {
             return ((result.name.toLowerCase() == (props.name) || props.name == "")
                     && result.form.includes(props.form)
                     && result.mode.includes(props.mode) 
                     && result.day.includes(props.day)
                     && result.month.includes(props.month) 
                     && result.year.includes(props.year))
-        }).map((data, i) => (
+        }).sort((a, b) => Date.parse(a.month+"/"+a.day+"/"+a.year) - Date.parse(b.month+"/"+b.day+"/"+b.year)).map((data, i) => (
             <tbody>
                 {sumofAmount(parseFloat(data.amount), data.mode)}
             <tr>

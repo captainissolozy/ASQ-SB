@@ -4,7 +4,6 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import {collection, onSnapshot} from "firebase/firestore";
 import db from "../../../config/firebase-config";
-import { FormControl } from '@mui/material';
 
 const options = ['Option 1', 'Option 2'];
 
@@ -36,7 +35,6 @@ export default function ComboBox(props) {
             options={formName}
             onChange={(event, newValue) => {
                 setValue(newValue);
-                console.log(newValue)
                 props.func(newValue)
             }}
             inputValue={inputValue}

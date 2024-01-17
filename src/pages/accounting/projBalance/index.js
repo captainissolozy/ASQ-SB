@@ -34,7 +34,7 @@ export default function Lobby() {
 
     const initialSearchKey = Object.freeze({
         name: "",
-        mode: "",
+        customer: "",
         form: "",
         day: "",
         month: "",
@@ -57,9 +57,6 @@ export default function Lobby() {
         window.scrollTo(0, 0)
     }, [navigate, user])
 
-    const handleCreate = () => {
-        setOpen(true)
-    }
     const handleClose = () => {
         setOpen(false)
         updateFormData({})
@@ -82,17 +79,6 @@ export default function Lobby() {
             ...formData2,
             [e.target.name]: e.target.value
         })
-    }
-
-    const listenTotal = (data) => {
-        setTotal(data)
-    }
-
-    const listenEdit = async (data) => {
-        const docRef1 = doc(db, "accounting", "incomeExpense", "record", sessionStorage.getItem("projbalanceID"));
-        const docSnap = await getDoc(docRef1);
-        updateFormData2(docSnap.data())
-        setEdit(data)
     }
 
     const joinChange = (e) => {
@@ -203,18 +189,14 @@ export default function Lobby() {
                                 <div className="row d-flex justify-content-center">
                                     <div className="col p-0">
                                         <div className="col p-0 pt-1 mb-2 mx-2">
-                                        <FormControl size="small" className="w-100">
-                                            <InputLabel id="demo-simple-select-label">Status</InputLabel>
-                                            <Select     id="demo-simple-select" labelId="demo-simple-select-label"
-                                                        name="mode" label="Type" className="w-100"
-                                                        value={searchKey.mode} onChange={joinChange}>
-                                                <MenuItem value="">
-                                                    <em>All</em>
-                                                </MenuItem>
-                                                <MenuItem value={"Income"}>Income</MenuItem>
-                                                <MenuItem value={"Expense"}>Expense</MenuItem>
-                                            </Select>
-                                        </FormControl>
+                                        <TextField id="outlined-search" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="customer" label="Customer" className="w-100" onChange={joinChange}/>
                                         </div>
                                     </div>
                                 </div>
@@ -226,19 +208,16 @@ export default function Lobby() {
                             <table className="table border-bottom-0 overflow-auto" id="dtHorizontalExample" >
                                 <thead className="text-light">
                                 <tr>
-                                    <th scope="col" className="t-stick th px-3">Type</th>
-                                    <th scope="col" className="t-stick th px-3">Description</th>
                                     <th scope="col" className="t-stick th px-3">Form</th>
+                                    <th scope="col" className="t-stick th px-3">Description</th>
+                                    <th scope="col" className="t-stick th px-3">Customer</th>
                                     <th scope="col" className="t-stick th px-3">Date</th>
-                                    <th scope="col" className="t-stick th px-3 text-end">Amount</th>
                                 </tr>
                                 </thead>
-                                <AddTable name={searchKey.name} form={searchKey.form.toLowerCase()} mode={searchKey.mode}
-                                          day={searchKey.day} month={searchKey.month} year={searchKey.year} total={listenTotal}
-                                          truth={listenEdit}
+                                <AddTable name={searchKey.name} form={searchKey.form.toLowerCase()} customer={searchKey.customer}
+                                          day={searchKey.day} month={searchKey.month} year={searchKey.year}
                                 />
                             </table>
-                            <h5 className="d-flex justify-content-end">Total : {total.toLocaleString(undefined, {maximumFractionDigits:2})}</h5>
                     </div>
                 </div>
 

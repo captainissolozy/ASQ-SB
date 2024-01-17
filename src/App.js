@@ -21,6 +21,7 @@ import Taxes from "./pages/accounting/taxes";
 import Lent from "./pages/accounting/lent";
 import Record from "./pages/accounting/record";
 import BalanceProj from "./pages/accounting/projBalance"
+import BalanceProjIns from "./pages/accounting/projBalance/projBalanceIn"
 
 
 function App() {
@@ -45,6 +46,7 @@ function App() {
                 <Route path="/taxes" element={<Taxes/>}/>
                 <Route path="/balance" element={<Balance/>}/>
                 <Route path="/balanceProj" element={<BalanceProj/>}/>
+                <Route path="/balanceProjIns" element={<BalanceProjIns/>}/>
                 <Route path="/record" element={<Record/>}/>
                 <Route path="/lent" element={<Lent/>}/>
                 <Route path="/lobby" element={<Lobby/>}/>

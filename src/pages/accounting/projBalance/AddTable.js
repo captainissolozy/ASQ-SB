@@ -7,7 +7,7 @@ import {useNavigate} from "react-router-dom";
 const AddTable = (props) => {
 
     const [formData, setFormData] = useState([])
-    let amount = 0
+    const navigate = useNavigate()
 
     useEffect(() => {
         onSnapshot(collection(db, "accounting", "IncomeExpenseO", "record"), (snapshot) => {
@@ -15,40 +15,32 @@ const AddTable = (props) => {
         });
     }, [])
 
-    const sumofAmount = (data, mode) => {
-        if(mode == "Expense"){
-            amount -= data
-            props.total(amount)
-        }else{
-            amount += data
-            props.total(amount)
+    const handleJoinPublic = async (id) => {
+        sessionStorage.setItem('projectIDAC', id)
+        const docRef1 = doc(db, "PO", id);
+        const docSnap = await getDoc(docRef1);
+        if (docSnap.exists()) {
+            navigate("/balanceProjIns")
         }
-        
     }
 
     return (
         formData.filter( result => {
             return ((result.name.toLowerCase() == (props.name) || props.name == "")
                     && result.form.includes(props.form)
-                    && result.mode.includes(props.mode) 
+                    && result.cus.toLowerCase().includes(props.customer.toLowerCase())
                     && result.day.includes(props.day)
                     && result.month.includes(props.month) 
                     && result.year.includes(props.year))
-        }).map((data, i) => (
+        }).sort((a, b) => Date.parse(a.month+"/"+a.day+"/"+a.year) - Date.parse(b.month+"/"+b.day+"/"+b.year)).map((data, i) => (
             <tbody>
-                {sumofAmount(parseFloat(data.amount), data.mode)}
-            <tr>
-                <td className="px-3">{data.mode}</td>
-                <td className="px-3">{data.name}</td>
-                <td className="px-3">{data.form}</td>
-                <td className="px-3">{data.day+"/"+data.month+"/"+data.year}</td>
-                {data.mode == "Expense" ? (
-                                <td className="px-3 overflow-hidden text-end">{parseFloat(data.amount*-1).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
-                            ) : (
-                                <td className="px-3 overflow-hidden text-end">{parseFloat(data.amount).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
-                            )}
-                
-            </tr>
+                <tr onClick={() => handleJoinPublic(data.form)} style={{cursor: "pointer"}}
+                >
+                    <td className="px-3">{data.form}</td>
+                    <td className="px-3">{data.name}</td>
+                    <td className="px-3">{data.cus || ""}</td>
+                    <td className="px-3">{data.day+"/"+data.month+"/"+data.year}</td>   
+                </tr>
             </tbody>
 
         ))

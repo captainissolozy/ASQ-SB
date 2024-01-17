@@ -169,12 +169,13 @@ export default function Lobby() {
 
     const handleSubmit3 = async (e) => {
         e.preventDefault()
-        const docRef2 = doc(db, "accounting", "taxes", "record", sessionStorage.getItem("taxesID"));
-        await deleteDoc(docRef2);
-        const docRef1 = doc(db, "accounting", "taxes", "record", formData3.mode+formData3.bank+formData3.amount+formData3.day+formData3.month);
-        await setDoc(docRef1, formData3);
-        
-        setEdit(false)
+        if(formData3.bank != ""){
+            const docRef2 = doc(db, "accounting", "taxes", "record", sessionStorage.getItem("taxesID"));
+            await deleteDoc(docRef2);
+            const docRef1 = doc(db, "accounting", "taxes", "record", formData3.mode+formData3.bank+formData3.amount+formData3.day+formData3.month);
+            await setDoc(docRef1, formData3);
+            setEdit(false)
+        }
     };
 
     return (

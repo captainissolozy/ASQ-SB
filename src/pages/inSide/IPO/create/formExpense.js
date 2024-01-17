@@ -23,7 +23,7 @@ const AddTable = (props) => {
                 <td className="text-center">{data.exPenseDoc.supplier}</td>
                 <td className="text-center">{data.exPenseDoc.amount}</td>
                 <td className="text-center">{data.exPenseDoc.day+"/"+data.exPenseDoc.month+"/"+data.exPenseDoc.year}</td>
-                <td key={data.url} className="text-center"><a href={data.url} target="_blank">{data.exPenseDoc.name}.png</a></td>
+                <td key={data.url} className="text-center"><a href={data.url} target="_blank">{data.url != ""?data.exPenseDoc.name : ""}</a></td>
             </tr>
             </tbody>
 

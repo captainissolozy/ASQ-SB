@@ -81,26 +81,13 @@ export default function Lobby() {
         })
     }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
-        if(formData.amount == "" || formData.day == "" || formData.month == ""|| formData.year == ""){
-            
-        }else{
-            const docRef1 = doc(db, "accounting", "incomeExpense", "record", formData.name+formData.amount);
-            await setDoc(docRef1, formData);
-            setOpen(false)
-        }
-    };
-
     return (
         <LobbyWrapper>
             <div className="wrapper-box pt-4">
                 <div className="container mb-5 py-4 px-3 shadow-sm" style={{height: "auto"}}>
                     <div className=''>
                     <div className="col px-2 d-flex align-items-center justify-content-between">
-                        <h4 className="mb-0">Income & Expense</h4>
-                        <IconButton variant="outlined" className="px-3 rounded-2 sty-addbtn" color="primary" onClick={handleCreate}
-                                    size="small"><p3 className="mb-0">Add</p3></IconButton>
+                        <h4 className="mb-0">Project Balance : {sessionStorage.getItem("projectIDAC")}</h4>
                     </div>
                     <div className="row mt-3 d-flex justify-content-center">
                         <div className="row">
@@ -200,6 +187,7 @@ export default function Lobby() {
                                 </thead>
                                 <AddTable name={searchKey.name} form={searchKey.form.toLowerCase()} mode={searchKey.mode}
                                           day={searchKey.day} month={searchKey.month} year={searchKey.year} total={listenTotal}
+                                          roomcode={sessionStorage.getItem("projectIDAC")}
                                 />
                             </table>
                             <h5 className="d-flex justify-content-end">Total : {total.toLocaleString(undefined, {maximumFractionDigits:2})}</h5>
@@ -207,81 +195,7 @@ export default function Lobby() {
                 </div>
 
             </div>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                className="d-flex justify-content-center align-items-center"
-                disableEnforceFocus
-            >
-
-                <form className="border border-secondary p-4 m-2 rounded-2 row bg-white" style={{maxWidth: "600px"}}>
-                    <div className="heading-container mt-2 mb-2 p-0 d-flex justify-content-start">
-                        <h3>Income & Expense</h3>
-                    </div>
-                    <InputLabel id="demo-simple-select-label" >Type</InputLabel>
-                        <Select id="demo-simple-select" labelId="demo-simple-select-label" name="mode" label="Type" className="w-100 mb-2"
-                            value={formData.mode} onChange={handleChange}>
-                                <MenuItem value={"Income"}>Income</MenuItem>
-                                <MenuItem value={"Expense"}>Expense</MenuItem>
-                        </Select>
-                    <TextField className="my-2"
-                               label="Description"
-                               name="name"
-                               required
-                               onChange={handleChange}
-                    />
-                    <TextField className="my-2"
-                               label="Amount"
-                               name="amount"
-                               type="text"
-                               required
-                               onChange={handleChange}
-                    />
-                    <TextField className="my-2"
-                               label="Form"
-                               name="form"
-                               type="text"
-                               required
-                               onChange={handleChange}
-                    />
-                    <div className="px-0 mb-2">
-                        <div className="col d-flex justify-content-between w-100">
-                        <TextField className="my-2"
-                               label="Day"
-                               name="day"
-                               type="text"
-                               required
-                               onChange={handleChange}/>
-                    <TextField className="my-2"
-                               label="Month"
-                               name="month"
-                               type="text"
-                               required
-                               onChange={handleChange}/>
-                    <TextField className="my-2"
-                               label="Year"
-                               name="year"
-                               type="text"
-                               required
-                               onChange={handleChange}/>
-                        </div>
-                    </div>
-
-                    <div className="pt-2">
-                        <div className="col d-flex justify-content-center">
-                            <Button type="submit" variant="contained" color="secondary" className="mx-3 m"
-                                    onClick={handleClose}>
-                                Close
-                            </Button>
-
-                            <Button type="submit" variant="contained" color="primary" className="mx-3"
-                                    onClick={handleSubmit}>
-                                Create
-                            </Button>
-                        </div>
-                    </div>
-                </form>
-            </Modal>
+            
             <ToastContainer/>
         </LobbyWrapper>
 

@@ -26,7 +26,8 @@ export default function Customer() {
 
     const initialIncome = Object.freeze({
         name: "",
-        mode: "Income",
+        mode:"Income",
+        cus: sessionStorage.getItem("CustomerProj"),
         amount: "",
         form: sessionStorage.getItem("projectID"),
         day: "",
@@ -36,7 +37,8 @@ export default function Customer() {
 
     const initialExpense = Object.freeze({
         name: "",
-        mode: "Expense",
+        mode:"Expense",
+        cus: sessionStorage.getItem("CustomerProj"),
         amount: "",
         supplier: "",
         form: sessionStorage.getItem("projectID"),
@@ -222,28 +224,31 @@ export default function Customer() {
     const handleSubmitIncome = async (e) => {
         e.preventDefault()
         if (!file) {
-            alert("Please choose a file first!")
+            const docRef1 = doc(db, "PO", sessionStorage.getItem("projectID"), "income", inComeDoc.name+inComeDoc.form);
+            await setDoc(docRef1, {inComeDoc, url:""});
+        }else{
+            const storageRef = ref(storage, `/media/PO/${file.name}`)
+            const uploadTask = uploadBytesResumable(storageRef, file);
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                    const percent = Math.round(
+                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                    );
+                },
+                (err) => console.log(err),
+                () => {
+                    // download url
+                    getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
+                        const docRef1 = doc(db, "PO", sessionStorage.getItem("projectID"), "income", inComeDoc.name+inComeDoc.form);
+                        await setDoc(docRef1, {inComeDoc, url});
+                    });
+                }
+            );
         }
-        const storageRef = ref(storage, `/media/PO/${file.name}`)
-        const uploadTask = uploadBytesResumable(storageRef, file);
-        uploadTask.on(
-            "state_changed",
-            (snapshot) => {
-                const percent = Math.round(
-                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                );
-            },
-            (err) => console.log(err),
-            () => {
-                // download url
-                getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
-                    const docRef1 = doc(db, "PO", sessionStorage.getItem("projectID"), "income", inComeDoc.name+inComeDoc.form);
-                    await setDoc(docRef1, {inComeDoc, url});
-                });
-            }
-        );
+        
         if(inComeDoc.amount != "" || inComeDoc.day != "" || inComeDoc.month != ""|| inComeDoc.year != ""){
-            const docRef1 = doc(db, "accounting", "incomeExpense", "record", inComeDoc.name+inComeDoc.amount);
+            const docRef1 = doc(db, "accounting", "IncomeExpenseO", "record", sessionStorage.getItem("projectID"));
             await setDoc(docRef1, inComeDoc);
         }
         setOpenThree(false)
@@ -254,28 +259,30 @@ export default function Customer() {
     const handleSubmitExpense = async (e) => {
         e.preventDefault()
         if (!file) {
-            alert("Please choose a file first!")
+            const docRef1 = doc(db, "PO", sessionStorage.getItem("projectID"), "expense", exPenseDoc.name+exPenseDoc.form);
+            await setDoc(docRef1, {exPenseDoc, url:""});
+        }else{
+            const storageRef = ref(storage, `/media/PO/${file.name}`)
+            const uploadTask = uploadBytesResumable(storageRef, file);
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                    const percent = Math.round(
+                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                    );
+                },
+                (err) => console.log(err),
+                () => {
+                    // download url
+                    getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
+                        const docRef1 = doc(db, "PO", sessionStorage.getItem("projectID"), "expense", exPenseDoc.name+exPenseDoc.form);
+                        await setDoc(docRef1, {exPenseDoc, url});
+                    });
+                }
+            );
         }
-        const storageRef = ref(storage, `/media/PO/${file.name}`)
-        const uploadTask = uploadBytesResumable(storageRef, file);
-        uploadTask.on(
-            "state_changed",
-            (snapshot) => {
-                const percent = Math.round(
-                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                );
-            },
-            (err) => console.log(err),
-            () => {
-                // download url
-                getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
-                    const docRef1 = doc(db, "PO", sessionStorage.getItem("projectID"), "expense", exPenseDoc.name+exPenseDoc.form);
-                    await setDoc(docRef1, {exPenseDoc, url});
-                });
-            }
-        );
         if(exPenseDoc.amount != "" || exPenseDoc.day != "" || exPenseDoc.month != ""|| exPenseDoc.year != ""){
-            const docRef1 = doc(db, "accounting", "incomeExpense", "record", exPenseDoc.name+exPenseDoc.amount);
+            const docRef1 = doc(db, "accounting", "IncomeExpenseO", "record", sessionStorage.getItem("projectID"));
             await setDoc(docRef1, exPenseDoc);
         }
         setOpenFour(false)
@@ -619,24 +626,73 @@ export default function Customer() {
                             />
                             <div className="px-0 mb-2">
                                 <div className="col d-flex justify-content-between w-100">
-                                <TextField className="my-2"
-                                    label="Day"
-                                    name="day"
-                                    type="text"
-                                    required
-                                    onChange={handleChangeIncome}/>
-                                <TextField className="my-2"
-                                        label="Month"
-                                        name="month"
-                                        type="text"
-                                        required
-                                        onChange={handleChangeIncome}/>
-                                <TextField className="my-2"
-                                        label="Year"
-                                        name="year"
-                                        type="text"
-                                        required
-                                        onChange={handleChangeIncome}/>
+                                <InputLabel id="demo-simple-select-label1" >Day</InputLabel>
+                        <Select id="demo-simple-select1" labelId="demo-simple-select-label1" name="day" label="day" className="w-100 mb-2"
+                            value={inComeDoc.day} onChange={handleChangeIncome} size="small">
+                                <MenuItem value={"01"}>01</MenuItem>
+                                <MenuItem value={"02"}>02</MenuItem>
+                                <MenuItem value={"03"}>03</MenuItem>
+                                <MenuItem value={"04"}>04</MenuItem>
+                                <MenuItem value={"05"}>05</MenuItem>
+                                <MenuItem value={"06"}>06</MenuItem>
+                                <MenuItem value={"07"}>07</MenuItem>
+                                <MenuItem value={"08"}>08</MenuItem>
+                                <MenuItem value={"09"}>09</MenuItem>
+                                <MenuItem value={"10"}>10</MenuItem>
+                                <MenuItem value={"11"}>11</MenuItem>
+                                <MenuItem value={"12"}>12</MenuItem>
+                                <MenuItem value={"13"}>13</MenuItem>
+                                <MenuItem value={"14"}>14</MenuItem>
+                                <MenuItem value={"15"}>15</MenuItem>
+                                <MenuItem value={"16"}>16</MenuItem>
+                                <MenuItem value={"17"}>17</MenuItem>
+                                <MenuItem value={"18"}>18</MenuItem>
+                                <MenuItem value={"19"}>19</MenuItem>
+                                <MenuItem value={"20"}>20</MenuItem>
+                                <MenuItem value={"21"}>21</MenuItem>
+                                <MenuItem value={"22"}>22</MenuItem>
+                                <MenuItem value={"23"}>23</MenuItem>
+                                <MenuItem value={"24"}>24</MenuItem>
+                                <MenuItem value={"25"}>25</MenuItem>
+                                <MenuItem value={"26"}>26</MenuItem>
+                                <MenuItem value={"27"}>27</MenuItem>
+                                <MenuItem value={"28"}>28</MenuItem>
+                                <MenuItem value={"29"}>29</MenuItem>
+                                <MenuItem value={"30"}>30</MenuItem>
+                                <MenuItem value={"31"}>31</MenuItem>
+                        </Select>
+                        <InputLabel id="demo-simple-select-label2" >Month</InputLabel>
+                        <Select id="demo-simple-select2" labelId="demo-simple-select-label2" name="month" label="month" className="w-100 mb-2"
+                            value={inComeDoc.month} onChange={handleChangeIncome}>
+                                <MenuItem value={"01"}>01</MenuItem>
+                                <MenuItem value={"02"}>02</MenuItem>
+                                <MenuItem value={"03"}>03</MenuItem>
+                                <MenuItem value={"04"}>04</MenuItem>
+                                <MenuItem value={"05"}>05</MenuItem>
+                                <MenuItem value={"06"}>06</MenuItem>
+                                <MenuItem value={"07"}>07</MenuItem>
+                                <MenuItem value={"08"}>08</MenuItem>
+                                <MenuItem value={"09"}>09</MenuItem>
+                                <MenuItem value={"10"}>10</MenuItem>
+                                <MenuItem value={"11"}>11</MenuItem>
+                                <MenuItem value={"12"}>12</MenuItem>
+                        </Select>
+                        <InputLabel id="demo-simple-select-label3" >Year</InputLabel>
+                        <Select id="demo-simple-select3" labelId="demo-simple-select-label3" name="year" label="year" className="w-100 mb-2"
+                            value={inComeDoc.year} onChange={handleChangeIncome}>
+                                <MenuItem value={"2019"}>2019</MenuItem>
+                                <MenuItem value={"2020"}>2020</MenuItem>
+                                <MenuItem value={"2021"}>2021</MenuItem>
+                                <MenuItem value={"2022"}>2022</MenuItem>
+                                <MenuItem value={"2023"}>2023</MenuItem>
+                                <MenuItem value={"2024"}>2024</MenuItem>
+                                <MenuItem value={"2025"}>2025</MenuItem>
+                                <MenuItem value={"2026"}>2026</MenuItem>
+                                <MenuItem value={"2027"}>2027</MenuItem>
+                                <MenuItem value={"2028"}>2028</MenuItem>
+                                <MenuItem value={"2029"}>2029</MenuItem>
+                                <MenuItem value={"2030"}>2030</MenuItem>
+                        </Select>
                                 </div>
                             </div>
                             <input name="path" className="row d-flex justify-content-center p-2 mb-3"
@@ -683,24 +739,73 @@ export default function Customer() {
                             />
                             <div className="px-0 mb-2">
                                 <div className="col d-flex justify-content-between w-100">
-                                <TextField className="my-2"
-                                    label="Day"
-                                    name="day"
-                                    type="text"
-                                    required
-                                    onChange={handleChangeExpense}/>
-                                <TextField className="my-2"
-                                        label="Month"
-                                        name="month"
-                                        type="text"
-                                        required
-                                        onChange={handleChangeExpense}/>
-                                <TextField className="my-2"
-                                        label="Year"
-                                        name="year"
-                                        type="text"
-                                        required
-                                        onChange={handleChangeExpense}/>
+                                <InputLabel id="demo-simple-select-label1" >Day</InputLabel>
+                        <Select id="demo-simple-select1" labelId="demo-simple-select-label1" name="day" label="day" className="w-100 mb-2"
+                            value={exPenseDoc.day} onChange={handleChangeExpense}>
+                                <MenuItem value={"01"}>01</MenuItem>
+                                <MenuItem value={"02"}>02</MenuItem>
+                                <MenuItem value={"03"}>03</MenuItem>
+                                <MenuItem value={"04"}>04</MenuItem>
+                                <MenuItem value={"05"}>05</MenuItem>
+                                <MenuItem value={"06"}>06</MenuItem>
+                                <MenuItem value={"07"}>07</MenuItem>
+                                <MenuItem value={"08"}>08</MenuItem>
+                                <MenuItem value={"09"}>09</MenuItem>
+                                <MenuItem value={"10"}>10</MenuItem>
+                                <MenuItem value={"11"}>11</MenuItem>
+                                <MenuItem value={"12"}>12</MenuItem>
+                                <MenuItem value={"13"}>13</MenuItem>
+                                <MenuItem value={"14"}>14</MenuItem>
+                                <MenuItem value={"15"}>15</MenuItem>
+                                <MenuItem value={"16"}>16</MenuItem>
+                                <MenuItem value={"17"}>17</MenuItem>
+                                <MenuItem value={"18"}>18</MenuItem>
+                                <MenuItem value={"19"}>19</MenuItem>
+                                <MenuItem value={"20"}>20</MenuItem>
+                                <MenuItem value={"21"}>21</MenuItem>
+                                <MenuItem value={"22"}>22</MenuItem>
+                                <MenuItem value={"23"}>23</MenuItem>
+                                <MenuItem value={"24"}>24</MenuItem>
+                                <MenuItem value={"25"}>25</MenuItem>
+                                <MenuItem value={"26"}>26</MenuItem>
+                                <MenuItem value={"27"}>27</MenuItem>
+                                <MenuItem value={"28"}>28</MenuItem>
+                                <MenuItem value={"29"}>29</MenuItem>
+                                <MenuItem value={"30"}>30</MenuItem>
+                                <MenuItem value={"31"}>31</MenuItem>
+                        </Select>
+                        <InputLabel id="demo-simple-select-label2" >Month</InputLabel>
+                        <Select id="demo-simple-select2" labelId="demo-simple-select-label2" name="month" label="month" className="w-100 mb-2"
+                            value={exPenseDoc.month} onChange={handleChangeExpense}>
+                                <MenuItem value={"01"}>01</MenuItem>
+                                <MenuItem value={"02"}>02</MenuItem>
+                                <MenuItem value={"03"}>03</MenuItem>
+                                <MenuItem value={"04"}>04</MenuItem>
+                                <MenuItem value={"05"}>05</MenuItem>
+                                <MenuItem value={"06"}>06</MenuItem>
+                                <MenuItem value={"07"}>07</MenuItem>
+                                <MenuItem value={"08"}>08</MenuItem>
+                                <MenuItem value={"09"}>09</MenuItem>
+                                <MenuItem value={"10"}>10</MenuItem>
+                                <MenuItem value={"11"}>11</MenuItem>
+                                <MenuItem value={"12"}>12</MenuItem>
+                        </Select>
+                        <InputLabel id="demo-simple-select-label3" >Year</InputLabel>
+                        <Select id="demo-simple-select3" labelId="demo-simple-select-label3" name="year" label="year" className="w-100 mb-2"
+                            value={exPenseDoc.year} onChange={handleChangeExpense}>
+                                <MenuItem value={"2019"}>2019</MenuItem>
+                                <MenuItem value={"2020"}>2020</MenuItem>
+                                <MenuItem value={"2021"}>2021</MenuItem>
+                                <MenuItem value={"2022"}>2022</MenuItem>
+                                <MenuItem value={"2023"}>2023</MenuItem>
+                                <MenuItem value={"2024"}>2024</MenuItem>
+                                <MenuItem value={"2025"}>2025</MenuItem>
+                                <MenuItem value={"2026"}>2026</MenuItem>
+                                <MenuItem value={"2027"}>2027</MenuItem>
+                                <MenuItem value={"2028"}>2028</MenuItem>
+                                <MenuItem value={"2029"}>2029</MenuItem>
+                                <MenuItem value={"2030"}>2030</MenuItem>
+                        </Select>
                                 </div>
                             </div>
                             <input name="path" className="row d-flex justify-content-center p-2 mb-3"
