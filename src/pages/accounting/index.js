@@ -15,10 +15,16 @@ export default function Accounting() {
 
     useEffect(() => {
         if (!user) {
-            navigate("/");
+            navigate('/')
+        }
+        if (sessionStorage.getItem('role') !== "Admin") {
+            navigate('/')
+        }
+        if (sessionStorage.getItem('role') !== "Accountant") {
+            navigate('/')
         }
         window.scrollTo(0, 0)
-    }, [navigate, user]);
+    }, [navigate, user, sessionStorage.getItem('role')])
 
     return (
         <LobbyWrapper>
