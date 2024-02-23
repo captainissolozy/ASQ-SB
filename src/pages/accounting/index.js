@@ -17,10 +17,7 @@ export default function Accounting() {
         if (!user) {
             navigate('/')
         }
-        if (sessionStorage.getItem('role') !== "Admin") {
-            navigate('/')
-        }
-        if (sessionStorage.getItem('role') !== "Accountant") {
+        if (sessionStorage.getItem('role') !== "Admin" && sessionStorage.getItem('role') !== "Accountant") {
             navigate('/')
         }
         window.scrollTo(0, 0)

@@ -63,14 +63,12 @@ export default function Lobby() {
         if (!user) {
             navigate('/')
         }
-        if (sessionStorage.getItem('role') !== "Admin") {
-            navigate('/')
-        }
-        if (sessionStorage.getItem('role') !== "Accountant") {
+        if (sessionStorage.getItem('role') !== "Admin" && sessionStorage.getItem('role') !== "Accountant") {
             navigate('/')
         }
         window.scrollTo(0, 0)
     }, [navigate, user, sessionStorage.getItem('role')])
+
 
     const handleCreate = () => {
         setOpen(true)

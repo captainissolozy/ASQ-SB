@@ -128,7 +128,7 @@ const Navbar = () => {
                             ) : (
                                 <></>
                             )}
-                            {userInfo.role === "Admin" && user ? (
+                            {(userInfo.role === "Admin" || userInfo.role === "Accountant") && user ? (
                                 <li className="nav-item"
                                     data-bs-toggle="collapse"
                                     data-bs-target="#navbarTogglerDemo02"
