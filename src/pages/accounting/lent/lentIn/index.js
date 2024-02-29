@@ -112,95 +112,42 @@ export default function Lobby() {
                                             height: "5px",
                                         },
                                     }}
-                                               name="form" label="From" className="w-100" onChange={joinChange}/>
+                                               name="form" label="Form" className="w-100" onChange={joinChange}/>
                                 </div>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col-8">
-                            <div className="row d-flex">
+                                <div className="row d-flex">
                                     <div className="col p-0 pt-1 col-md mb-2 mx-2">
-                                        <FormControl fullWidth size="small">
-                                        <InputLabel id="demo-simple-select-label">Day</InputLabel>
-                                        <Select id="demo-simple-select1" name="day" label="day" className="w-100 mb-2" labelId="demo-simple-select-label"
-                                            value={searchKey.day} onChange={joinChange} size="small">
-                                                <MenuItem value={""}>All</MenuItem>
-                                                <MenuItem value={"01"}>01</MenuItem>
-                                                <MenuItem value={"02"}>02</MenuItem>
-                                                <MenuItem value={"03"}>03</MenuItem>
-                                                <MenuItem value={"04"}>04</MenuItem>
-                                                <MenuItem value={"05"}>05</MenuItem>
-                                                <MenuItem value={"06"}>06</MenuItem>
-                                                <MenuItem value={"07"}>07</MenuItem>
-                                                <MenuItem value={"08"}>08</MenuItem>
-                                                <MenuItem value={"09"}>09</MenuItem>
-                                                <MenuItem value={"10"}>10</MenuItem>
-                                                <MenuItem value={"11"}>11</MenuItem>
-                                                <MenuItem value={"12"}>12</MenuItem>
-                                                <MenuItem value={"13"}>13</MenuItem>
-                                                <MenuItem value={"14"}>14</MenuItem>
-                                                <MenuItem value={"15"}>15</MenuItem>
-                                                <MenuItem value={"16"}>16</MenuItem>
-                                                <MenuItem value={"17"}>17</MenuItem>
-                                                <MenuItem value={"18"}>18</MenuItem>
-                                                <MenuItem value={"19"}>19</MenuItem>
-                                                <MenuItem value={"20"}>20</MenuItem>
-                                                <MenuItem value={"21"}>21</MenuItem>
-                                                <MenuItem value={"22"}>22</MenuItem>
-                                                <MenuItem value={"23"}>23</MenuItem>
-                                                <MenuItem value={"24"}>24</MenuItem>
-                                                <MenuItem value={"25"}>25</MenuItem>
-                                                <MenuItem value={"26"}>26</MenuItem>
-                                                <MenuItem value={"27"}>27</MenuItem>
-                                                <MenuItem value={"28"}>28</MenuItem>
-                                                <MenuItem value={"29"}>29</MenuItem>
-                                                <MenuItem value={"30"}>30</MenuItem>
-                                                <MenuItem value={"31"}>31</MenuItem>
-                                            </Select>
-                                        </FormControl>
-                                
+                                        <TextField id="outlined-search" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="day" label="Date" className="w-100" onChange={joinChange}/>
                                     </div>
                                     <div className="col p-0 pt-1 col-md mb-2 mx-2">
-                                    <FormControl fullWidth size="small">
-                                        <InputLabel id="demo-simple-select-label">Month</InputLabel>
-                                        <Select id="demo-simple-select1" name="month" label="Month" className="w-100 mb-2" labelId="demo-simple-select-label"
-                                            value={searchKey.month} onChange={joinChange} size="small">
-                                                <MenuItem value={""}>All</MenuItem>
-                                                <MenuItem value={"01"}>01</MenuItem>
-                                                <MenuItem value={"02"}>02</MenuItem>
-                                                <MenuItem value={"03"}>03</MenuItem>
-                                                <MenuItem value={"04"}>04</MenuItem>
-                                                <MenuItem value={"05"}>05</MenuItem>
-                                                <MenuItem value={"06"}>06</MenuItem>
-                                                <MenuItem value={"07"}>07</MenuItem>
-                                                <MenuItem value={"08"}>08</MenuItem>
-                                                <MenuItem value={"09"}>09</MenuItem>
-                                                <MenuItem value={"10"}>10</MenuItem>
-                                                <MenuItem value={"11"}>11</MenuItem>
-                                                <MenuItem value={"12"}>12</MenuItem>
-                                            </Select>
-                                        </FormControl>
+                                        <TextField id="outlined-search" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="month" label="Month" className="w-100" onChange={joinChange}/>
                                     </div>
                                     <div className="col p-0 pt-1 col-md mb-2 mx-2">
-                                    <FormControl fullWidth size="small">
-                                        <InputLabel id="demo-simple-select-label">Year</InputLabel>
-                                        <Select id="demo-simple-select1" name="year" label="Year" className="w-100 mb-2" labelId="demo-simple-select-label"
-                                            value={searchKey.year} onChange={joinChange} size="small">
-                                                <MenuItem value={""}>All</MenuItem>
-                                                <MenuItem value={"2019"}>2019</MenuItem>
-                                                <MenuItem value={"2020"}>2020</MenuItem>
-                                                <MenuItem value={"2021"}>2021</MenuItem>
-                                                <MenuItem value={"2022"}>2022</MenuItem>
-                                                <MenuItem value={"2023"}>2023</MenuItem>
-                                                <MenuItem value={"2024"}>2024</MenuItem>
-                                                <MenuItem value={"2025"}>2025</MenuItem>
-                                                <MenuItem value={"2026"}>2026</MenuItem>
-                                                <MenuItem value={"2027"}>2027</MenuItem>
-                                                <MenuItem value={"2028"}>2028</MenuItem>
-                                                <MenuItem value={"2029"}>2029</MenuItem>
-                                                <MenuItem value={"2030"}>2030</MenuItem>
-                                            </Select>
-                                        </FormControl>
+                                        <TextField id="outlined-search" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="year" label="Year" className="w-100" onChange={joinChange}/>
                                     </div>
                                 </div>
                             </div>
@@ -233,11 +180,9 @@ export default function Lobby() {
                                 <tr>
                                     <th scope="col" className="t-stick th px-3">Type</th>
                                     <th scope="col" className="t-stick th px-3">Description</th>
-                                    <th scope="col" className="t-stick th px-3">From</th>
-                                    <th scope="col" className="t-stick th px-3">Bank</th>
+                                    <th scope="col" className="t-stick th px-3">Form</th>
                                     <th scope="col" className="t-stick th px-3">Date</th>
                                     <th scope="col" className="t-stick th px-3 text-end">Amount</th>
-                                    <th scope="col" className="t-stick th px-3 text-center">File</th>
                                 </tr>
                                 </thead>
                                 <AddTable name={searchKey.name} form={searchKey.form.toLowerCase()} mode={searchKey.mode}

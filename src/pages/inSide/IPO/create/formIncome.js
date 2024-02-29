@@ -20,6 +20,7 @@ const AddTable = (props) => {
             <tbody>
             <tr>
                 <td>{data.inComeDoc.name}</td>
+                <td className="text-center">{data.inComeDoc.bank || ""}</td>
                 <td className="text-center">{data.inComeDoc.amount}</td>
                 <td className="text-center">{data.inComeDoc.day+"/"+data.inComeDoc.month+"/"+data.inComeDoc.year}</td>
                 <td key={data.url} className="text-center"><a href={data.url} target="_blank">{data.url != ""? data.inComeDoc.name : ""}</a></td>

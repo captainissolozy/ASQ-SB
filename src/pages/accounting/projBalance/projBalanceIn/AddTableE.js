@@ -41,6 +41,7 @@ const AddTable = (props) => {
                 <td className="px-3">{data.mode}</td>
                 <td className="px-3">{data.name}</td>
                 <td className="px-3">{data.form}</td>
+                <td className="px-3">{data.bank || ""}</td>
                 <td className="px-3">{data.day+"/"+data.month+"/"+data.year}</td>
                 {data.mode == "Expense" ? (
                                 <td className="px-3 overflow-hidden text-end">{parseFloat(data.amount*-1).toLocaleString(undefined, {maximumFractionDigits:2})}</td>

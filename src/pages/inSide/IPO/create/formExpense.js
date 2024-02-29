@@ -20,6 +20,7 @@ const AddTable = (props) => {
             <tbody>
             <tr>
                 <td>{data.exPenseDoc.name}</td>
+                <td className="text-center">{data.exPenseDoc.bank || ""}</td>
                 <td className="text-center">{data.exPenseDoc.supplier}</td>
                 <td className="text-center">{data.exPenseDoc.amount}</td>
                 <td className="text-center">{data.exPenseDoc.day+"/"+data.exPenseDoc.month+"/"+data.exPenseDoc.year}</td>

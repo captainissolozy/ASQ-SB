@@ -16,7 +16,7 @@ const AddTable = (props) => {
 
     return (
         formData.filter( result => {
-            return ( result.bank.includes(props.bank)
+            return ( result.bank.includes(props.bank || "")
                     && result.mode.includes(props.mode) 
                     && result.day.includes(props.day)
                     && result.month.includes(props.month) 

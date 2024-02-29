@@ -26,10 +26,12 @@ const AddTable = (props) => {
         while(realLength > 0){
             for(var i in formData){
                 realData[realLength] = formData[i].inComeDoc
+                realData[realLength].url = formData[i].url || ""
                 realLength -= 1
             }
             for(var i in formData2){
                 realData[realLength] = formData2[i].exPenseDoc
+                realData[realLength].url = formData2[i].url || ""
                 realLength -= 1
             }
         }
@@ -60,13 +62,14 @@ const AddTable = (props) => {
                 <td className="px-3">{data.mode}</td>
                 <td className="px-3">{data.name}</td>
                 <td className="px-3">{data.form}</td>
+                <td className="px-3">{data.bank || ""}</td>
                 <td className="px-3">{data.day+"/"+data.month+"/"+data.year}</td>
                 {data.mode == "Expense" ? (
                                 <td className="px-3 overflow-hidden text-end">{parseFloat(data.amount*-1).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                             ) : (
                                 <td className="px-3 overflow-hidden text-end">{parseFloat(data.amount).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                             )}
-                
+                <td key={data.url} className="text-center"><a href={data.url} target="_blank">{data.url != ""?data.name : ""}</a></td>
             </tr>
             </tbody>
 

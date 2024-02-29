@@ -64,6 +64,7 @@ export default function Customer() {
     const [listenAid, setListenAid] = useState(0);
     const [listenBB, setListenBB] = useState(0);
     const [blockState, setBlockState] = useState(0);
+    const [userInfo, setUserInfo] = useState(sessionStorage.getItem("role"));
 
 
 
@@ -358,12 +359,12 @@ export default function Customer() {
                         <Button variant="outlined" color={textColor} className="mx-2 " onClick={handleSubmit}>
                             {textEdit} <EditIcon className="p-0"/>
                         </Button>
-                        {formDataIn.v_box6 !== "BlackList"?(
+                        {(formDataIn.v_box6 !== "BlackList" && (userInfo === "Admin" || userInfo === "Accountant"))?(
                         <Button variant="outlined" color="error" className="mx-2 " onClick={handleBlock}>
                             Blacklist <BlockIcon className="p-0"/>
                         </Button>):(<></>)}
                         
-                        {formDataIn.v_box6 === "BlackList"?(
+                        {(formDataIn.v_box6 === "BlackList"&& (userInfo === "Admin" || userInfo === "Accountant"))?(
                         <Button variant="outlined" color="error" className="mx-2 " onClick={handleUnBlock}>
                             Whitelist <UndoIcon className="p-0"/>
                         </Button>):(<></>)}

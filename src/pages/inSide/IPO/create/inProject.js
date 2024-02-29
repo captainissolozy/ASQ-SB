@@ -16,6 +16,7 @@ import CustomerWrapper from "./CustomerWrapper";
 import AddIcon from "@mui/icons-material/Add";
 import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
 import ComboBox2 from "./combobox2";
+import ComboBox3 from "./combobox3";
 
 
 export default function Customer() {
@@ -32,7 +33,8 @@ export default function Customer() {
         form: sessionStorage.getItem("projectID"),
         day: "",
         month: "",
-        year: ""
+        year: "",
+        bank: ""
     });
 
     const initialExpense = Object.freeze({
@@ -44,7 +46,8 @@ export default function Customer() {
         form: sessionStorage.getItem("projectID"),
         day: "",
         month: "",
-        year: ""
+        year: "",
+        bank: ""
     });
 
     const navigate = useNavigate()
@@ -129,6 +132,28 @@ export default function Customer() {
             ...exPenseDoc,
             supplier: data
         })
+    }
+
+    const listenChangeBox = (data) => {
+        handleBank(data)
+    }
+
+    const handleBank = async (data) => {
+        setIncomeDoc({
+            ...inComeDoc,
+            "bank": data
+        });
+    }
+
+    const listenChangeBox2 = (data) => {
+        handleBank2(data)
+    }
+
+    const handleBank2 = async (data) => {
+        setExpenseDoc({
+            ...exPenseDoc,
+            "bank": data
+        });
     }
 
     const handleCloseTwo = () => {
@@ -520,7 +545,8 @@ export default function Customer() {
                             <table className="table table-sm border-bottom-0">
                                 <thead className="bg-dark text-light">
                                 <tr>
-                                    <th style={{width: 40+'%'}} className="">Income</th>
+                                    <th style={{width: 20+'%'}} className="">Income</th>
+                                    <th style={{width: 20+'%'}} className="">Bank</th>
                                     <th style={{width: 20+'%'}} className="">Amount</th>
                                     <th style={{width: 20+'%'}} className="">Date</th>
                                     <th style={{width: 20+'%'}} className="">File</th>
@@ -543,7 +569,8 @@ export default function Customer() {
                             <table className="table table-sm border-bottom-0">
                                 <thead className="bg-dark text-light">
                                 <tr>
-                                    <th style={{width: 40+'%'}} className="">Expense</th>
+                                    <th style={{width: 20+'%'}} className="">Expense</th>
+                                    <th style={{width: 20+'%'}} className="">Bank</th>
                                     <th style={{width: 20+'%'}} className="">Suplier</th>
                                     <th style={{width: 15+'%'}} className="">Amount</th>
                                     <th style={{width: 15+'%'}} className="">Date</th>
@@ -624,6 +651,7 @@ export default function Customer() {
                                     required
                                     onChange={handleChangeIncome}
                             />
+                            <ComboBox3 className="w-100" func={listenChangeBox}/>
                             <div className="px-0 mb-2">
                                 <div className="col d-flex justify-content-between w-100">
                                 <InputLabel id="demo-simple-select-label1" >Day</InputLabel>
@@ -737,6 +765,8 @@ export default function Customer() {
                                     required
                                     onChange={handleChangeExpense}
                             />
+
+                            <ComboBox3 className="w-100" func={listenChangeBox2}/>
                             <div className="px-0 mb-2">
                                 <div className="col d-flex justify-content-between w-100">
                                 <InputLabel id="demo-simple-select-label1" >Day</InputLabel>

@@ -13,8 +13,6 @@ const AddTable = (props) => {
         });
     }, [])
 
-    console.log(props.mode)
-
     return (
         formData.filter( result => {
             return ((result.name.toLowerCase().includes(props.name.toLowerCase()) || props.name == "")
