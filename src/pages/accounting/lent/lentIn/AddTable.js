@@ -1,72 +1,62 @@
 import {useEffect, useState} from "react";
 import db from "../../../../config/firebase-config"
-import {collection, doc, getDoc, onSnapshot} from "firebase/firestore"
-import {useNavigate} from "react-router-dom";
+import {collection, doc, getDoc, onSnapshot, deleteDoc, updateDoc} from "firebase/firestore"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons'
+
 
 
 const AddTable = (props) => {
 
+    const initialFormData = Object.freeze({
+        name: "",
+        lent: 0,
+        description: "",
+        payback: 0,
+        day: "",
+        month: "",
+        year: "",
+        pday: "::",
+        pmonth: "::",
+        pyear: "::::",
+        status:"pending",
+        lleft: 0
+    });
+
+    const initialFormData2 = Object.freeze({
+        lleft: ""
+    });
+
     const [formData, setFormData] = useState([])
-    const [formData2, setFormData2] = useState([])
-    const [realData, setRealData] = useState([])
-    let amount = 0
-    
+    const [formData2, updateFormData2] = useState(initialFormData2)
 
     useEffect(() => {
-        onSnapshot(collection(db, "PO", props.roomcode, "income"), (snapshot) => {
+        onSnapshot(collection(db, "accounting", "record", props.roomcode), (snapshot) => {
             setFormData(snapshot.docs.map((doc) => doc.data()))
         });
-        onSnapshot(collection(db, "PO", props.roomcode, "expense"), (snapshot) => {
-            setFormData2(snapshot.docs.map((doc) => doc.data()))
-        });
+        
     }, [])
 
-    useEffect(() => {
-        var realLength = formData.length + formData2.length - 1
-        while(realLength > 0){
-            for(var i in formData){
-                realData[realLength] = formData[i].inComeDoc
-                realLength -= 1
-            }
-            for(var i in formData2){
-                realData[realLength] = formData2[i].exPenseDoc
-                realLength -= 1
-            }
+    const onDelete = async (e) => {
+        var string_split = e.target.id.split("-")
+        const docRef2 = doc(db, "accounting", "record", props.roomcode, string_split[0]+string_split[1]);
+        await deleteDoc(docRef2);
+        const docRef = doc(db, "accounting", "lent", "record", props.roomcode);
+        const docsnap = await getDoc(docRef);
+        var formData3 = {lleft: ""}
+        if(docsnap.exists){
+            formData3.lleft = docsnap.data().lleft + parseFloat(string_split[0]);
         }
-    }, [formData, formData2])
-
-    const sumofAmount = (data, mode) => {
-        if(mode == "Expense"){
-            amount -= data
-            props.total(amount)
-        }else{
-            amount += data
-            props.total(amount)
-        }
-    }
+        await updateDoc(docRef, formData3)
+    };
 
     return (
-        realData.filter( result => {
-            return ((result.name.toLowerCase() == (props.name) || props.name == "")
-                    && result.form.includes(props.form)
-                    && result.mode.includes(props.mode) 
-                    && result.day.includes(props.day)
-                    && result.month.includes(props.month) 
-                    && result.year.includes(props.year))
-        }).sort((a, b) => Date.parse(a.month+"/"+a.day+"/"+a.year) - Date.parse(b.month+"/"+b.day+"/"+b.year)).map((data, i) => (
+        formData.sort((a, b) => Date.parse(a.month+"/"+a.day+"/"+a.year) - Date.parse(b.month+"/"+b.day+"/"+b.year)).map((data, i) => (
             <tbody>
-                {sumofAmount(parseFloat(data.amount), data.mode)}
             <tr>
-                <td className="px-3">{data.mode}</td>
-                <td className="px-3">{data.name}</td>
-                <td className="px-3">{data.form}</td>
-                <td className="px-3">{data.day+"/"+data.month+"/"+data.year}</td>
-                {data.mode == "Expense" ? (
-                                <td className="px-3 overflow-hidden text-end">{parseFloat(data.amount*-1).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
-                            ) : (
-                                <td className="px-3 overflow-hidden text-end">{parseFloat(data.amount).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
-                            )}
-                
+                <td className="px-3">{parseFloat(data.payback).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
+                <td className="px-3">{data.pday+"/"+data.pmonth+"/"+data.pyear}</td> 
+                <td style={{cursor: "pointer"}} className="text-center dlt-icon z-indie" onClick={onDelete} id={data.payback +"-"+ data.pday} ><FontAwesomeIcon id={data.payback + "-" + data.pday} icon={faTrashCan}/></td>
             </tr>
             </tbody>
 

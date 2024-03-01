@@ -40,12 +40,12 @@ export default function Lobby() {
 
     const initialSearchKey = Object.freeze({
         bank: "",
-        number: "",
         amount: "",
-        description: "",
+        name: "",
         day: "",
         month: "",
-        year: ""
+        year: "",
+        form:""
     });
 
     const navigate = useNavigate()
@@ -58,6 +58,7 @@ export default function Lobby() {
     const [formData3, updateFormData3] = useState(initialFormData)
     const [searchKey, setSearchKey] = useState(initialSearchKey)
     const [edit, setEdit] = useState(false)
+    const [total, setTotal] = useState(0)
 
     useEffect(() => {
         if (!user) {
@@ -70,14 +71,10 @@ export default function Lobby() {
     }, [navigate, user, sessionStorage.getItem('role')])
 
 
-    const handleCreate = () => {
-        setOpen(true)
-    }
-
-    const handleClose = () => {
-        setOpen(false)
-        setListen("")
-    }
+    // const handleClose = () => {
+    //     setOpen(false)
+    //     setListen("")
+    // }
 
     const handleCreate2 = () => {
         setOpen2(true)
@@ -91,31 +88,27 @@ export default function Lobby() {
         setEdit(false)
     }
 
-    const listenChange = (data) => {
-        setListen(data)
-        handleBank(data)
-    }
+    // const listenChange = (data) => {
+    //     setListen(data)
+    //     handleBank(data)
+    // }
 
     const listenChange3 = (data) => {
         setListen(data)
         handleBank3(data)
     }
 
-    const handleBank = async (data) => {
-        const docSnap = data.split("-")
-        updateFormData({
-            ...formData,
-            "bank": docSnap[0],
-            "number": docSnap[1],
-        });
-    }
+    // const handleBank = async (data) => {
+    //     updateFormData({
+    //         ...formData,
+    //         "bank": data
+    //     });
+    // }
 
     const handleBank3 = async (data) => {
-        const docSnap = data.split("-")
         updateFormData3({
             ...formData3,
-            "bank": docSnap[0],
-            "number": docSnap[1],
+            "bank": data
         });
     }
 
@@ -125,15 +118,14 @@ export default function Lobby() {
     }
 
     const handleBank2 = async (data) => {
-        var docSnap = ["", ""]
-        if(data != null){
-            docSnap = data.split("-")
-        }
         setSearchKey({
             ...searchKey,
-            "bank": docSnap[0],
-            "number": docSnap[1],
+            "bank": data
         });
+    }
+
+    const listenTotal = (data) => {
+        setTotal(data)
     }
 
     const listenEdit = async (data) => {
@@ -207,36 +199,34 @@ export default function Lobby() {
                     <div className="col px-2 d-flex align-items-center justify-content-between">
                         <h4 className="mb-0">Accounting Record</h4>
                         <div>
-                        <IconButton variant="outlined" className="px-3 rounded-2 sty-addbtn" color="primary" onClick={handleCreate}
-                                    size="small"><p3 className="mb-0">Add Record</p3></IconButton>
                         <IconButton variant="outlined" className="px-3 rounded-2" color="secondary" onClick={handleCreate2}
                                     size="small"><p3 className="mb-0">+ Bank</p3></IconButton>
                         </div>
                     </div>
                     <div className="row mt-3 d-flex justify-content-center">
                         <div className="row">
-                            <div className="col-8 px-2">
+                            <div className="col-6 px-2">
                                 <div className="col pt-1 col-md-12 mb-2">
-                                    <FormControl className="w-100" size="small">
-                                        <InputLabel id="demo-simple-select-label" >Bank</InputLabel>
-                                            <Select id="demo-simple-select" labelId="demo-simple-select-label" name="bank" label="Bank" className="w-100"
-                                                value={searchKey.bank} onChange={joinChange}>
-                                                <MenuItem value={""}>All</MenuItem>
-                                                <MenuItem value={"Kasikorn"}>Kasikorn</MenuItem>
-                                                <MenuItem value={"Krungthai"}>Krungthai</MenuItem>
-                                                <MenuItem value={"Krungsri"}>Krungsri</MenuItem>
-                                                <MenuItem value={"TTB"}>TTB</MenuItem>
-                                                <MenuItem value={"SCB"}>SCB</MenuItem>
-                                                <MenuItem value={"BBL"}>BBL</MenuItem>
-                                                <MenuItem value={"GSB"}>GCB</MenuItem>
-                                                <MenuItem value={"TMB"}>TMB</MenuItem>
-                                            </Select>
-                                    </FormControl>
+                                    <TextField id="outlined-search" type="name" InputLabelProps={{
+                                            shrink: true
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                        name="description" label="Description" className="w-100" onChange={joinChange}/>
                                 </div>
                             </div>
-                            <div className="col-md-4 p-0 col">
+                            <div className="col-md-6 p-0 col">
                                 <div className="col p-0 pt-1 mb-2 mx-2">
-                                    <ComboBox className="w-100" func={listenChange2}/>
+                                <TextField id="outlined-search" type="name" InputLabelProps={{
+                                            shrink: true
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                        name="form" label="From/Bill" className="w-100" onChange={joinChange}/>
                                 </div>
                             </div>
                         </div>
@@ -330,40 +320,37 @@ export default function Lobby() {
                             </div>
                             <div className="col-md-4 p-0 col">
                                 <div className="col p-0 pt-1 mb-2 mx-2">
-                                    <TextField id="outlined-search" type="name" InputLabelProps={{
-                                        shrink: true
-                                    }} inputProps={{
-                                        style: {
-                                            height: "5px",
-                                        },
-                                    }}
-                                               name="description" label="Description" className="w-100" onChange={joinChange}/>
+                                    <ComboBox className="w-100" func={listenChange2}/>
                                 </div>
                             </div>
                         </div>
                     </div>
                     </div>
                     <div className="row mt-2 mx-2 table-responsive">
-                            <table className="table border-bottom-0 overflow-auto" id="dtHorizontalExample" >
+                            <table className="table border-bottom-0" id="dtHorizontalExample" >
                                 <thead className="text-light">
                                 <tr>
-                                    <th scope="col" className="t-stick th px-3">Bank</th>
-                                    <th scope="col" className="t-stick th px-3">Account number</th>
-                                    <th scope="col" className="t-stick th px-3">Description</th>
-                                    <th scope="col" className="t-stick th px-3">Date</th>
-                                    <th scope="col" className="t-stick th px-3 text-end">Amount</th>
+                                    <th scope="col" className="t-stick th">Description</th>
+                                    <th scope="col" className="t-stick th">From/Bill</th>
+                                    <th scope="col" className="t-stick th">Bank</th>
+                                    <th scope="col" className="t-stick th">Date</th>
+                                    
+                                    <th scope="col" className="t-stick th text-end">Amount</th>
+                                    <th scope="col" className="t-stick th text-center">file</th>
                                 </tr>
                                 </thead>
-                                <AddTable bank={searchKey.bank} number={searchKey.number} description={searchKey.description}
+                                <AddTable bank={searchKey.bank} name={searchKey.name.toLowerCase()}
                                           day={searchKey.day} month={searchKey.month} year={searchKey.year}
-                                          truth={listenEdit}
+                                          form={searchKey.form}
+                                          total={listenTotal}
+                                        //   truth={listenEdit}
                                 />
                             </table>
                     </div>
                 </div>
 
             </div>
-            <Modal
+            {/* <Modal
                 open={open}
                 onClose={handleClose}
                 className="d-flex justify-content-center align-items-center"
@@ -488,7 +475,7 @@ export default function Lobby() {
                         </div>
                     </div>
                 </form>
-            </Modal>
+            </Modal> */}
             <Modal
                 open={open2}
                 onClose={handleClose2}

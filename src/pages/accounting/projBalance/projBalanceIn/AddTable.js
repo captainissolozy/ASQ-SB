@@ -61,15 +61,16 @@ const AddTable = (props) => {
             <tr>
                 <td className="px-3">{data.mode}</td>
                 <td className="px-3">{data.name}</td>
-                <td className="px-3">{data.form}</td>
+                    
                 <td className="px-3">{data.bank || ""}</td>
+                <td className="px-3">{data.supplier || ""}</td>
                 <td className="px-3">{data.day+"/"+data.month+"/"+data.year}</td>
                 {data.mode == "Expense" ? (
                                 <td className="px-3 overflow-hidden text-end">{parseFloat(data.amount*-1).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                             ) : (
                                 <td className="px-3 overflow-hidden text-end">{parseFloat(data.amount).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                             )}
-                <td key={data.url} className="text-center"><a href={data.url} target="_blank">{data.url != ""?data.name : ""}</a></td>
+                <td key={data.url} className="text-center"><a href={data.url} target="_blank">{data.url != ""?"file" : ""}</a></td>
             </tr>
             </tbody>
 

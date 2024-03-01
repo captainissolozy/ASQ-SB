@@ -55,19 +55,6 @@ export default function Lobby() {
         window.scrollTo(0, 0)
     }, [navigate, user])
 
-    const handleCreate = () => {
-        setOpen(true)
-    }
-    const handleClose = () => {
-        setOpen(false)
-        updateFormData({})
-    }
-    const handleChange = (e) => {
-        updateFormData({
-            ...formData,
-            [e.target.name]: e.target.value.trim()
-        })
-    }
 
     const listenTotal = (data) => {
         setTotal(data)
@@ -233,8 +220,8 @@ export default function Lobby() {
                                 <tr>
                                     <th scope="col" className="t-stick th px-3">Type</th>
                                     <th scope="col" className="t-stick th px-3">Description</th>
-                                    <th scope="col" className="t-stick th px-3">From</th>
                                     <th scope="col" className="t-stick th px-3">Bank</th>
+                                    <th scope="col" className="t-stick th px-3">Supplier</th>
                                     <th scope="col" className="t-stick th px-3">Date</th>
                                     <th scope="col" className="t-stick th px-3 text-end">Amount</th>
                                     <th scope="col" className="t-stick th px-3 text-center">File</th>

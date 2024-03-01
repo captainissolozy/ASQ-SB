@@ -1,7 +1,8 @@
 import {useEffect, useState} from "react";
 import db from "../../../config/firebase-config"
-import {collection, doc, getDoc, onSnapshot} from "firebase/firestore"
-import {useNavigate} from "react-router-dom";
+import {collection, doc, getDoc, onSnapshot, deleteDoc} from "firebase/firestore"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons'
 
 
 const AddTable = (props) => {
@@ -26,15 +27,16 @@ const AddTable = (props) => {
         
     }
 
+
     return (
         formData.filter( result => {
             return ((result.name.toLowerCase() == (props.name) || props.name == "")
                     && result.form.includes(props.form)
                     && (result.bank || "").includes(props.bank || "")
-                    && result.mode.includes(props.mode) 
-                    && result.day.includes(props.day)
-                    && result.month.includes(props.month) 
-                    && result.year.includes(props.year))
+                    && (result.mode|| "").includes(props.mode) 
+                    && (result.day || "").includes(props.day)
+                    && (result.month || "").includes(props.month) 
+                    && (result.year || "").includes(props.year))
         }).sort((a, b) => Date.parse(a.month+"/"+a.day+"/"+a.year) - Date.parse(b.month+"/"+b.day+"/"+b.year)).map((data, i) => (
             <tbody>
                 {sumofAmount(parseFloat(data.amount), data.mode)}
@@ -52,6 +54,8 @@ const AddTable = (props) => {
                             ) : (
                                 <td className="px-3 overflow-hidden text-end">{parseFloat(data.amount).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                             )}
+                <td key={data.url} className="text-center"><a href={data.url} target="_blank">{data.url != ""?"":"file"}</a></td>
+                
                 
             </tr>
             </tbody>

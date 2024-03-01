@@ -53,7 +53,6 @@ export default function Lobby() {
     const [formData2, updateFormData2] = useState(initialFormData2)
     const [formData3, updateFormData3] = useState(initialFormData)
     const [searchKey, setSearchKey] = useState(initialSearchKey)
-    const [listen, setListen] = useState("")
     const [edit, setEdit] = useState(false)
 
     useEffect(() => {
@@ -108,7 +107,6 @@ export default function Lobby() {
     }
 
     const listenChange = (data) => {
-        console.log(data)
         handleBank(data)
     }
 

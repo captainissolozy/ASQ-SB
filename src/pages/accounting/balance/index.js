@@ -12,13 +12,14 @@ import {
     FormControl,
     Button
 } from "@mui/material";
-import db from "../../../config/firebase-config"
+import db,{storage} from "../../../config/firebase-config"
 import {doc, getDoc, setDoc, deleteDoc } from "firebase/firestore"
 import AddTable from "./AddTable";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Modal from "@material-ui/core/Modal";
 import ComboBox from "./combobox";
+import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
 
 
 export default function Lobby() {
@@ -31,7 +32,8 @@ export default function Lobby() {
         bank:"",
         day: "",
         month: "",
-        year: ""
+        year: "",
+        url: ""
     });
 
     const initialSearchKey = Object.freeze({
@@ -44,14 +46,15 @@ export default function Lobby() {
         year: ""
     });
 
-    const navigate = useNavigate()
-    const {user} = useUserContext()
-    const [open, setOpen] = useState(false)
-    const [total, setTotal] = useState(0)
-    const [formData, updateFormData] = useState(initialFormData)
-    const [formData2, updateFormData2] = useState(initialFormData)
-    const [searchKey, setSearchKey] = useState(initialSearchKey)
-    const [edit, setEdit] = useState(false)
+    const navigate = useNavigate();
+    const {user} = useUserContext();
+    const [open, setOpen] = useState(false);
+    const [total, setTotal] = useState(0);
+    const [formData, updateFormData] = useState(initialFormData);
+    const [formData2, updateFormData2] = useState(initialFormData);
+    const [searchKey, setSearchKey] = useState(initialSearchKey);
+    const [edit, setEdit] = useState(false);
+    const [file, setFile] = useState("");
 
     useEffect(() => {
         if (!user) {
@@ -70,12 +73,12 @@ export default function Lobby() {
 
     const handleClose = () => {
         setOpen(false)
-        updateFormData({})
+        updateFormData(initialFormData)
     }
 
     const handleClose2 = () => {
         setEdit(false)
-        updateFormData2({})
+        updateFormData2(initialFormData)
     }
 
     const handleChange = (e) => {
@@ -92,6 +95,10 @@ export default function Lobby() {
         })
     }
 
+    const handleChangeUploadFile = (e) => {
+        setFile(e.target.files[0])
+    }
+
     const listenTotal = (data) => {
         setTotal(data)
     }
@@ -99,8 +106,10 @@ export default function Lobby() {
     const listenEdit = async (data) => {
         const docRef1 = doc(db, "accounting", "incomeExpense", "record", sessionStorage.getItem("balanceID"));
         const docSnap = await getDoc(docRef1);
-        updateFormData2(docSnap.data())
-        setEdit(data)
+        if(docSnap.exists){
+            updateFormData2(docSnap.data());
+            setEdit(data);
+        }
     }
 
     const listenChange = (data) => {
@@ -146,13 +155,34 @@ export default function Lobby() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if(formData.amount == "" || formData.day == "" || formData.month == ""|| formData.year == ""){
-            
-        }else{
-            const docRef1 = doc(db, "accounting", "incomeExpense", "record", formData.name+formData.amount);
-            await setDoc(docRef1, formData);
-            setOpen(false)
-        }
+            const storageRef = ref(storage, `/media/IncExp/${file.name}`)
+            const uploadTask = uploadBytesResumable(storageRef, file);
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                    const percent = Math.round(
+                        (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                    );
+                },
+                (err) => console.log(err),
+                () => {
+                    // download url
+                    getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
+                        updateFormData({
+                            ...formData,
+                            "url": url
+                        });
+                        console.log(formData, url)
+                        if(formData.amount == "" || formData.day == "" || formData.month == ""|| formData.year == ""){
+                            
+                        }else{
+                            const docRef1 = doc(db, "accounting", "incomeExpense", "record", formData.name+formData.amount);
+                            await setDoc(docRef1, formData);
+                            setOpen(false)
+                        }
+                    });
+                }
+            )
         updateFormData({})
     };
 
@@ -165,7 +195,6 @@ export default function Lobby() {
             await deleteDoc(docRef2);
             const docRef1 = doc(db, "accounting", "incomeExpense", "record", formData2.name+formData2.amount);
             await setDoc(docRef1, formData2);
-            
             setEdit(false)
         }
     };
@@ -334,6 +363,7 @@ export default function Lobby() {
                                     <th scope="col" className="t-stick th px-3">From</th>
                                     <th scope="col" className="t-stick th px-3">Date</th>
                                     <th scope="col" className="t-stick th px-3 text-end">Amount</th>
+                                    <th scope="col" className="t-stick th px-3 text-center">File</th>
                                 </tr>
                                 </thead>
                                 <AddTable name={searchKey.name} form={searchKey.form.toLowerCase()} mode={searchKey.mode}
@@ -376,13 +406,14 @@ export default function Lobby() {
                                required
                                onChange={handleChange}
                     />
-                    <TextField className="my-2"
+                    <TextField className="my-2 pb-2"
                                label="Bill Number"
                                name="form"
                                type="text"
                                required
                                onChange={handleChange}
                     />
+                    
                     <ComboBox className="w-100" func={listenChange}/>
                     <div className="px-0 mb-2 mt-4">
                         <div className="col d-flex justify-content-between w-100">
@@ -455,7 +486,8 @@ export default function Lobby() {
                         </Select>
                         </div>
                     </div>
-
+                    <input name="path" className="row d-flex justify-content-center px-2 mb-3 pt-4 mx-2"
+                            type="file" accept="image/*" onChange={handleChangeUploadFile}/>
                     <div className="pt-2">
                         <div className="col d-flex justify-content-center">
                             <Button type="submit" variant="contained" color="secondary" className="mx-3 m"

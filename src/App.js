@@ -19,6 +19,7 @@ import Accounting from "./pages/accounting";
 import Balance from "./pages/accounting/balance";
 import Taxes from "./pages/accounting/taxes";
 import Lent from "./pages/accounting/lent";
+import LentIn from "./pages/accounting/lent/lentIn";
 import Record from "./pages/accounting/record";
 import BalanceProj from "./pages/accounting/projBalance"
 import BalanceProjIns from "./pages/accounting/projBalance/projBalanceIn"
@@ -58,6 +59,7 @@ function App() {
                 <Route path="/insideQuotation" element={<InsideQuote/>}/>
                 <Route path="/staticQuotation" element={<StaticQuote/>}/>
                 <Route path="/staticQuotation2" element={<StaticQuote2/>}/>
+                <Route path="/creditIn" element={<LentIn/>}/>
             </Routes>
         </div>
         </BrowserRouter>

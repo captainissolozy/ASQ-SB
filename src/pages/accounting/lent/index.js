@@ -33,7 +33,8 @@ export default function Lobby() {
         pday: "::",
         pmonth: "::",
         pyear: "::::",
-        status:"pending"
+        status:"pending",
+        lleft: 0
     });
 
     const initialFormData2 = Object.freeze({
@@ -41,7 +42,8 @@ export default function Lobby() {
         pday: "",
         pmonth: "",
         pyear: "",
-        status:"pending"
+        status:"pending",
+        lleft: ""
     });
 
     const initialSearchKey = Object.freeze({
@@ -112,6 +114,7 @@ export default function Lobby() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        formData.lleft = formData.lent
         const docRef1 = doc(db, "accounting", "lent", "record", formData.name+formData.description);
         await setDoc(docRef1, formData);
         setOpen(false)
@@ -123,7 +126,10 @@ export default function Lobby() {
         if(sessionStorage.getItem("PayLent") - formData2.payback == 0){
             formData2.status = "done"
         }
+        formData2.lleft = sessionStorage.getItem("PayLent") - formData2.payback
         await updateDoc(docRef1, formData2);
+        const docRef2 = doc(db, "accounting", "record", sessionStorage.getItem("PayID"), formData2.payback+formData2.pday);
+        await setDoc(docRef2, formData2);
         sessionStorage.setItem("PayID", "");
         sessionStorage.setItem("PayLent", "");
         setOpen2(false)
@@ -287,9 +293,9 @@ export default function Lobby() {
                                     <th scope="col" className="t-stick th px-3">Description</th>
                                     <th scope="col" className="t-stick th px-3 text-center">Lent Date</th>
                                     <th scope="col" className="t-stick th px-3 text-end">เงินยืม</th>
-                                    <th scope="col" className="t-stick th px-3 text-center">Payback Date</th>
-                                    <th scope="col" className="t-stick th px-3 text-end">เงินคืน</th>
+                                    <th scope="col" className="t-stick th px-3 text-center">Latest Payback Date</th>
                                     <th scope="col" className="t-stick th px-3 text-end">คงเหลือ</th>
+                                    <th scope="col" className="t-stick th px-3 text-end">History</th>
                                 </tr>
                                 </thead>
                                 <AddTable name={searchKey.name} description={searchKey.description} mode={searchKey.mode}

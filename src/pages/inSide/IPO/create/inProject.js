@@ -34,7 +34,8 @@ export default function Customer() {
         day: "",
         month: "",
         year: "",
-        bank: ""
+        bank: "",
+        url: ""
     });
 
     const initialExpense = Object.freeze({
@@ -47,7 +48,8 @@ export default function Customer() {
         day: "",
         month: "",
         year: "",
-        bank: ""
+        bank: "",
+        url: ""
     });
 
     const navigate = useNavigate()
@@ -251,6 +253,8 @@ export default function Customer() {
         if (!file) {
             const docRef1 = doc(db, "PO", sessionStorage.getItem("projectID"), "income", inComeDoc.name+inComeDoc.form);
             await setDoc(docRef1, {inComeDoc, url:""});
+            const docRef2 = doc(db, "accounting", "IncomeExpenseO", "record", inComeDoc.name+inComeDoc.form);
+            await setDoc(docRef2, inComeDoc);
         }else{
             const storageRef = ref(storage, `/media/PO/${file.name}`)
             const uploadTask = uploadBytesResumable(storageRef, file);
@@ -265,16 +269,14 @@ export default function Customer() {
                 () => {
                     // download url
                     getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
+                        inComeDoc.url = url
                         const docRef1 = doc(db, "PO", sessionStorage.getItem("projectID"), "income", inComeDoc.name+inComeDoc.form);
                         await setDoc(docRef1, {inComeDoc, url});
+                        const docRef2 = doc(db, "accounting", "IncomeExpenseO", "record", inComeDoc.name+inComeDoc.form);
+                        await setDoc(docRef2, inComeDoc);
                     });
                 }
             );
-        }
-        
-        if(inComeDoc.amount != "" || inComeDoc.day != "" || inComeDoc.month != ""|| inComeDoc.year != ""){
-            const docRef1 = doc(db, "accounting", "IncomeExpenseO", "record", sessionStorage.getItem("projectID"));
-            await setDoc(docRef1, inComeDoc);
         }
         setOpenThree(false)
         setIncomeDoc(initialIncome)
@@ -286,6 +288,8 @@ export default function Customer() {
         if (!file) {
             const docRef1 = doc(db, "PO", sessionStorage.getItem("projectID"), "expense", exPenseDoc.name+exPenseDoc.form);
             await setDoc(docRef1, {exPenseDoc, url:""});
+            const docRef2 = doc(db, "accounting", "IncomeExpenseO", "record", exPenseDoc.name+exPenseDoc.form);
+            await setDoc(docRef2, exPenseDoc);
         }else{
             const storageRef = ref(storage, `/media/PO/${file.name}`)
             const uploadTask = uploadBytesResumable(storageRef, file);
@@ -300,15 +304,14 @@ export default function Customer() {
                 () => {
                     // download url
                     getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
+                        exPenseDoc.url = url
                         const docRef1 = doc(db, "PO", sessionStorage.getItem("projectID"), "expense", exPenseDoc.name+exPenseDoc.form);
                         await setDoc(docRef1, {exPenseDoc, url});
+                        const docRef2 = doc(db, "accounting", "IncomeExpenseO", "record", exPenseDoc.name+exPenseDoc.form);
+                        await setDoc(docRef2, exPenseDoc);
                     });
                 }
             );
-        }
-        if(exPenseDoc.amount != "" || exPenseDoc.day != "" || exPenseDoc.month != ""|| exPenseDoc.year != ""){
-            const docRef1 = doc(db, "accounting", "IncomeExpenseO", "record", sessionStorage.getItem("projectID"));
-            await setDoc(docRef1, exPenseDoc);
         }
         setOpenFour(false)
         setIncomeDoc(initialExpense)
@@ -549,7 +552,8 @@ export default function Customer() {
                                     <th style={{width: 20+'%'}} className="">Bank</th>
                                     <th style={{width: 20+'%'}} className="">Amount</th>
                                     <th style={{width: 20+'%'}} className="">Date</th>
-                                    <th style={{width: 20+'%'}} className="">File</th>
+                                    <th style={{width: 15+'%'}} className="">File</th>
+                                    <th style={{width: 5+'%'}} className="">x</th>
                                 </tr>
                                 </thead>
                                 <FormIncome roomCode={sessionStorage.getItem("projectID")}/>
@@ -574,7 +578,8 @@ export default function Customer() {
                                     <th style={{width: 20+'%'}} className="">Suplier</th>
                                     <th style={{width: 15+'%'}} className="">Amount</th>
                                     <th style={{width: 15+'%'}} className="">Date</th>
-                                    <th style={{width: 10+'%'}} className="">file</th>
+                                    <th style={{width: 5+'%'}} className="">file</th>
+                                    <th style={{width: 5+'%'}} className="">x</th>
                                 </tr>
                                 </thead>
                                 <FormExpense roomCode={sessionStorage.getItem("projectID")}/>
