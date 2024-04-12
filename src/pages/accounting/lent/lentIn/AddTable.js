@@ -51,7 +51,7 @@ const AddTable = (props) => {
     };
 
     return (
-        formData.sort((a, b) => Date.parse(a.month+"/"+a.day+"/"+a.year) - Date.parse(b.month+"/"+b.day+"/"+b.year)).map((data, i) => (
+        formData.sort((b, a) => Date.parse(a.month+"/"+a.day+"/"+a.year) - Date.parse(b.month+"/"+b.day+"/"+b.year)).map((data, i) => (
             <tbody>
             <tr>
                 <td className="px-3">{parseFloat(data.payback).toLocaleString(undefined, {maximumFractionDigits:2})}</td>

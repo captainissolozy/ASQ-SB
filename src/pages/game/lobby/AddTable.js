@@ -25,16 +25,16 @@ const AddTable = (props) => {
             navigate("/insideQuotation")
         }
     }
-
+    
     return (
         formData.filter( result => {
-            return ((result.v_box6.toLowerCase() == (props.status) || props.status == "")
+            return (((result.status || "") == (props.status) || props.status == "")
                     && result.genQo.includes(props.genQo)
                     && result.sales.toLowerCase().includes(props.sales) 
                     && result.date.toString().includes(props.day)
                     && result.month.toString().includes(props.month) 
                     && result.year.toString().includes(props.year))
-        }).sort((a, b) => Date.parse(a.month+"/"+a.date+"/"+a.year) - Date.parse(b.month+"/"+b.date+"/"+b.year)).map((data, i) => (
+        }).sort((b, a) => Date.parse(a.month+"/"+a.date+"/"+a.year) - Date.parse(b.month+"/"+b.date+"/"+b.year)).map((data, i) => (
             <tbody>
             <tr onClick={() => handleJoinPublic(data.genQo, data.v_box1)} style={{cursor: "pointer"}}>
                 <td className="px-3">{data.genQo}</td>

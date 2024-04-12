@@ -18,7 +18,6 @@ const AddTable = (props) => {
     }, [navigate])
 
     const onDelete = async (e) => {
-        console.log(e.target.id)
         const docRef1 = doc(db, "PO", props.roomCode, "income", e.target.id);
         await deleteDoc(docRef1);
         const docRef2 = doc(db, "accounting", "IncomeExpenseO", "record", e.target.id);

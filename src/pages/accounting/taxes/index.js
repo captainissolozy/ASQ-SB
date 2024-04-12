@@ -209,15 +209,15 @@ export default function Lobby() {
                                         <Select id="demo-simple-select1" name="day" label="day" className="w-100 mb-2" labelId="demo-simple-select-label"
                                             value={searchKey.day} onChange={joinChange} size="small">
                                                 <MenuItem value={""}>All</MenuItem>
-                                                <MenuItem value={"01"}>01</MenuItem>
-                                                <MenuItem value={"02"}>02</MenuItem>
-                                                <MenuItem value={"03"}>03</MenuItem>
-                                                <MenuItem value={"04"}>04</MenuItem>
-                                                <MenuItem value={"05"}>05</MenuItem>
-                                                <MenuItem value={"06"}>06</MenuItem>
-                                                <MenuItem value={"07"}>07</MenuItem>
-                                                <MenuItem value={"08"}>08</MenuItem>
-                                                <MenuItem value={"09"}>09</MenuItem>
+                                                <MenuItem value={"1"}>01</MenuItem>
+                                                <MenuItem value={"2"}>02</MenuItem>
+                                                <MenuItem value={"3"}>03</MenuItem>
+                                                <MenuItem value={"4"}>04</MenuItem>
+                                                <MenuItem value={"5"}>05</MenuItem>
+                                                <MenuItem value={"6"}>06</MenuItem>
+                                                <MenuItem value={"7"}>07</MenuItem>
+                                                <MenuItem value={"8"}>08</MenuItem>
+                                                <MenuItem value={"9"}>09</MenuItem>
                                                 <MenuItem value={"10"}>10</MenuItem>
                                                 <MenuItem value={"11"}>11</MenuItem>
                                                 <MenuItem value={"12"}>12</MenuItem>
@@ -250,15 +250,15 @@ export default function Lobby() {
                                         <Select id="demo-simple-select1" name="month" label="Month" className="w-100 mb-2" labelId="demo-simple-select-label"
                                             value={searchKey.month} onChange={joinChange} size="small">
                                                 <MenuItem value={""}>All</MenuItem>
-                                                <MenuItem value={"01"}>01</MenuItem>
-                                                <MenuItem value={"02"}>02</MenuItem>
-                                                <MenuItem value={"03"}>03</MenuItem>
-                                                <MenuItem value={"04"}>04</MenuItem>
-                                                <MenuItem value={"05"}>05</MenuItem>
-                                                <MenuItem value={"06"}>06</MenuItem>
-                                                <MenuItem value={"07"}>07</MenuItem>
-                                                <MenuItem value={"08"}>08</MenuItem>
-                                                <MenuItem value={"09"}>09</MenuItem>
+                                                <MenuItem value={"1"}>01</MenuItem>
+                                                <MenuItem value={"2"}>02</MenuItem>
+                                                <MenuItem value={"3"}>03</MenuItem>
+                                                <MenuItem value={"4"}>04</MenuItem>
+                                                <MenuItem value={"5"}>05</MenuItem>
+                                                <MenuItem value={"6"}>06</MenuItem>
+                                                <MenuItem value={"7"}>07</MenuItem>
+                                                <MenuItem value={"8"}>08</MenuItem>
+                                                <MenuItem value={"9"}>09</MenuItem>
                                                 <MenuItem value={"10"}>10</MenuItem>
                                                 <MenuItem value={"11"}>11</MenuItem>
                                                 <MenuItem value={"12"}>12</MenuItem>

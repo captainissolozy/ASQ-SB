@@ -47,11 +47,6 @@ export default function Accounting() {
                             </Link>
                         </div>
                         <div className="pt-4 col-11 mb-2">
-                            <Link to={"/record"} className="nav-link d-flex justify-content-center">
-                                <Button className="p-2 w-50" color="primary" variant="contained">Accounting Record</Button>
-                            </Link>
-                        </div>
-                        <div className="pt-4 col-11 mb-2">
                             <Link to={"/taxes"} className="nav-link d-flex justify-content-center">
                                 <Button className="p-2 w-50" color="primary" variant="contained">Taxes</Button>
                             </Link>
@@ -59,6 +54,11 @@ export default function Accounting() {
                         <div className="pt-4 col-11">
                             <Link to={"/lent"} className="nav-link d-flex justify-content-center">
                                 <Button className="p-2 w-50" color="primary" variant="contained">Credit</Button>
+                            </Link>
+                        </div>
+                        <div className="pt-4 col-11 mb-2">
+                            <Link to={"/record"} className="nav-link d-flex justify-content-center">
+                                <Button className="p-2 w-50" color="primary" variant="contained">Accounting Record</Button>
                             </Link>
                         </div>
                     </div>

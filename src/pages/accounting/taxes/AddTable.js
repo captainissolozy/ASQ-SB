@@ -21,7 +21,7 @@ const AddTable = (props) => {
                     && result.day.includes(props.day)
                     && result.month.includes(props.month) 
                     && result.year.includes(props.year))
-        }).sort((a, b) => Date.parse(a.month+"/"+a.day+"/"+a.year) - Date.parse(b.month+"/"+b.day+"/"+b.year)).map((data, i) => (
+        }).sort((b, a) => Date.parse(a.month+"/"+a.day+"/"+a.year) - Date.parse(b.month+"/"+b.day+"/"+b.year)).map((data, i) => (
             <tbody>
             <tr style={{cursor: "pointer"}} onClick={() => {
                 sessionStorage.setItem("taxesID", data.mode+data.bank+data.amount+data.day+data.month)

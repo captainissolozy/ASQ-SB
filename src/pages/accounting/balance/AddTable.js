@@ -37,7 +37,7 @@ const AddTable = (props) => {
                     && (result.day || "").includes(props.day)
                     && (result.month || "").includes(props.month) 
                     && (result.year || "").includes(props.year))
-        }).sort((a, b) => Date.parse(a.month+"/"+a.day+"/"+a.year) - Date.parse(b.month+"/"+b.day+"/"+b.year)).map((data, i) => (
+        }).sort((b, a) => Date.parse(a.month+"/"+a.day+"/"+a.year) - Date.parse(b.month+"/"+b.day+"/"+b.year)).map((data, i) => (
             <tbody>
                 {sumofAmount(parseFloat(data.amount), data.mode)}
             <tr style={{cursor: "pointer"}} onClick={() => {
@@ -54,7 +54,7 @@ const AddTable = (props) => {
                             ) : (
                                 <td className="px-3 overflow-hidden text-end">{parseFloat(data.amount).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
                             )}
-                <td key={data.url} className="text-center"><a href={data.url} target="_blank">{data.url != ""?"":"file"}</a></td>
+                <td key={data.url} className="text-center"><a href={data.url} target="_blank">{data.url != ""?"file":""}</a></td>
                 
                 
             </tr>
