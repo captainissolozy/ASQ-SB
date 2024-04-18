@@ -47,12 +47,12 @@ const AddTable = (props) => {
         while(realLength > 0){
             for(var i in formData){
                 realData[realLength] = formData[i]
-                realData[realLength].type = "Project Balance"
+                realData[realLength].type = "Income/Expense"
                 realLength -= 1
             }
             for(var i in formData2){
                 realData[realLength] = formData2[i]
-                realData[realLength].type = "Income/Expense"
+                realData[realLength].type = "Project Balance"
                 realLength -= 1
             }
             // for(var i in formData3){

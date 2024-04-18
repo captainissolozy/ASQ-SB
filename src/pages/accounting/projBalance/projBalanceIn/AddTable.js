@@ -9,6 +9,7 @@ const AddTable = (props) => {
     const [formData, setFormData] = useState([])
     const [formData2, setFormData2] = useState([])
     const [realData, setRealData] = useState([])
+    const [count, setCount] = useState(0)
     let amount = 0
     
 
@@ -19,20 +20,26 @@ const AddTable = (props) => {
         onSnapshot(collection(db, "PO", props.roomcode, "expense"), (snapshot) => {
             setFormData2(snapshot.docs.map((doc) => doc.data()))
         });
-    }, [])
+    }, [count])
 
     useEffect(() => {
-        var realLength = formData.length + formData2.length - 1
+        var realLength = formData.length + formData2.length
+
         while(realLength > 0){
-            for(var i in formData){
-                realData[realLength] = formData[i].inComeDoc
-                realData[realLength].url = formData[i].url || ""
-                realLength -= 1
+            if(formData.length > 0){
+                for(var i in formData){
+                    realData[realLength-1] = formData[i].inComeDoc
+                    realData[realLength-1].url = formData[i].url || ""
+                    realLength -= 1
+                }
             }
-            for(var i in formData2){
-                realData[realLength] = formData2[i].exPenseDoc
-                realData[realLength].url = formData2[i].url || ""
-                realLength -= 1
+
+            if(formData2.length > 0){
+                for(var i in formData2){
+                    realData[realLength-1] = formData2[i].exPenseDoc
+                    realData[realLength-1].url = formData2[i].url || ""
+                    realLength -= 1
+                }
             }
         }
     }, [formData, formData2])
