@@ -49,6 +49,7 @@ export default function Lobby() {
                                 <tr>
                                     <th scope="col" className="t-stick th px-3">Payback Amount</th>
                                     <th scope="col" className="t-stick th px-3">Date</th>
+                                    <th scope="col" className="t-stick th px-3">File</th>
                                     <th scope="col" className="t-stick th px-3 text-center">x</th>
                                 </tr>
                                 </thead>

@@ -80,7 +80,8 @@ const AddTable = (props) => {
 
     return (
         realData.filter( result => {
-            return (((result.name || "").toLowerCase().includes(props.name || ""))
+            return ((((result.name || "").toLowerCase().includes(props.name || ""))
+                    || ((result.mode || "").toLowerCase().includes(props.name || "")))
                     && (result.form || "").includes(props.form || "")
                     && (result.bank || "").includes(props.bank || "")
                     && result.day.includes(props.day)

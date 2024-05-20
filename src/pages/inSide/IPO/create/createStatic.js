@@ -2,7 +2,11 @@ import * as React from "react";
 import {useEffect, useState, useRef} from "react";
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../../../context/UserContexts";
-import {Button, IconButton, TextField, InputAdornment} from "@mui/material";
+import {Button, IconButton, TextField, InputAdornment,
+    InputLabel,
+    Select,
+    MenuItem,
+    FormControl} from "@mui/material";
 import Modal from "@material-ui/core/Modal";
 import db from "../../../../config/firebase-config"
 import { doc, getDoc, setDoc, collection, updateDoc} from "firebase/firestore"
@@ -55,7 +59,9 @@ export default function Customer(props) {
     const [countQo, setCountQo] = useState(0);
     const [listenTotal, setListenTotal] = useState(0);
     const myTable = useRef(null);
+    const myAllTable = useRef(null);
     const [height, setHeight] = useState({});
+    const [t_height, setTHeight] = useState({});
     const role = sessionStorage.getItem("role")
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -198,7 +204,6 @@ export default function Customer(props) {
             quantity: 1,
         })
         var heightT_o = myTable.current.clientHeight;
-        console.log(heightT_o)
         if(heightT_o > 500 && heightT_o <= 700){
             setHeight({
                 "height": 700 + "px"
@@ -233,11 +238,52 @@ export default function Customer(props) {
         await setDoc(docRef1, formDataProject2)
     };
 
+    const handlePrint = async (total_h) => {
+        //11 decrease 10 px
+        //
+        var heightT_o = myTable.current.clientHeight;
+        if(heightT_o <= 337){
+            setHeight({
+                "height": (325 - heightT_o) + "px"
+              });
+              setTHeight({
+                "height": "500" + "px"
+            });
+        }else if(heightT_o <= 1373){
+            setHeight({
+                "height": (1373 - heightT_o) + "px"
+              });
+              setTHeight({
+                "height": "1740" + "px"
+            });
+        }else if(heightT_o <= 2430){
+            setHeight({
+                "height": (2425 - heightT_o) + "px"
+              });
+        }else if(heightT_o <= 3430){
+            setHeight({
+                "height": (3425 - heightT_o) + "px"
+              });
+        }else{
+            setHeight({
+                "height": (heightT_o) + "px"
+              });
+        }
+    }
+
+    const handleClosePrint = async () => {
+        setHeight({});
+        setTHeight({});
+    }
+
     const createPDF = async () => {
+        var total_h = myAllTable.current.clientHeight;
+        await handlePrint(total_h);
         var originalTitle = document.title;
         document.title = '\u00A0';
         window.print();
         document.title = originalTitle;
+        await handleClosePrint();
       };
 
     const pull_total = async (data) => {
@@ -302,6 +348,92 @@ export default function Customer(props) {
                             </div>
                         </div>
                     </form>
+                    <div className="row pt-1 pt-md-1 px-2 mb-2 mx-900" id="no-print">
+                            <div className="col-8">
+                            <div className="row d-flex">
+                                    <div className="col p-0 pt-1 col-md mb-2 mx-2">
+                                        <FormControl fullWidth size="small">
+                                        <InputLabel id="demo-simple-select-label">Day</InputLabel>
+                                        <Select id="demo-simple-select1" name="date" label="day" className="w-100 mb-2" labelId="demo-simple-select-label"
+                                            value={formDataIn.day} onChange={handleChangePro} size="small">
+                                                <MenuItem value={"01"}>01</MenuItem>
+                                                <MenuItem value={"02"}>02</MenuItem>
+                                                <MenuItem value={"03"}>03</MenuItem>
+                                                <MenuItem value={"04"}>04</MenuItem>
+                                                <MenuItem value={"05"}>05</MenuItem>
+                                                <MenuItem value={"06"}>06</MenuItem>
+                                                <MenuItem value={"07"}>07</MenuItem>
+                                                <MenuItem value={"08"}>08</MenuItem>
+                                                <MenuItem value={"09"}>09</MenuItem>
+                                                <MenuItem value={"10"}>10</MenuItem>
+                                                <MenuItem value={"11"}>11</MenuItem>
+                                                <MenuItem value={"12"}>12</MenuItem>
+                                                <MenuItem value={"13"}>13</MenuItem>
+                                                <MenuItem value={"14"}>14</MenuItem>
+                                                <MenuItem value={"15"}>15</MenuItem>
+                                                <MenuItem value={"16"}>16</MenuItem>
+                                                <MenuItem value={"17"}>17</MenuItem>
+                                                <MenuItem value={"18"}>18</MenuItem>
+                                                <MenuItem value={"19"}>19</MenuItem>
+                                                <MenuItem value={"20"}>20</MenuItem>
+                                                <MenuItem value={"21"}>21</MenuItem>
+                                                <MenuItem value={"22"}>22</MenuItem>
+                                                <MenuItem value={"23"}>23</MenuItem>
+                                                <MenuItem value={"24"}>24</MenuItem>
+                                                <MenuItem value={"25"}>25</MenuItem>
+                                                <MenuItem value={"26"}>26</MenuItem>
+                                                <MenuItem value={"27"}>27</MenuItem>
+                                                <MenuItem value={"28"}>28</MenuItem>
+                                                <MenuItem value={"29"}>29</MenuItem>
+                                                <MenuItem value={"30"}>30</MenuItem>
+                                                <MenuItem value={"31"}>31</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                
+                                    </div>
+                                    <div className="col p-0 pt-1 col-md mb-2 mx-2">
+                                    <FormControl fullWidth size="small">
+                                        <InputLabel id="demo-simple-select-label">Month</InputLabel>
+                                        <Select id="demo-simple-select1" name="month" label="Month" className="w-100 mb-2" labelId="demo-simple-select-label"
+                                            value={formDataIn.month} onChange={handleChangePro} size="small">
+                                                <MenuItem value={"1"}>01</MenuItem>
+                                                <MenuItem value={"2"}>02</MenuItem>
+                                                <MenuItem value={"3"}>03</MenuItem>
+                                                <MenuItem value={"4"}>04</MenuItem>
+                                                <MenuItem value={"5"}>05</MenuItem>
+                                                <MenuItem value={"6"}>06</MenuItem>
+                                                <MenuItem value={"7"}>07</MenuItem>
+                                                <MenuItem value={"8"}>08</MenuItem>
+                                                <MenuItem value={"9"}>09</MenuItem>
+                                                <MenuItem value={"10"}>10</MenuItem>
+                                                <MenuItem value={"11"}>11</MenuItem>
+                                                <MenuItem value={"12"}>12</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </div>
+                                    <div className="col p-0 pt-1 col-md mb-2 mx-2">
+                                    <FormControl fullWidth size="small">
+                                        <InputLabel id="demo-simple-select-label">Year</InputLabel>
+                                        <Select id="demo-simple-select1" name="year" label="Year" className="w-100 mb-2" labelId="demo-simple-select-label"
+                                            value={formDataIn.year} onChange={handleChangePro} size="small">
+                                                <MenuItem value={"2019"}>2019</MenuItem>
+                                                <MenuItem value={"2020"}>2020</MenuItem>
+                                                <MenuItem value={"2021"}>2021</MenuItem>
+                                                <MenuItem value={"2022"}>2022</MenuItem>
+                                                <MenuItem value={"2023"}>2023</MenuItem>
+                                                <MenuItem value={"2024"}>2024</MenuItem>
+                                                <MenuItem value={"2025"}>2025</MenuItem>
+                                                <MenuItem value={"2026"}>2026</MenuItem>
+                                                <MenuItem value={"2027"}>2027</MenuItem>
+                                                <MenuItem value={"2028"}>2028</MenuItem>
+                                                <MenuItem value={"2029"}>2029</MenuItem>
+                                                <MenuItem value={"2030"}>2030</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                 </div>
                 <div className="container bg-white px-2">
                     <div className="wrapper-header d-flex justify-content-between align-items-start mb-1">
@@ -491,7 +623,7 @@ export default function Customer(props) {
                     <div className="row mx-2 mt-1 wrap-text">
                         <p3 className="p-0">บริษัทฯ ยินดีเสนอราคาสินค้าดังรายการต่อไปนี้</p3>
                     </div>
-                    {stateOfN?(<div className="container-fluid p-0">
+                    {stateOfN?(<div className="container-fluid p-0" ref={myAllTable} style={t_height}>
                         <div className="row m-2 pt-1 mb-0">
                             <table className="qa-table">
                                 <thead className="bg-dark text-light">
@@ -775,8 +907,8 @@ export default function Customer(props) {
                         <div className="row p-0 mx-2">
                             <p2 className="p-0">บริษัท เอ สแควร์จํากัด</p2>
                             <p2 className="p-0">A SQUARE LIMITED.</p2>
-                            <p2 className="p-0">26 ซอยนวมินทร์86 แขวงรามอินทรา เขตคันนายาว กรุงเทพฯ 10230</p2>
-                            <p2 className="p-0">26 Soi Nawamin 86 Ram Intra, Khan Na Yao, BANGKOK 10230</p2>
+                            <p2 className="p-0">26 ซอยนวมินทร์ 86 แขวงรามอินทรา เขตคันนายาว กรุงเทพฯ 10230</p2>
+                            <p2 className="p-0">26 Soi Nawamin 86 Ram Intra, Khan Na Yao, Bangkok 10230</p2>
                             <p2 className="p-0">Tel: (662) 0-2542-2108-9 ;Email: pracha.imail@gmail.com; www.asquare.co.th</p2>
                         </div>
                     </div>):(<></>)}

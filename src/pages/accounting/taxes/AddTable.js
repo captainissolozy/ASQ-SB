@@ -31,6 +31,7 @@ const AddTable = (props) => {
                 <td className="px-3">{data.bank}</td>
                 <td className="px-3">{data.day+"/"+data.month+"/"+data.year}</td>
                 <td className="px-3 overflow-hidden text-end">{parseFloat(data.amount).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
+                <td key={data.url} className="text-center"><a href={data.url} target="_blank">{data.url != ""?"File":""}</a></td>
             </tr>
             </tbody>
 

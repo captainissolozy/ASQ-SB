@@ -168,11 +168,8 @@ export default function Lobby() {
                 () => {
                     // download url
                     getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
-                        updateFormData({
-                            ...formData,
-                            "url": url
-                        });
-                        console.log(formData, url)
+                        formData.url = url;
+                        console.log(formData)
                         if(formData.amount == "" || formData.day == "" || formData.month == ""|| formData.year == ""){
                             
                         }else{
@@ -233,7 +230,7 @@ export default function Lobby() {
                                             height: "5px",
                                         },
                                     }}
-                                               name="form" label="From" className="w-100" onChange={joinChange}/>
+                                               name="form" label="Bill Number" className="w-100" onChange={joinChange}/>
                                 </div>
                             </div>
                             <div className="col-4 px-2">

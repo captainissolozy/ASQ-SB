@@ -30,7 +30,7 @@ const AddTable = (props) => {
 
     return (
         formData.filter( result => {
-            return ((result.name.toLowerCase() == (props.name) || props.name == "")
+            return ((result.name.toLowerCase().includes(props.name))
                     && result.form.includes(props.form)
                     && (result.bank || "").includes(props.bank || "")
                     && (result.mode|| "").includes(props.mode) 

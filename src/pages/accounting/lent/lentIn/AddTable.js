@@ -55,7 +55,8 @@ const AddTable = (props) => {
             <tbody>
             <tr>
                 <td className="px-3">{parseFloat(data.payback).toLocaleString(undefined, {maximumFractionDigits:2})}</td>
-                <td className="px-3">{data.pday+"/"+data.pmonth+"/"+data.pyear}</td> 
+                <td className="px-3">{data.pday+"/"+data.pmonth+"/"+data.pyear}</td>
+                <td key={data.url} className="text-center"><a href={data.url} target="_blank">{data.url != ""?"File":""}</a></td>
                 <td style={{cursor: "pointer"}} className="text-center dlt-icon z-indie" onClick={onDelete} id={data.payback +"-"+ data.pday} ><FontAwesomeIcon id={data.payback + "-" + data.pday} icon={faTrashCan}/></td>
             </tr>
             </tbody>

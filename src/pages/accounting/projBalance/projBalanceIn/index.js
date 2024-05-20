@@ -87,7 +87,7 @@ export default function Lobby() {
                                             height: "5px",
                                         },
                                     }}
-                                               name="name" label="Description" className="w-100" onChange={joinChange}/>
+                                               name="name" label="Subject" className="w-100" onChange={joinChange}/>
                                 </div>
                             </div>
                             <div className="col-md-4 p-0 col">
@@ -219,7 +219,7 @@ export default function Lobby() {
                                 <thead className="text-light">
                                 <tr>
                                     <th scope="col" className="t-stick th px-3">Type</th>
-                                    <th scope="col" className="t-stick th px-3">Description</th>
+                                    <th scope="col" className="t-stick th px-3">Subject</th>
                                     <th scope="col" className="t-stick th px-3">Bank</th>
                                     <th scope="col" className="t-stick th px-3">Supplier</th>
                                     <th scope="col" className="t-stick th px-3">Date</th>

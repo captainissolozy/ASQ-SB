@@ -12,12 +12,13 @@ import {
     FormControl,
     Button
 } from "@mui/material";
-import db from "../../../config/firebase-config"
+import db, {storage} from "../../../config/firebase-config"
 import {doc, updateDoc, setDoc } from "firebase/firestore"
 import AddTable from "./AddTable";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Modal from "@material-ui/core/Modal";
+import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
 
 
 export default function Lobby() {
@@ -43,7 +44,8 @@ export default function Lobby() {
         pmonth: "",
         pyear: "",
         status:"pending",
-        lleft: ""
+        lleft: "",
+        url: "",
     });
 
     const initialSearchKey = Object.freeze({
@@ -63,6 +65,7 @@ export default function Lobby() {
     const [formData2, updateFormData2] = useState(initialFormData2)
     const [searchKey, setSearchKey] = useState(initialSearchKey)
     const [edit, setEdit] = useState(false)
+    const [file, setFile] = useState("");
 
     useEffect(() => {
         if (!user) {
@@ -89,6 +92,10 @@ export default function Lobby() {
 
     const handleClose2 = () => {
         setOpen2(false)
+    }
+
+    const handleChangeUploadFile = (e) => {
+        setFile(e.target.files[0])
     }
 
     const handleChange = (e) => {
@@ -122,17 +129,39 @@ export default function Lobby() {
 
     const handleSubmit2 = async (e) => {
         e.preventDefault()
-        const docRef1 = doc(db, "accounting", "lent", "record", sessionStorage.getItem("PayID"));
-        if(sessionStorage.getItem("PayLent") - formData2.payback == 0){
-            formData2.status = "done"
-        }
-        formData2.lleft = sessionStorage.getItem("PayLent") - formData2.payback
-        await updateDoc(docRef1, formData2);
-        const docRef2 = doc(db, "accounting", "record", sessionStorage.getItem("PayID"), formData2.payback+formData2.pday);
-        await setDoc(docRef2, formData2);
-        sessionStorage.setItem("PayID", "");
-        sessionStorage.setItem("PayLent", "");
-        setOpen2(false)
+        const storageRef = ref(storage, `/media/lent/${file.name}`)
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+                const percent = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+            },
+            (err) => console.log(err),
+            () => {
+                // download url
+                getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
+                    if(formData.pday == ""){
+                        
+                    }else{
+                        formData2.url = url;
+                        const docRef1 = doc(db, "accounting", "lent", "record", sessionStorage.getItem("PayID"));
+                        if(sessionStorage.getItem("PayLent") - formData2.payback == 0){
+                            formData2.status = "done"
+                        }
+                        formData2.lleft = sessionStorage.getItem("PayLent") - formData2.payback
+                        await updateDoc(docRef1, formData2);
+                        const docRef2 = doc(db, "accounting", "record", sessionStorage.getItem("PayID"), formData2.payback+formData2.pday);
+                        await setDoc(docRef2, formData2);
+                        sessionStorage.setItem("PayID", "");
+                        sessionStorage.setItem("PayLent", "");
+                        setOpen2(false)
+                    }
+                });
+            }
+        )
+        
     };
 
     return (
@@ -514,7 +543,8 @@ export default function Lobby() {
                         </Select>
                         </div>
                     </div>
-
+                    <input name="path" className="row d-flex justify-content-center px-2 mb-3 pt-4 mx-2"
+                            type="file" accept="image/*" onChange={handleChangeUploadFile}/>
                     <div className="pt-2">
                         <div className="col d-flex justify-content-center">
                             <Button type="submit" variant="contained" color="secondary" className="mx-3 m"

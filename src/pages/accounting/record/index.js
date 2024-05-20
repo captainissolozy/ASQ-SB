@@ -214,7 +214,7 @@ export default function Lobby() {
                                                 height: "5px",
                                             },
                                         }}
-                                        name="description" label="Description" className="w-100" onChange={joinChange}/>
+                                        name="name" label="Description" className="w-100" onChange={joinChange}/>
                                 </div>
                             </div>
                             <div className="col-md-6 p-0 col">
